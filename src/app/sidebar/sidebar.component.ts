@@ -9,10 +9,10 @@ export interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-  { path: '/login',         title: 'Login',             icon:'nc-key-25',       class: '' },
-  { path: '/equipos',     title: 'Dashboard',         icon:'nc-bank',       class: '' },
-  { path: '/solicitudes',         title: 'Icons',             icon:'nc-diamond',    class: '' },
-  { path: '/usuarios',          title: 'Maps',              icon:'nc-pin-3',      class: '' },
+  { path: '/login', title: 'Login', icon: 'nc-key-25', class: '' },
+  { path: '/equipos', title: 'Equipos', icon: 'nc-bank', class: '' },
+  { path: '/solicitudes', title: 'Solicitudes', icon: 'nc-diamond', class: '' },
+  { path: '/usuarios', title: 'Usuarios', icon: 'nc-pin-3', class: '' },
 ];
 
 
@@ -20,9 +20,9 @@ export const ROUTES: RouteInfo[] = [
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html'
 })
-export class SidebarComponent implements OnInit{
+export class SidebarComponent implements OnInit {
   public menuItems: any[] | undefined;
   ngOnInit() {
-      this.menuItems = ROUTES.filter(menuItem => menuItem);
+    this.menuItems = ROUTES.filter(menuItem => menuItem);
   }
 }
