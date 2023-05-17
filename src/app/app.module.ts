@@ -15,12 +15,14 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { SidebarModule } from './sidebar/sidebar.module';
 import { NavbarModule } from './shared/navbar/navbar.module';
 import { FooterModule } from './shared/footer/footer.module';
+import { HistorialComponent } from './pages/historial/historial.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    LoginComponent
+    LoginComponent,
+    HistorialComponent
   ],
   imports: [
     BrowserModule,
