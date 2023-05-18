@@ -27,16 +27,18 @@ export class AuthService {
       usuario,
       password
     }
-    return this.http.post<AuthResponse>(url,body)
-    .pipe(
-      tap( (resp) =>{
-        if(resp.ok){
-          localStorage.setItem('token',resp.token!);
-        }
-      }),
-      map( resp => resp.ok),
-      catchError(err=> of(err.error))
-    )
+    return this.http.post<AuthResponse>(url,body);
+  }
+
+
+  solicitaUsuario( usuario: string, email: string, password: string){
+    const url = `${this.baseUrl}/usuarios/solicitar`
+    const body = {
+      usuario,
+      email,
+      password
+    }
+    return this.http.post<AuthResponse>(url,body);
   }
 
 }

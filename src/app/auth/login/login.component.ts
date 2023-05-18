@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginComponent {
 
   
-
+  public mostrarSpinner: boolean = false;
 
   miFormulario: FormGroup = this.fb.group({
     user: ['', [Validators.required]],
@@ -20,25 +20,52 @@ export class LoginComponent {
   });
 
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private toastr: ToastrService,
+    private fb: FormBuilder,
     private router: Router,
     private authService: AuthService
     ){}
 
 
     login(){
+      this.mostrarSpinner = true;
       const {user, password} = this.miFormulario.value;
  
       this.authService.login(user,password)
       .subscribe((ok)=>{
-        // if(ok===true){
-            this.router.navigateByUrl('/solicitudes');
+          this.mostrarSpinner = false;
+
+          this.toastr.success(
+            '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Acceso correcto!!!</span>',
+            "",
+            {
+              timeOut: 4000,
+              closeButton: true,
+              enableHtml: true,
+              toastClass: "alert alert-success alert-with-icon",
+              positionClass: "toast-" + "top" + "-" + "center"
+            }
+          );
+
+          //this.router.navigateByUrl('/solicitudes');
         //  }else{
         //     console.log('error');
         //  }
       },
       (err)=>{
-        console.log(err)
+          this.mostrarSpinner = false;
+          this.toastr.error(
+            '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">'+err.error+'</span>',
+            "",
+            {
+              timeOut: 4000,
+              closeButton: true,
+              enableHtml: true,
+              toastClass: "alert alert-danger alert-with-icon",
+              positionClass: "toast-" + "top" + "-" + "center"
+            }
+          );
       }
       )
     }

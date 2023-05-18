@@ -15,8 +15,12 @@
                     <input type="password" formControlName="password" class="form-control" id="password">
                 </div>
             </div>
+            
             <div class="card-footer">
-                <button [disabled]="miFormulario.invalid" class="btn btn-primary" type="submit">Entrar</button>
+                <button [disabled]="miFormulario.invalid || mostrarSpinner" class="btn btn-primary" type="submit">
+                    <span *ngIf="mostrarSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
+                    Entrar
+                </button>
                 <span class="spacer"></span>
                 <a class="btn btn-link" routerLink="/registro">Solicitar cuenta</a>
             </div>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app-routing.module';
 import { RouterModule } from '@angular/router';
@@ -18,6 +18,7 @@ import { FooterModule } from './shared/footer/footer.module';
 import { HistorialComponent } from './pages/historial/historial.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -28,12 +29,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     HistorialComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
     BrowserModule,
     RouterModule.forRoot(AppRoutes,{
       useHash: true
     }),
+    ToastrModule.forRoot(),
     SidebarModule,
     NavbarModule,
     FooterModule
