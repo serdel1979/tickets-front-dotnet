@@ -33,9 +33,10 @@ export class LoginComponent {
       const {user, password} = this.miFormulario.value;
  
       this.authService.login(user,password)
-      .subscribe((ok)=>{
+      .subscribe((resp)=>{
           this.mostrarSpinner = false;
 
+          localStorage.setItem('usrlog',JSON.stringify(resp));
           this.toastr.success(
             '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Acceso correcto!!!</span>',
             "",
