@@ -92,4 +92,8 @@ export class NavbarComponent implements OnInit{
 
     }
 
+    salir(){
+      console.log('logout');
+    }
+
 }

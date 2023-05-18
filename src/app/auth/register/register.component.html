@@ -1,1 +1,30 @@
-<p>register works!</p>
+<form autocomplete="off"
+    [formGroup]="miFormulario"
+    (ngSubmit)="solicitaUsuario()">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">Solicitar acceso</div>
+            <div class="card-body">
+
+                <div class="form-group">
+                    <label for="user">Usuario/Departamento</label>
+                    <input class="form-control" formControlName="user" id="user">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" formControlName="email" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" formControlName="password" class="form-control" id="password">
+                </div>
+            </div>
+            <div class="card-footer">
+                <button [disabled]="miFormulario.invalid" class="btn btn-primary" type="submit">Enviar</button>
+                <span class="spacer"></span>
+                <a class="btn btn-link" routerLink="/login">Ingresar</a>
+            </div>
+
+        </div>
+    </div>
+</form>
