@@ -42,7 +42,8 @@ export class NavbarComponent implements OnInit{
             return this.listTitles[item].title;
         }
     }
-    return 'Solicitudes';
+    titlee = titlee.slice(1);
+    return titlee;
   }
   sidebarToggle() {
       if (this.sidebarVisible === false) {
