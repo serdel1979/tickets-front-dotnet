@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { AuthResponse, Usuario } from '../interfaces/usuario.interface';
 import { catchError, map, of, tap } from 'rxjs';
 
@@ -21,10 +21,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
 
-  login( email: string, password: string){
-    const url = `${this.baseUrl}/auth`
+  login( usuario: string, password: string){
+    const url = `${this.baseUrl}/usuarios/login`
     const body = {
-      email,
+      usuario,
       password
     }
     return this.http.post<AuthResponse>(url,body)
@@ -35,7 +35,7 @@ export class AuthService {
         }
       }),
       map( resp => resp.ok),
-      catchError(err=> of(err.error.msg))
+      catchError(err=> of(err.error))
     )
   }
 

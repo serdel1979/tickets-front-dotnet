@@ -31,12 +31,16 @@ export class LoginComponent {
  
       this.authService.login(user,password)
       .subscribe((ok)=>{
-         if(ok===true){
+        // if(ok===true){
             this.router.navigateByUrl('/solicitudes');
-         }else{
-            console.log('error');
-         }
-      })
+        //  }else{
+        //     console.log('error');
+        //  }
+      },
+      (err)=>{
+        console.log(err)
+      }
+      )
     }
 
  
