@@ -35,8 +35,10 @@ export class LoginComponent {
       this.authService.login(user,password)
       .subscribe((resp)=>{
           this.mostrarSpinner = false;
-
+          localStorage.setItem('token',JSON.stringify(resp.token));
           localStorage.setItem('usrlog',JSON.stringify(resp));
+
+          this.authService.loginOk();
           this.toastr.success(
             '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Acceso correcto!!!</span>',
             "",
@@ -48,11 +50,7 @@ export class LoginComponent {
               positionClass: "toast-" + "top" + "-" + "center"
             }
           );
-
-          //this.router.navigateByUrl('/solicitudes');
-        //  }else{
-        //     console.log('error');
-        //  }
+          this.router.navigateByUrl('/solicitudes');
       },
       (err)=>{
           this.mostrarSpinner = false;

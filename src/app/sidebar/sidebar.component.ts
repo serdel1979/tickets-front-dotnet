@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { Subscription } from 'rxjs';
 
 
 export interface RouteInfo {
@@ -21,8 +23,31 @@ export const ROUTES: RouteInfo[] = [
   templateUrl: './sidebar.component.html'
 })
 export class SidebarComponent implements OnInit {
+
+  public userlogued: string = '';
+
+  isLoggedIn: boolean = false;
+  
+
+  private subscription!: Subscription;
+
+
+  constructor(private authService: AuthService){}
+
+
+
   public menuItems: any[] | undefined;
   ngOnInit() {
+    this.isLoggedIn = this.authService.isLogued();
+    this.subscription = this.authService.isLoggedInChange.subscribe((loggedIn: boolean) => {
+      this.isLoggedIn = loggedIn;
+    });
     this.menuItems = ROUTES.filter(menuItem => menuItem);
   }
+
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
 }
