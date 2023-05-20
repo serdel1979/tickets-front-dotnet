@@ -13,6 +13,8 @@ export class AuthService {
 
   private _usuario!: Usuario;
 
+  private userName: string = '';
+
 
   public isLoggedInChange: Subject<boolean> = new Subject<boolean>();
 
@@ -73,7 +75,7 @@ export class AuthService {
           return usr.userName;
         }
     }
-    return 'NONE';
+    return null;
   }
 
   isLogued(){

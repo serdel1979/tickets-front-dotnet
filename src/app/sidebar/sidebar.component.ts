@@ -8,13 +8,14 @@ export interface RouteInfo {
   title: string;
   icon: string;
   class: string;
+  admin: boolean;
 }
 
 export const ROUTES: RouteInfo[] = [
-  { path: '/solicitudes', title: 'Solicitudes', icon: 'nc-bullet-list-67', class: '' },
-  { path: '/historial', title: 'Historial', icon: 'nc-paper', class: '' },
-  { path: '/usuarios', title: 'Usuarios', icon: 'nc-single-02', class: '' },
-  { path: '/equipos', title: 'Equipos', icon: 'nc-laptop', class: '' },
+  { path: '/solicitudes', title: 'Solicitudes', icon: 'nc-bullet-list-67', class: '', admin: false},
+  { path: '/historial', title: 'Historial', icon: 'nc-paper', class: '', admin: false },
+  { path: '/usuarios', title: 'Usuarios', icon: 'nc-single-02', class: '', admin: true},
+  { path: '/equipos', title: 'Equipos', icon: 'nc-laptop', class: '', admin: false},
 ];
 
 
@@ -24,9 +25,11 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
 
-  public userlogued: string = '';
+  public usrName: string = '';
 
   isLoggedIn: boolean = false;
+
+  isAdmin: boolean = false;
   
 
   private subscription!: Subscription;
@@ -37,17 +40,29 @@ export class SidebarComponent implements OnInit {
 
 
   public menuItems: any[] | undefined;
+
+  public filteredMenuItems: RouteInfo[] = [];
+
   ngOnInit() {
     this.isLoggedIn = this.authService.isLogued();
+    this.usrName = this.authService.getUserLogued();
+    this.isAdmin = this.authService.isAdmin();
+    console.log(`logueado? ${this.isLoggedIn}, usrname? ${this.usrName}, es admin? ${this.isAdmin}`);
     this.subscription = this.authService.isLoggedInChange.subscribe((loggedIn: boolean) => {
       this.isLoggedIn = loggedIn;
+      if(loggedIn){
+        this.usrName = this.authService.getUserLogued();
+        this.isAdmin = this.authService.isAdmin();
+      }
+      
     });
+    
     this.menuItems = ROUTES.filter(menuItem => menuItem);
   }
 
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   this.subscription.unsubscribe();
+  // }
 
 }

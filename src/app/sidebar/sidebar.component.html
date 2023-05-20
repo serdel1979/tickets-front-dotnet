@@ -6,14 +6,14 @@
           <img src="">
         </div>
       </a>
-      <a href="" class="simple-text logo-normal">
-        Soporte <i class="nc-icon nc-laptop"></i>
-      </a>
+      <div class="simple-text logo-normal">
+        {{ usrName }} <i class="nc-icon nc-laptop"></i>
+      </div>
     </div>
     <ul class="nav">
 
       <li *ngFor="let menuItem of menuItems" routerLinkActive="active" class="{{menuItem.class}}">
-        <a [routerLink]="[menuItem.path]">
+        <a *ngIf="isAdmin || (!isAdmin && !menuItem.admin)" [routerLink]="[menuItem.path]">
           <i class="nc-icon {{menuItem.icon}}"></i>
           <p>{{menuItem.title}}</p>
         </a>
@@ -21,4 +21,7 @@
 
     </ul>
   </div>
+</div>
+<div>
+  {{isLoggedIn}}
 </div>
