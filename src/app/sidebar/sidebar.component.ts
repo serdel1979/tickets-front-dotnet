@@ -47,7 +47,6 @@ export class SidebarComponent implements OnInit {
     this.isLoggedIn = this.authService.isLogued();
     this.usrName = this.authService.getUserLogued();
     this.isAdmin = this.authService.isAdmin();
-    console.log(`logueado? ${this.isLoggedIn}, usrname? ${this.usrName}, es admin? ${this.isAdmin}`);
     this.subscription = this.authService.isLoggedInChange.subscribe((loggedIn: boolean) => {
       this.isLoggedIn = loggedIn;
       if(loggedIn){

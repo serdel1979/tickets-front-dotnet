@@ -35,7 +35,11 @@ export class LoginComponent {
       this.authService.login(user,password)
       .subscribe((resp)=>{
           this.mostrarSpinner = false;
-          localStorage.setItem('token',JSON.stringify(resp.token));
+          let token = JSON.stringify(resp.token);
+          console.log(token);
+          token = token.slice(1);
+          token = token.slice(0, -1);
+          localStorage.setItem('token',token);
           localStorage.setItem('usrlog',JSON.stringify(resp));
 
           this.authService.loginOk();
@@ -53,6 +57,7 @@ export class LoginComponent {
           this.router.navigateByUrl('/solicitudes');
       },
       (err)=>{
+        console.log(err);
           this.mostrarSpinner = false;
           this.toastr.error(
             '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">'+err.error+'</span>',

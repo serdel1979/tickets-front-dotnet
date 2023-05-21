@@ -89,5 +89,16 @@ export class AuthService {
     return false;
   }
 
+  getIdLogued(){
+    let objetoString: string | null = localStorage.getItem('usrlog');
+    if (objetoString) {
+        let usr: any = JSON.parse(objetoString);
+        if(usr){
+          return usr.id;
+        }
+    }
+    return '';
+  }
+
 
 }

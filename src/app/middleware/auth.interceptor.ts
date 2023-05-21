@@ -11,7 +11,6 @@ export class AuthInterceptor implements HttpInterceptor {
 
         let token = localStorage.getItem('token');
 
-        console.log(token);
         if (token) {
             request = request.clone({
                 setHeaders: {
@@ -19,7 +18,6 @@ export class AuthInterceptor implements HttpInterceptor {
                 }
             });
         }
-
         return next.handle(request);
     }
 }

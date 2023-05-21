@@ -8,19 +8,24 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SolicitudesComponent } from 'src/app/pages/solicitudes/solicitudes.component';
 import { UsuariosComponent } from 'src/app/pages/usuarios/usuarios.component';
 import { EquiposComponent } from 'src/app/pages/equipos/equipos.component';
+import { AppModule } from "../../app.module";
+import { AdminComponent } from '../../pages/solicitudes/admin/admin.component';
+import { UsersComponent } from 'src/app/pages/solicitudes/users/users.component';
 
 
 @NgModule({
-  declarations: [
-    SolicitudesComponent,
-    UsuariosComponent,
-    EquiposComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(AdminLayoutRoutes),
-    FormsModule,
-    NgbModule
-  ]
+    declarations: [
+        SolicitudesComponent,
+        UsuariosComponent,
+        EquiposComponent,
+        AdminComponent,
+        UsersComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(AdminLayoutRoutes),
+        FormsModule,
+        NgbModule
+    ]
 })
 export class AdminLayoutModule { }

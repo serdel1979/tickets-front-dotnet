@@ -16,9 +16,12 @@ import { SidebarModule } from './sidebar/sidebar.module';
 import { NavbarModule } from './shared/navbar/navbar.module';
 import { FooterModule } from './shared/footer/footer.module';
 import { HistorialComponent } from './pages/historial/historial.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,  HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { AdminComponent } from './pages/solicitudes/admin/admin.component';
+import { UsersComponent } from './pages/solicitudes/users/users.component';
+import { AuthInterceptor } from './middleware/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,11 @@ import { ToastrModule } from 'ngx-toastr';
     NavbarModule,
     FooterModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
