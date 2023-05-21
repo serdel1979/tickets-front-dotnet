@@ -4,11 +4,6 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app-routing.module';
 import { RouterModule } from '@angular/router';
-import { SolicitudesComponent } from './pages/solicitudes/solicitudes.component';
-import { UsuariosComponent } from './pages/usuarios/usuarios.component';
-import { EquiposComponent } from './pages/equipos/equipos.component';
-import { NavbarComponent } from './shared/navbar/navbar.component';
-import { FooterComponent } from './shared/footer/footer.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
@@ -19,8 +14,6 @@ import { HistorialComponent } from './pages/historial/historial.component';
 import { HttpClientModule,  HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-import { AdminComponent } from './pages/solicitudes/admin/admin.component';
-import { UsersComponent } from './pages/solicitudes/users/users.component';
 import { AuthInterceptor } from './middleware/auth.interceptor';
 
 @NgModule({

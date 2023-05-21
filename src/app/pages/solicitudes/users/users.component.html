@@ -1,7 +1,44 @@
+
 <div class="row-cols-3">
-    <button class="btn btn-primary">Solicitar</button>
-</div>
-<div class="row">
-    {{ misSolicitudes | json }}
+    <div class="text-center">
+        <p><button class="btn btn-primary" (click)="mostrarModalInfo()">Modal para informar</button></p>
+        <p><button class="btn btn-primary" (click)="mostrarModalConf()">Modal de confirmacion</button></p>
+      </div>
 </div>
 
+
+<ng-template #myModalInfo let-modal>
+ 
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Éxito</h5>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        ¡Modal mostrado correctamente!
+      </div>
+    </div>
+   
+  </ng-template>
+   
+  <ng-template #myModalConf let-modal>
+   
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Éxito</h5>
+          <button class="btn btn-primary" type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close('Cerrado desde la ventana')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        ¿Quieres confirmar la informacion? (Mira el resultado en consola)
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modal.close('No')">No</button>
+        <button type="button" class="btn btn-primary" (click)="modal.close('Si')">Si</button>
+      </div>
+    </div>
+   
+  </ng-template>

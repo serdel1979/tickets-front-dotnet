@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 import { SolicitudesService } from '../../../services/solicitudes.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-users',
@@ -10,11 +11,15 @@ import { SolicitudesService } from '../../../services/solicitudes.service';
 export class UsersComponent implements OnInit {
 
 
-
+  @ViewChild("myModalInfo", {static: false}) myModalInfo!: TemplateRef<any>;
+  @ViewChild("myModalConf", {static: false}) myModalConf!: TemplateRef<any>;
 
   private isLogued: boolean = false;
   private id!: string;
-  constructor(private authService: AuthService, private solicitudesServices:SolicitudesService){}
+  constructor(
+    private authService: AuthService,
+    private modalService: NgbModal, 
+    private solicitudesServices:SolicitudesService){}
 
   public misSolicitudes : any[]=[];
 
@@ -27,5 +32,18 @@ export class UsersComponent implements OnInit {
       })
     }
   }
+
+  mostrarModalInfo(){
+    this.modalService.open(this.myModalInfo);
+  }
+ 
+  mostrarModalConf(){
+    this.modalService.open(this.myModalConf).result.then( r => {
+      console.log("Tu respuesta ha sido: " + r);
+    }, error => {
+      console.log(error);
+    });
+  }
+ 
 
 }
