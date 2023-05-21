@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router";
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { isLoguedGuard } from "./guards/is-logued.guard";
 
 export const AppRoutes: Routes = [
   {
