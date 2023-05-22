@@ -65,7 +65,6 @@ export class UsersComponent implements OnInit {
  
   enviar(){
     console.log("enviando", this.solicitudesForm.value);
-    
   }
 
 }
