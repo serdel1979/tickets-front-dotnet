@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/
 import { AuthService } from '../../../auth/auth.service';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
@@ -14,9 +15,18 @@ export class UsersComponent implements OnInit {
   @ViewChild("myModalInfo", {static: false}) myModalInfo!: TemplateRef<any>;
   @ViewChild("myModalConf", {static: false}) myModalConf!: TemplateRef<any>;
 
+
+  solicitudesForm: FormGroup =  this.fb.group({
+    usuario: ['', [Validators.required]],
+    equipo: ['', [Validators.required]],
+    descripcion: ['',[Validators.required]],
+    foto: ['']
+  }); 
+
   private isLogued: boolean = false;
   private id!: string;
   constructor(
+    private fb: FormBuilder,
     private authService: AuthService,
     private modalService: NgbModal, 
     private solicitudesServices:SolicitudesService){}
@@ -34,7 +44,15 @@ export class UsersComponent implements OnInit {
   }
 
   mostrarModalInfo(){
-    this.modalService.open(this.myModalInfo);
+    this.modalService.open(this.myModalInfo).result.then(r=>{
+      if(r){
+        console.log('se presiono enviar ',this.solicitudesForm.value);
+      }else{
+        console.log('se cerró el modal');
+      }
+    },err=>{
+      console.error('modal cerrado ',err);
+    })
   }
  
   mostrarModalConf(){
@@ -45,5 +63,9 @@ export class UsersComponent implements OnInit {
     });
   }
  
+  enviar(){
+    console.log("enviando", this.solicitudesForm.value);
+    
+  }
 
 }
