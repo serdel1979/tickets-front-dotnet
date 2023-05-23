@@ -26,6 +26,9 @@ export class UsersComponent implements OnInit {
     fecha:[new Date(),[Validators.required]]
   }); 
 
+  
+  public imagenBase64!: string | ArrayBuffer | null;
+
   private isLogued: boolean = false;
   private id!: string;
   constructor(
@@ -82,6 +85,37 @@ export class UsersComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+  }
+
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.convertToBase64(file);
+    }
+  }
+
+  // convertToBase64(file: File) {
+  //   const reader: FileReader = new FileReader();
+  //   reader.onload = () => {
+  //     this.imagenBase64 = reader.result as string;
+  //     this.solicitudesForm.patchValue({
+  //       imagen: this.imagenBase64
+  //     });
+  //   };
+  //   reader.readAsDataURL(file);
+  // }
+
+  convertToBase64(file: File) {
+    const reader: FileReader = new FileReader();
+    reader.onload = () => {
+      this.imagenBase64 = reader.result as string;
+      console.log(this.imagenBase64);
+      this.solicitudesForm.patchValue({
+               imagen: this.imagenBase64
+      });
+    };
+    reader.readAsDataURL(file);
   }
  
   enviar(){
