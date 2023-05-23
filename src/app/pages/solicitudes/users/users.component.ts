@@ -17,10 +17,13 @@ export class UsersComponent implements OnInit {
 
 
   solicitudesForm: FormGroup =  this.fb.group({
+    usuarioId: ['', [Validators.required]],
     usuario: ['', [Validators.required]],
+    departamento: ['', [Validators.required]],
     equipo: ['', [Validators.required]],
     descripcion: ['',[Validators.required]],
-    foto: ['']
+    imagen: [''],
+    fecha:[new Date(),[Validators.required]]
   }); 
 
   private isLogued: boolean = false;
@@ -40,8 +43,26 @@ export class UsersComponent implements OnInit {
       this.solicitudesServices.getMisSolicitudes(this.id).subscribe(resp=>{
         this.misSolicitudes = resp;
       })
+      this.setValoresPorDefecto();
     }
   }
+
+
+
+  setValoresPorDefecto() {
+    const fechaActual = new Date();
+    const usuarioIdPorDefecto = this.authService.getIdLogued();
+    const usuarioPorDefecto = this.authService.getUserLogued();
+
+    this.solicitudesForm.patchValue({
+      fecha: fechaActual,
+      usuarioId: usuarioIdPorDefecto,
+      departamento: usuarioPorDefecto
+    });
+  }
+
+
+
 
   mostrarModalInfo(){
     this.modalService.open(this.myModalInfo).result.then(r=>{

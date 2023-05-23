@@ -36,7 +36,6 @@ export class LoginComponent {
       .subscribe((resp)=>{
           this.mostrarSpinner = false;
           let token = JSON.stringify(resp.token);
-          console.log(token);
           token = token.slice(1);
           token = token.slice(0, -1);
           localStorage.setItem('token',token);
