@@ -127,10 +127,14 @@ export class UsersComponent implements OnInit {
   onSubmit() {
     if (this.archivoSeleccionado) {
       const formData = new FormData();
-      formData.append('file', this.archivoSeleccionado);
+      formData.append('imagen', this.archivoSeleccionado);
       // Agrega los valores del formulario reactivo al formData
       Object.keys(this.solicitudesForm.value).forEach(key => {
-        formData.append(key, this.solicitudesForm.value[key]);
+        if (key === 'fecha') {
+          formData.append(key, new Date(this.solicitudesForm.value[key]).toISOString());
+        } else {
+          formData.append(key, this.solicitudesForm.value[key]);
+        }
       });
 
    
