@@ -16,5 +16,9 @@ export class SolicitudesService {
     return this.http.get<any[]>(`${this.baseUrl}/solicitudes/${id}/missolicitudes`)
   }
 
+  enviaSolicitud(form: any){
+    return this.http.post(`${this.baseUrl}/solicitudes`,form);
+  }
+
 
 }

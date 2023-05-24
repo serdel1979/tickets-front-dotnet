@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/
 import { AuthService } from '../../../auth/auth.service';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
@@ -12,21 +12,25 @@ import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
 export class UsersComponent implements OnInit {
 
 
-  @ViewChild("myModalInfo", {static: false}) myModalInfo!: TemplateRef<any>;
-  @ViewChild("myModalConf", {static: false}) myModalConf!: TemplateRef<any>;
+  @ViewChild("myModalInfo", { static: false }) myModalInfo!: TemplateRef<any>;
+  @ViewChild("myModalConf", { static: false }) myModalConf!: TemplateRef<any>;
 
 
-  solicitudesForm: FormGroup =  this.fb.group({
+  archivoSeleccionado: File | null = null;
+
+  imagenURL: string = '';
+
+  solicitudesForm: FormGroup = this.fb.group({
     usuarioId: ['', [Validators.required]],
     usuario: ['', [Validators.required]],
     departamento: ['', [Validators.required]],
     equipo: ['', [Validators.required]],
-    descripcion: ['',[Validators.required]],
+    descripcion: ['', [Validators.required]],
     imagen: [''],
-    fecha:[new Date(),[Validators.required]]
-  }); 
+    fecha: [new Date(), [Validators.required]]
+  });
 
-  
+
   public imagenBase64!: string | ArrayBuffer | null;
 
   private isLogued: boolean = false;
@@ -34,16 +38,16 @@ export class UsersComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private modalService: NgbModal, 
-    private solicitudesServices:SolicitudesService){}
+    private modalService: NgbModal,
+    private solicitudesServices: SolicitudesService) { }
 
-  public misSolicitudes : any[]=[];
+  public misSolicitudes: any[] = [];
 
   ngOnInit() {
     this.isLogued = this.authService.isLogued();
-    if (this.isLogued){
+    if (this.isLogued) {
       this.id = this.authService.getIdLogued();
-      this.solicitudesServices.getMisSolicitudes(this.id).subscribe(resp=>{
+      this.solicitudesServices.getMisSolicitudes(this.id).subscribe(resp => {
         this.misSolicitudes = resp;
       })
       this.setValoresPorDefecto();
@@ -51,6 +55,20 @@ export class UsersComponent implements OnInit {
   }
 
 
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    this.archivoSeleccionado = file;
+    if (file instanceof Blob) {
+      this.getImagenURL(file)
+        .then(url => {
+          this.imagenURL = url;
+        })
+        .catch(error => {
+          console.log('Error al obtener la URL de la imagen:', error);
+        });
+    }
+  }
 
   setValoresPorDefecto() {
     const fechaActual = new Date();
@@ -67,20 +85,20 @@ export class UsersComponent implements OnInit {
 
 
 
-  mostrarModalInfo(){
-    this.modalService.open(this.myModalInfo).result.then(r=>{
-      if(r){
-        console.log('se presiono enviar ',this.solicitudesForm.value);
-      }else{
+  mostrarModalInfo() {
+    this.modalService.open(this.myModalInfo).result.then(r => {
+      if (r) {
+        this.onSubmit();
+      } else {
         console.log('se cerró el modal');
       }
-    },err=>{
-      console.error('modal cerrado ',err);
+    }, err => {
+      console.error('modal cerrado ', err);
     })
   }
- 
-  mostrarModalConf(){
-    this.modalService.open(this.myModalConf).result.then( r => {
+
+  mostrarModalConf() {
+    this.modalService.open(this.myModalConf).result.then(r => {
       console.log("Tu respuesta ha sido: " + r);
     }, error => {
       console.log(error);
@@ -88,38 +106,56 @@ export class UsersComponent implements OnInit {
   }
 
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.convertToBase64(file);
+
+  getImagenURL(file: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (event: any) => {
+        resolve(event.target.result); // Resuelve la promesa con la URL de datos (data URL) de la imagen
+      };
+
+      reader.onerror = (event) => {
+        reject(event); // Rechaza la promesa en caso de error
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+
+  onSubmit() {
+    if (this.archivoSeleccionado) {
+      const formData = new FormData();
+      formData.append('file', this.archivoSeleccionado);
+      // Agrega los valores del formulario reactivo al formData
+      Object.keys(this.solicitudesForm.value).forEach(key => {
+        formData.append(key, this.solicitudesForm.value[key]);
+      });
+
+   
+      // Aquí puedes hacer la solicitud HTTP utilizando Angular HttpClient
+      // Ejemplo:
+      // this.http.post('URL_DEL_ENDPOINT', formData).subscribe(response => {
+      //   // Manejar la respuesta del servidor
+      // });
+      this.solicitudesServices.enviaSolicitud(formData).subscribe(resp=>{
+        console.log(resp);
+        this.resetForm(); // Restablecer los valores del formulario y las variables después de enviar el formulario
+      },
+      err=>{
+        console.log(err);
+        //this.resetForm(); // Restablecer los valores del formulario y las variables después de enviar el formulario
+      })
+      
     }
   }
 
-  // convertToBase64(file: File) {
-  //   const reader: FileReader = new FileReader();
-  //   reader.onload = () => {
-  //     this.imagenBase64 = reader.result as string;
-  //     this.solicitudesForm.patchValue({
-  //       imagen: this.imagenBase64
-  //     });
-  //   };
-  //   reader.readAsDataURL(file);
-  // }
-
-  convertToBase64(file: File) {
-    const reader: FileReader = new FileReader();
-    reader.onload = () => {
-      this.imagenBase64 = reader.result as string;
-      console.log(this.imagenBase64);
-      this.solicitudesForm.patchValue({
-               imagen: this.imagenBase64
-      });
-    };
-    reader.readAsDataURL(file);
-  }
- 
-  enviar(){
-    console.log("enviando", this.solicitudesForm.value);
+  resetForm() {
+    this.solicitudesForm.reset();
+    this.setValoresPorDefecto();
+    this.archivoSeleccionado = null;
+    this.imagenURL = '';
   }
 
 }
