@@ -5,6 +5,51 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title"> Solicitudes </h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th>
+                Usuario
+              </th>
+              <th>
+                Equipo
+              </th>
+              <th>
+                Descripción
+              </th>
+              <th>
+                Imágen
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let solicitud of misSolicitudes">
+                <td>
+                  {{ solicitud.usuario }}
+                </td>
+                <td>
+                  {{ solicitud.equipo }}
+                </td>
+                <td>
+                  {{ solicitud.descripcion }}
+                </td>
+                <td>
+                  <img *ngIf="solicitud.urlImagen != ''" [src]="solicitud.urlImagen" alt="Imagen guardada" style="max-width: 100px; max-height: 100px;">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <ng-template #myModalInfo let-modal>
   <div class="modal-content">
@@ -31,7 +76,8 @@
         <div class="form-group">
           <label for="imagen">Imagen (opcional)</label>
 
-          <input type="file" name="imagen" (change)="onFileSelected($event)" formControlName="imagen" accept=".png, .jpg, .jpeg, .gif" />
+          <input type="file" name="imagen" (change)="onFileSelected($event)" formControlName="imagen"
+            accept=".png, .jpg, .jpeg, .gif" />
           <!-- Mostrar la imagen cargada -->
           <img *ngIf="imagenURL" [src]="imagenURL" alt="Imagen cargada">
           <!-- Otros campos del formulario -->
