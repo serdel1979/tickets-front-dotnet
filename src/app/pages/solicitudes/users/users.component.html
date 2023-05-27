@@ -27,6 +27,9 @@
               <th>
                 Imágen
               </th>
+              <th>
+                Acción
+              </th>
             </thead>
             <tbody>
               <tr *ngFor="let solicitud of misSolicitudes">
@@ -40,7 +43,10 @@
                   {{ solicitud.descripcion }}
                 </td>
                 <td>
-                  <img *ngIf="solicitud.urlImagen != ''" [src]="solicitud.urlImagen" alt="Imagen guardada" style="max-width: 100px; max-height: 100px;">
+                  <img *ngIf="solicitud.urlImagen != null" [src]="solicitud.urlImagen" alt="Imagen guardada" style="max-width: 100px; max-height: 100px;">
+                </td>
+                <td>
+                  <button>ver</button>
                 </td>
               </tr>
             </tbody>
