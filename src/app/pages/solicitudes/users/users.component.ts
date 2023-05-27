@@ -3,6 +3,10 @@ import { AuthService } from '../../../auth/auth.service';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { fromEvent } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { error } from 'console';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-users',
@@ -15,6 +19,9 @@ export class UsersComponent implements OnInit {
   @ViewChild("myModalInfo", { static: false }) myModalInfo!: TemplateRef<any>;
   @ViewChild("myModalConf", { static: false }) myModalConf!: TemplateRef<any>;
 
+
+
+  public mostrarSpinner: boolean = false;
 
   archivoSeleccionado: File | null = null;
 
@@ -36,6 +43,7 @@ export class UsersComponent implements OnInit {
   private isLogued: boolean = false;
   private id!: string;
   constructor(
+    private toastr: ToastrService,
     private fb: FormBuilder,
     private authService: AuthService,
     private modalService: NgbModal,
@@ -86,9 +94,9 @@ export class UsersComponent implements OnInit {
 
 
   mostrarModalInfo() {
-    this.modalService.open(this.myModalInfo).result.then(r => {
+    this.modalService.open(this.myModalInfo).result.then(async r => {
       if (r) {
-        this.onSubmit();
+        await this.onSubmit();
       } else {
         console.log('se cerró el modal');
       }
@@ -124,35 +132,63 @@ export class UsersComponent implements OnInit {
   }
 
 
-  onSubmit() {
+  async onSubmit() {
+    this.mostrarSpinner = true;
+    const formData = new FormData();
     if (this.archivoSeleccionado) {
-      const formData = new FormData();
-      formData.append('imagen', this.archivoSeleccionado);
-      // Agrega los valores del formulario reactivo al formData
-      Object.keys(this.solicitudesForm.value).forEach(key => {
-        if (key === 'fecha') {
-          formData.append(key, new Date(this.solicitudesForm.value[key]).toISOString());
-        } else {
-          formData.append(key, this.solicitudesForm.value[key]);
-        }
-      });
 
-   
-      // Aquí puedes hacer la solicitud HTTP utilizando Angular HttpClient
-      // Ejemplo:
-      // this.http.post('URL_DEL_ENDPOINT', formData).subscribe(response => {
-      //   // Manejar la respuesta del servidor
-      // });
-      this.solicitudesServices.enviaSolicitud(formData).subscribe(resp=>{
-        console.log(resp);
-        this.resetForm(); // Restablecer los valores del formulario y las variables después de enviar el formulario
-      },
-      err=>{
-        console.log(err);
-        //this.resetForm(); // Restablecer los valores del formulario y las variables después de enviar el formulario
-      })
-      
+      formData.append('imagen', this.archivoSeleccionado);
+
     }
+    // Agrega los valores del formulario reactivo al formData
+    Object.keys(this.solicitudesForm.value).forEach(key => {
+      if (key === 'fecha') {
+        formData.append(key, new Date(this.solicitudesForm.value[key]).toISOString());
+      } else {
+        formData.append(key, this.solicitudesForm.value[key]);
+      }
+    });
+    // Aquí puedes hacer la solicitud HTTP utilizando Angular HttpClient
+    // Ejemplo:
+    // this.http.post('URL_DEL_ENDPOINT', formData).subscribe(response => {
+    //   // Manejar la respuesta del servidor
+    // });
+    this.solicitudesServices.enviaSolicitud(formData).subscribe({
+      next: () => {
+        this.resetForm();
+        this.toastr.success(
+          '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Solicitud enviada!!!</span>',
+          "",
+          {
+            timeOut: 4000,
+            closeButton: true,
+            enableHtml: true,
+            toastClass: "alert alert-success alert-with-icon",
+            positionClass: "toast-" + "top" + "-" + "center"
+          }
+        );
+        this.solicitudesServices.getMisSolicitudes(this.id).subscribe(resp => {
+          this.misSolicitudes = resp;
+          console.log(this.misSolicitudes);
+        });
+        this.mostrarSpinner = false;
+      },
+      error: (error) => {
+        this.toastr.error(
+          '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">' + error + '</span>',
+          "",
+          {
+            timeOut: 4000,
+            closeButton: true,
+            enableHtml: true,
+            toastClass: "alert alert-danger alert-with-icon",
+            positionClass: "toast-" + "top" + "-" + "center"
+          }
+        );
+        this.mostrarSpinner = false;
+      }
+
+    })
   }
 
   resetForm() {

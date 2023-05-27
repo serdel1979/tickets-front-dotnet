@@ -31,13 +31,16 @@
         <div class="form-group">
           <label for="imagen">Imagen (opcional)</label>
 
-          <input type="file" name="imagen" (change)="onFileSelected($event)" formControlName="imagen" />
+          <input type="file" name="imagen" (change)="onFileSelected($event)" formControlName="imagen" accept=".png, .jpg, .jpeg, .gif" />
           <!-- Mostrar la imagen cargada -->
           <img *ngIf="imagenURL" [src]="imagenURL" alt="Imagen cargada">
           <!-- Otros campos del formulario -->
 
         </div>
-        <button [disabled]="!solicitudesForm.valid" type="submit" class="btn btn-primary">Enviar</button>
+        <button [disabled]="!solicitudesForm.valid" type="submit" class="btn btn-primary">
+          <span *ngIf="mostrarSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Enviar
+        </button>
       </form>
     </div>
   </div>
