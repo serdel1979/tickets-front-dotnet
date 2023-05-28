@@ -1,9 +1,19 @@
-<div class="row-cols-3">
-  <div class="text-center">
-    <p><button class="btn btn-primary" (click)="mostrarModalInfo()">Modal para informar</button></p>
-    <p><button class="btn btn-primary" (click)="mostrarModalConf()">Modal de confirmacion</button></p>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <div class="d-flex flex-row-reverse justify-content-between align-items-center">
+          <i (click)="toggleChat()" class="nc-icon nc-chat-33 icon-zoom"></i>
+          <p class="mb-0"><button class="btn btn-primary" (click)="mostrarModalInfo()">Solicitar</button></p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- 
+    <p><button class="btn btn-primary" (click)="mostrarModalConf()">Modal de confirmacion</button></p>
+ -->
 
 <div class="row">
   <div class="col-md-12">
@@ -35,7 +45,7 @@
               </th>
             </thead>
             <tbody>
-              <tr *ngFor="let solicitud of misSolicitudes">
+              <tr *ngFor="let solicitud of misSolicitudes | paginate: { itemsPerPage:3, currentPage: page}">
                 <td>
                   {{ solicitud.usuario }}
                 </td>
@@ -60,34 +70,19 @@
               -->
                 <td style="width: 30mm;">
                   <i (click)="ver()" class="nc-icon nc-zoom-split icon-zoom"></i>
-                  <i (click)="toggleChat()" class="nc-icon nc-chat-33 icon-zoom" style="margin-left: 5mm;"></i>
-                  <div class="chat-window" *ngIf="mostrarChat">
-                    <!-- Contenido de la ventana de chat -->
-                    <div class="chat-window-content">
-                      <div class="chat-header">
-                        <button class="close-button" (click)="toggleChat()">&times;</button>
-                      </div>
-                      <div class="chat-conversation">
-                        <ul class="list-group" id="message-list">
-                          <li *ngFor="let mensaje of messages" class="list-group-item">{{ mensaje }}</li>
-                        </ul>
-                      </div>
-                      <div class="chat-input">
-                        <input  #messageInput type="text" class="form-control" placeholder="Escribe un mensaje" [(ngModel)]="message" (keyup.enter)="sendMessage()">
-                        <button class="btn btn-primary" (click)="sendMessage()">Enviar</button>
-                      </div>
-                    </div>
-                  </div>
+
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="Anterior"
+          nextLabel="Siguiente"></pagination-controls>
       </div>
     </div>
   </div>
 </div>
-
 
 <ng-template #myModalInfo let-modal>
   <div class="modal-content">
@@ -148,3 +143,23 @@
     </div>
   </div>
 </ng-template>
+
+
+<div class="chat-window" *ngIf="mostrarChat">
+  <!-- Contenido de la ventana de chat -->
+  <div class="chat-window-content">
+    <div class="chat-header">
+      <button class="close-button" (click)="toggleChat()">&times;</button>
+    </div>
+    <div class="chat-conversation">
+      <ul class="list-group" id="message-list">
+        <li *ngFor="let mensaje of messages" class="list-group-item">{{ mensaje }}</li>
+      </ul>
+    </div>
+    <div class="chat-input">
+      <input #messageInput type="text" class="form-control" placeholder="Escribe un mensaje" [(ngModel)]="message"
+        (keyup.enter)="sendMessage()">
+      <button class="btn btn-primary" (click)="sendMessage()">Enviar</button>
+    </div>
+  </div>
+</div>

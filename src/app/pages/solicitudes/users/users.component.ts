@@ -3,9 +3,7 @@ import { AuthService } from '../../../auth/auth.service';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { fromEvent } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { error } from 'console';
+
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -30,7 +28,18 @@ export class UsersComponent implements OnInit {
   mostrarChat: boolean = false;
 
   message: string = '';
-  messages: string[]=[];
+  messages: string[] = [];
+
+  paginationId: string = 'my-pagination';
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  
+  public page!: number;
+  // Variables de paginación
+  pageSize: number = 3; // Tamaño de página (número de solicitudes por página)
+  totalPages: number = 0; // Total de páginas
+  paginatedSolicitudes: any[] = []; // Solicitudes que se mostrarán en la página actual
+
 
   solicitudesForm: FormGroup = this.fb.group({
     usuarioId: ['', [Validators.required]],
@@ -52,7 +61,7 @@ export class UsersComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private modalService: NgbModal,
-    private solicitudesServices: SolicitudesService) { }
+    private solicitudesServices: SolicitudesService) {}
 
   public misSolicitudes: any[] = [];
 
@@ -68,6 +77,7 @@ export class UsersComponent implements OnInit {
   }
 
 
+  
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -174,7 +184,6 @@ export class UsersComponent implements OnInit {
         );
         this.solicitudesServices.getMisSolicitudes(this.id).subscribe(resp => {
           this.misSolicitudes = resp;
-          console.log(this.misSolicitudes);
         });
         this.mostrarSpinner = false;
       },
@@ -203,11 +212,11 @@ export class UsersComponent implements OnInit {
     this.imagenURL = '';
   }
 
-  ver(){
+  ver() {
     console.log("ver");
   }
 
-  chat(){
+  chat() {
     console.log("chat");
     this.mostrarChat = !this.mostrarChat;
   }
@@ -225,6 +234,12 @@ export class UsersComponent implements OnInit {
       this.message = '';
       this.messageInput.nativeElement.focus();
     }
+  }
+
+  onPageChange(event: any) {
+    this.page = event; // Actualizar el número de página actual
+    // Aquí puedes realizar cualquier acción adicional que necesites al cambiar de página
+    console.log('Página cambiada:', this.page);
   }
 
 }
