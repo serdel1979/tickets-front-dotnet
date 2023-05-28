@@ -19,13 +19,18 @@ export class UsersComponent implements OnInit {
   @ViewChild("myModalInfo", { static: false }) myModalInfo!: TemplateRef<any>;
   @ViewChild("myModalConf", { static: false }) myModalConf!: TemplateRef<any>;
 
-
+  @ViewChild('messageInput') messageInput!: ElementRef;
 
   public mostrarSpinner: boolean = false;
 
   archivoSeleccionado: File | null = null;
 
   imagenURL: string = '';
+
+  mostrarChat: boolean = false;
+
+  message: string = '';
+  messages: string[]=[];
 
   solicitudesForm: FormGroup = this.fb.group({
     usuarioId: ['', [Validators.required]],
@@ -196,6 +201,30 @@ export class UsersComponent implements OnInit {
     this.setValoresPorDefecto();
     this.archivoSeleccionado = null;
     this.imagenURL = '';
+  }
+
+  ver(){
+    console.log("ver");
+  }
+
+  chat(){
+    console.log("chat");
+    this.mostrarChat = !this.mostrarChat;
+  }
+  toggleChat() {
+    this.mostrarChat = !this.mostrarChat;
+  }
+
+
+  sendMessage() {
+    if (this.message) {
+      if (this.messages.length >= 8) {
+        this.messages.shift(); // Elimina el primer elemento
+      }
+      this.messages.push(this.message);
+      this.message = '';
+      this.messageInput.nativeElement.focus();
+    }
   }
 
 }
