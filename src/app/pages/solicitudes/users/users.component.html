@@ -6,6 +6,9 @@
           <i (click)="toggleChat()" class="nc-icon nc-chat-33 icon-zoom"></i>
           <p class="mb-0"><button class="btn btn-primary" (click)="mostrarModalInfo()">Solicitar</button></p>
         </div>
+        <div *ngIf="mostrarSpinner" class="alert alert-info">
+          Enviando!!!
+        </div>
       </div>
     </div>
   </div>
@@ -77,8 +80,8 @@
           </table>
         </div>
 
-        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="Anterior"
-          nextLabel="Siguiente"></pagination-controls>
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel=&laquo;
+          nextLabel= &raquo;></pagination-controls>
       </div>
     </div>
   </div>
@@ -100,7 +103,7 @@
         </div>
         <div class="form-group">
           <input type="text" class="form-control" id="equipo" formControlName="equipo" autocomplete="off"
-            placeholder="Ingrese el nombre del equipo">
+            placeholder="Ingrese cual es el equipo que tiene problema">
         </div>
         <div class="form-group">
           <textarea class="form-control" id="descripcion" formControlName="descripcion" autocomplete="off"

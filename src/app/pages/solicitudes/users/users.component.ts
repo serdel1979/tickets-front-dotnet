@@ -113,10 +113,10 @@ export class UsersComponent implements OnInit {
       if (r) {
         await this.onSubmit();
       } else {
-        console.log('se cerró el modal');
+        this.resetForm();
       }
     }, err => {
-      console.error('modal cerrado ', err);
+      this.resetForm();
     })
   }
 
