@@ -28,7 +28,10 @@ export class SolicitudesService {
 
         catchError(err=> throwError(()=>'No se envió la solicitud!!!'))
       )
+  }
 
+  getDetalleSolicitud(id:number){
+    return this.http.get<any>(`${this.baseUrl}/solicitudes/getmisolicitud/${id}`)
   }
 
 

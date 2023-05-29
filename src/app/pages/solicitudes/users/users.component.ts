@@ -212,8 +212,14 @@ export class UsersComponent implements OnInit {
     this.imagenURL = '';
   }
 
-  ver() {
-    console.log("ver");
+  ver(id:number) {
+    console.log(id);
+    this.solicitudesServices.getDetalleSolicitud(id).subscribe(resp=>{
+      console.log(resp);
+    },
+    err=>{
+      console.log(err);
+    })
   }
 
   chat() {
