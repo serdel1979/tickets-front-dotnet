@@ -24,9 +24,6 @@
                 Estado
               </th>
               <th>
-                Imágen
-              </th>
-              <th>
                 Acción
               </th>
             </thead>
@@ -46,10 +43,6 @@
                 </td>
                 <td>
                   {{ solicitud.estadoActual }}
-                </td>
-                <td style="width: 50mm;">
-                  <img *ngIf="solicitud.urlImagen != null" [src]="solicitud.urlImagen" alt="Imagen guardada"
-                    style="max-width: 100px; max-height: 100px;">
                 </td>
                 <td style="width: 30mm;">
                   <i class="nc-icon nc-zoom-split icon-zoom"></i>
