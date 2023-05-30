@@ -1,34 +1,49 @@
-<div class="card">
-    <div class="card-header">
-        <h4>Solicitud</h4>
+<div *ngIf="buscando">
+    <div class="alert alert-info">
+        Cargando!!!
     </div>
-    <div *ngIf="!solicitud" class="card-body">
-        <div class="alert alert-info">
-            Cargando!!!
-        </div>
+</div>
+<div *ngIf="errorNotFound">
+    <div class="alert alert-danger">
+        Ha ocurrido un error!!!
     </div>
-    <div *ngIf="solicitud" class="card-body">
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="col-sm-6">
-                    <strong>Departamento:</strong> {{ solicitud.departamento }}
+    <div>
+        <button (click)="volver()" class="btn btn-primary">Volver</button>
+    </div>
+</div>
+<div *ngIf="solicitud" class="row">
+    <div class="col-sm-6 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Solicitud</h4>
+            </div>
+            <div *ngIf="solicitud" class="card-body">
+                <div>
+                    <strong>Departamento: </strong>
+                    <span>{{ solicitud.departamento }}</span>
                 </div>
-                <div class="col-sm-6">
-                    <strong>Equipo:</strong> {{ solicitud.equipo }}
+                <div>
+                    <strong>Usuario: </strong>
+                    <span>{{ solicitud.usuario }}</span>
+                </div>
+                <div>
+                    <strong>Equipo: </strong>
+                    <span>{{ solicitud.equipo }}</span>
+                </div>
+                <div>
+                    <strong>Estado Actual: </strong>
+                    <span>{{ solicitud.estadoActual }}</span>
+                </div>
+                <div>
+                    <strong>Fecha: </strong>
+                    <span>{{ solicitud.fecha | date }}</span>
+                </div>
+                <div>
+                    <strong>Descripción: </strong>
+                    <span>{{ solicitud.descripcion }}</span>
                 </div>
 
-                <div class="col-sm-6">
-                    <strong>Estado Actual:</strong> {{ solicitud.estadoActual }}
-                </div>
-                <div class="col-sm-6">
-                    <strong>Fecha:</strong> {{ solicitud.fecha | date }}
-                </div>
-
-                <div class="col-sm-6">
-                    <strong>Descripción:</strong> {{ solicitud.descripcion }}
-                </div>
-
-                <div class="col-sm-6">
+                <div>
                     <strong>Estados:</strong>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" *ngFor="let estado of solicitud.estados">
@@ -40,16 +55,20 @@
                     </ul>
                 </div>
 
-                <div class="col-sm-6">
-                    <strong>Usuario:</strong> {{ solicitud.usuario }}
-                </div>
+                <button (click)="volver()" class="btn btn-primary">Volver</button>
             </div>
-            <div class="col-sm-4">
-                <div *ngIf="solicitud.urlImagen" class="col-md-6">
+        </div>
+    </div>
+    <div *ngIf="solicitud && solicitud.urlImagen" class="col-sm-6 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Imagen adjunta</h4>
+            </div>
+            <div class="card-body">
+                <div class="col-md-6">
                     <img [src]="solicitud.urlImagen" alt="Imagen de la solicitud">
                 </div>
             </div>
         </div>
-        <button (click)="volver()" class="btn btn-primary">Volver</button>
     </div>
 </div>

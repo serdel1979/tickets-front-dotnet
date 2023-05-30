@@ -19,6 +19,10 @@ export class SolicitudesService {
     return this.http.get<Solicitud[]>(`${this.baseUrl}/solicitudes/${id}/missolicitudes`)
   }
 
+  getSolicitudes(){
+    return this.http.get<Solicitud[]>(`${this.baseUrl}/solicitudes`)
+  }
+
   enviaSolicitud(form: any):Observable<any>{
     return this.http.post(`${this.baseUrl}/solicitudes`,form)
       .pipe(
