@@ -44,8 +44,16 @@ export class NavbarComponent implements OnInit{
         }
     }
     titlee = titlee.slice(1);
+    const stringOriginal = titlee;
+    const stringsSeparados = stringOriginal.split("/");
+    var titulo = '';
+    if(stringsSeparados.length > 0){
+      titulo = `${stringsSeparados[0]} ${stringsSeparados[1]}`;
+      return titulo;
+    }
     return titlee;
   }
+
   sidebarToggle() {
       if (this.sidebarVisible === false) {
           this.sidebarOpen();

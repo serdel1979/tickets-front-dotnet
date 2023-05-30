@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { error } from 'console';
+import { Solicitud } from '../interfaces/solicitud.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class SolicitudesService {
 
 
   getMisSolicitudes(id:string){
-    return this.http.get<any[]>(`${this.baseUrl}/solicitudes/${id}/missolicitudes`)
+    return this.http.get<Solicitud[]>(`${this.baseUrl}/solicitudes/${id}/missolicitudes`)
   }
 
   enviaSolicitud(form: any):Observable<any>{
@@ -31,7 +32,7 @@ export class SolicitudesService {
   }
 
   getDetalleSolicitud(id:number){
-    return this.http.get<any>(`${this.baseUrl}/solicitudes/getmisolicitud/${id}`)
+    return this.http.get<Solicitud>(`${this.baseUrl}/solicitudes/getmisolicitud/${id}`)
   }
 
 

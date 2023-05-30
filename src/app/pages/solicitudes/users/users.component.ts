@@ -5,6 +5,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { Solicitud } from 'src/app/interfaces/solicitud.interface';
 
 @Component({
   selector: 'app-users',
@@ -58,12 +60,13 @@ export class UsersComponent implements OnInit {
   private id!: string;
   constructor(
     private toastr: ToastrService,
+    private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
     private modalService: NgbModal,
     private solicitudesServices: SolicitudesService) {}
 
-  public misSolicitudes: any[] = [];
+  public misSolicitudes: Solicitud[] = [];
 
   ngOnInit() {
     this.isLogued = this.authService.isLogued();
@@ -214,12 +217,7 @@ export class UsersComponent implements OnInit {
 
   ver(id:number) {
     console.log(id);
-    this.solicitudesServices.getDetalleSolicitud(id).subscribe(resp=>{
-      console.log(resp);
-    },
-    err=>{
-      console.log(err);
-    })
+    this.router.navigate([`/solicitudes/detalle/${id}`]);
   }
 
   chat() {

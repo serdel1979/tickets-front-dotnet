@@ -1,0 +1,55 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Solicitud</h4>
+    </div>
+    <div *ngIf="!solicitud" class="card-body">
+        <div class="alert alert-info">
+            Cargando!!!
+        </div>
+    </div>
+    <div *ngIf="solicitud" class="card-body">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="col-sm-6">
+                    <strong>Departamento:</strong> {{ solicitud.departamento }}
+                </div>
+                <div class="col-sm-6">
+                    <strong>Equipo:</strong> {{ solicitud.equipo }}
+                </div>
+
+                <div class="col-sm-6">
+                    <strong>Estado Actual:</strong> {{ solicitud.estadoActual }}
+                </div>
+                <div class="col-sm-6">
+                    <strong>Fecha:</strong> {{ solicitud.fecha | date }}
+                </div>
+
+                <div class="col-sm-6">
+                    <strong>Descripción:</strong> {{ solicitud.descripcion }}
+                </div>
+
+                <div class="col-sm-6">
+                    <strong>Estados:</strong>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" *ngFor="let estado of solicitud.estados">
+                            <strong>Estado:</strong> {{ estado.estadoActual }},
+                            <strong>Comentario:</strong> {{ estado.comentario }},
+                            <strong>Fecha:</strong> {{ estado.fecha | date }},
+                            <strong>Hora:</strong> {{ estado.fecha | date: 'mediumTime' }}
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-sm-6">
+                    <strong>Usuario:</strong> {{ solicitud.usuario }}
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div *ngIf="solicitud.urlImagen" class="col-md-6">
+                    <img [src]="solicitud.urlImagen" alt="Imagen de la solicitud">
+                </div>
+            </div>
+        </div>
+        <button (click)="volver()" class="btn btn-primary">Volver</button>
+    </div>
+</div>

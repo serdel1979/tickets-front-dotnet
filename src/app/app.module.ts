@@ -15,6 +15,7 @@ import { HttpClientModule,  HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthInterceptor } from './middleware/auth.interceptor';
+import { DetalleSolicitudComponent } from './pages/solicitudes/detalle-solicitud/detalle-solicitud.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AuthInterceptor } from './middleware/auth.interceptor';
     LoginComponent,
     RegisterComponent,
     AdminLayoutComponent,
-    HistorialComponent
+    HistorialComponent,
+    DetalleSolicitudComponent
   ],
   imports: [
     BrowserAnimationsModule,
