@@ -11,9 +11,9 @@ import { SolicitudesService } from 'src/app/services/solicitudes.service';
 export class EditaSolicitudComponent implements OnInit {
 
 
-  private idSolicitud!: number;
+  public idSolicitud!: number;
 
-  private solicitud!: Solicitud;
+  public solicitud!: Solicitud;
 
 
   constructor(
