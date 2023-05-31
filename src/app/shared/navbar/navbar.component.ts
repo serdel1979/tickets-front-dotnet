@@ -48,7 +48,11 @@ export class NavbarComponent implements OnInit{
     const stringsSeparados = stringOriginal.split("/");
     var titulo = '';
     if(stringsSeparados.length > 0){
-      titulo = `${stringsSeparados[0]} ${stringsSeparados[1]}`;
+      if(stringsSeparados[1]){
+        titulo = `${stringsSeparados[0]} ${stringsSeparados[1]}`;
+      }else{
+        titulo = `${stringsSeparados[0]}`;
+      }
       return titulo;
     }
     return titlee;

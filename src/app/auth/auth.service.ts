@@ -89,10 +89,7 @@ export class AuthService {
       let currentDate = new Date();
       
       let dif = fechaExpira.getTime() - currentDate.getTime(); // Diferencia en milisegundos
-      if(dif < 600000 && dif > 0){
-        console.log(`tiempo restante ${dif}, refrescar token`);
-      }
-      console.log(`diferencia de fechas = ${dif}`)
+
       if (fechaExpira  > currentDate) return true;
     }
     return false;
