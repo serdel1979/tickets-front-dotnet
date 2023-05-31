@@ -34,7 +34,6 @@ export class EditaSolicitudComponent implements OnInit {
         this.solicitud = resp;
         this.solicitudesService.getEstadosPosibles(this.idSolicitud).subscribe(estados=>{
           this.estadosPosibles = estados;
-          console.log(estados);
         })
       })
   }
@@ -44,7 +43,7 @@ export class EditaSolicitudComponent implements OnInit {
   }
 
   agregarEstado(){
-    
+
   }
 
 }
