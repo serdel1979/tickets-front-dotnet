@@ -48,5 +48,8 @@ export class SolicitudesService {
     return this.http.get<any>(`${this.baseUrl}/solicitudes/estadosposibles/${id}`)
   }
 
+  agregaEstado(form:any,idSolicitud:number){
+    return this.http.post<any>(`${this.baseUrl}/solicitudes/estados/${idSolicitud}/nuevo`,form);
+  }
 
 }
