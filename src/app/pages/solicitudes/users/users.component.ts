@@ -216,7 +216,6 @@ export class UsersComponent implements OnInit {
   }
 
   ver(id:number) {
-    console.log(id);
     this.router.navigate([`/solicitudes/detalle/${id}`]);
   }
 

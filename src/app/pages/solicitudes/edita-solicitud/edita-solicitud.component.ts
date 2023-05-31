@@ -43,4 +43,8 @@ export class EditaSolicitudComponent implements OnInit {
     this.router.navigate([`/solicitudes`]);
   }
 
+  agregarEstado(){
+    
+  }
+
 }

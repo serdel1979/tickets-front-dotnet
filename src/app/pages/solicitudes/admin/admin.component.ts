@@ -25,7 +25,6 @@ export class AdminComponent implements OnInit{
     if (this.isLogued) {
       this.solicitudesService.getSolicitudes().subscribe(resp => {
         this.solicitudes = resp;
-        console.log(this.solicitudes);
       })
     }
   }
