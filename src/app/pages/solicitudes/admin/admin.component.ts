@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { AuthService } from '../../../auth/auth.service';
 import { Solicitud } from 'src/app/interfaces/solicitud.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -16,7 +17,8 @@ export class AdminComponent implements OnInit{
   public solicitudes!: Solicitud[];
 
   constructor(private solicitudesService: SolicitudesService,
-    private authService: AuthService){}
+    private authService: AuthService,
+    private router: Router){}
 
   ngOnInit(): void {
     this.isLogued = this.authService.isLogued();
@@ -26,5 +28,15 @@ export class AdminComponent implements OnInit{
         console.log(this.solicitudes);
       })
     }
+  }
+
+
+
+  onPageChange(event: any) {
+    this.page = event;
+  }
+
+  verSolicitud(id:number){
+    this.router.navigate([`/solicitudes/ver/${id}`]);
   }
 }

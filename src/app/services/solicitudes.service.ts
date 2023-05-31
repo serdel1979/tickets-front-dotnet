@@ -40,4 +40,8 @@ export class SolicitudesService {
   }
 
 
+  getSolicitud(id:number){
+    return this.http.get<Solicitud>(`${this.baseUrl}/solicitudes/${id}`)
+  }
+
 }

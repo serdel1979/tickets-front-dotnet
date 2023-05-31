@@ -241,9 +241,7 @@ export class UsersComponent implements OnInit {
   }
 
   onPageChange(event: any) {
-    this.page = event; // Actualizar el número de página actual
-    // Aquí puedes realizar cualquier acción adicional que necesites al cambiar de página
-    console.log('Página cambiada:', this.page);
+    this.page = event;
   }
 
 }

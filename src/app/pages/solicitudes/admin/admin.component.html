@@ -45,7 +45,7 @@
                   {{ solicitud.estadoActual }}
                 </td>
                 <td style="width: 30mm;">
-                  <i class="nc-icon nc-zoom-split icon-zoom"></i>
+                  <i (click)="verSolicitud(solicitud.id)" class="nc-icon nc-minimal-right icon-zoom"></i>
 
                 </td>
               </tr>
@@ -53,11 +53,9 @@
           </table>
         </div>
 
-        <pagination-controls  previousLabel=&laquo;
-          nextLabel= &raquo;></pagination-controls>
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel=&laquo;
+          nextLabel=&raquo;></pagination-controls>
       </div>
     </div>
   </div>
 </div>
-  
-

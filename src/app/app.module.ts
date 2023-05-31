@@ -16,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthInterceptor } from './middleware/auth.interceptor';
 import { DetalleSolicitudComponent } from './pages/solicitudes/detalle-solicitud/detalle-solicitud.component';
+import { EditaSolicitudComponent } from './pages/solicitudes/edita-solicitud/edita-solicitud.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { DetalleSolicitudComponent } from './pages/solicitudes/detalle-solicitud
     RegisterComponent,
     AdminLayoutComponent,
     HistorialComponent,
-    DetalleSolicitudComponent
+    DetalleSolicitudComponent,
+    EditaSolicitudComponent
   ],
   imports: [
     BrowserAnimationsModule,
