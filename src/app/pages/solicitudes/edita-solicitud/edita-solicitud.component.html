@@ -1,3 +1,74 @@
-{{ solicitud | json }}
+<div *ngIf="buscando">
+    <div class="alert alert-info">
+        Cargando!!!
+    </div>
+</div>
+<div *ngIf="errorNotFound">
+    <div class="alert alert-danger">
+        Ha ocurrido un error!!!
+    </div>
+    <div>
+        <button (click)="volver()" class="btn btn-primary">Volver</button>
+    </div>
+</div>
+<div *ngIf="solicitud" class="row">
+    <div class="col-sm-6 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Solicitud</h4>
+            </div>
+            <div *ngIf="solicitud" class="card-body">
+                <div>
+                    <strong>Departamento: </strong>
+                    <span>{{ solicitud.departamento }}</span>
+                </div>
+                <div>
+                    <strong>Usuario: </strong>
+                    <span>{{ solicitud.usuario }}</span>
+                </div>
+                <div>
+                    <strong>Equipo: </strong>
+                    <span>{{ solicitud.equipo }}</span>
+                </div>
+                <div>
+                    <strong>Estado Actual: </strong>
+                    <span>{{ solicitud.estadoActual }}</span>
+                </div>
+                <div>
+                    <strong>Fecha: </strong>
+                    <span>{{ solicitud.fecha | date }}</span>
+                </div>
+                <div>
+                    <strong>Descripción: </strong>
+                    <span>{{ solicitud.descripcion }}</span>
+                </div>
 
-<button (click)="volver()">Volver</button>
+                <div>
+                    <strong>Estados:</strong>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" *ngFor="let estado of solicitud.estados">
+                            <strong>Estado:</strong> {{ estado.estadoActual }}
+                            <strong *ngIf="estado.comentario !== ''">Comentario:</strong> {{ estado.comentario }}
+                            <strong>Fecha:</strong> {{ estado.fecha | date }}
+                            <strong>Hora:</strong> {{ estado.fecha | date: 'mediumTime' }}
+                        </li>
+                    </ul>
+                </div>
+
+                <button (click)="volver()" class="btn btn-primary">Volver</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="solicitud && solicitud.urlImagen" class="col-sm-6 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Imagen adjunta</h4>
+            </div>
+            <div class="card-body">
+                <div class="col-md-6">
+                    <img [src]="solicitud.urlImagen" alt="Imagen de la solicitud">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,6 +16,13 @@ export class EditaSolicitudComponent implements OnInit {
   public solicitud!: Solicitud;
 
 
+  public errorNotFound: boolean = false;
+
+  public buscando: boolean = false;
+
+  public estadosPosibles!: any[];
+
+
   constructor(
     private route: ActivatedRoute,
     private router: Router, 
@@ -24,8 +31,11 @@ export class EditaSolicitudComponent implements OnInit {
   ngOnInit(): void {
       this.idSolicitud = this.route.snapshot.params['id'];
       this.solicitudesService.getSolicitud(this.idSolicitud).subscribe(resp=>{
-        console.log(resp);
         this.solicitud = resp;
+        this.solicitudesService.getEstadosPosibles(this.idSolicitud).subscribe(estados=>{
+          this.estadosPosibles = estados;
+          console.log(estados);
+        })
       })
   }
 

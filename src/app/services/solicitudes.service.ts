@@ -44,4 +44,9 @@ export class SolicitudesService {
     return this.http.get<Solicitud>(`${this.baseUrl}/solicitudes/${id}`)
   }
 
+  getEstadosPosibles(id:number){
+    return this.http.get<any>(`${this.baseUrl}/solicitudes/estadosposibles/${id}`)
+  }
+
+
 }
