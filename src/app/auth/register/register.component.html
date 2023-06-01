@@ -1,6 +1,4 @@
-<form autocomplete="off"
-    [formGroup]="miFormulario"
-    (ngSubmit)="solicitaUsuario()">
+<form autocomplete="off" [formGroup]="miFormulario" (ngSubmit)="solicitaUsuario()">
     <div class="container">
         <div class="card">
             <div class="card-header">Solicitar acceso</div>
@@ -9,19 +7,30 @@
                 <div class="form-group">
                     <label for="user">Usuario/Departamento</label>
                     <input class="form-control" formControlName="user" id="user">
+                    <span *ngIf="campoNoValido('user')" class="form-text text-danger">
+                        El usuario es requerido
+                    </span>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" formControlName="email" id="email">
+                    <span *ngIf="campoNoValido('email')" class="form-text text-danger">
+                        {{ emailErrorMsg }}
+                    </span>
                 </div>
                 <div class="form-group">
                     <label for="password">Contraseña</label>
                     <input type="password" formControlName="password" class="form-control" id="password">
+                    <ng-container *ngIf="miFormulario.get('password').hasError('passInvalid')">
+                        {{ validaPassword.passInvalid(miFormulario.get('password')) }}
+                    </ng-container>
+
                 </div>
             </div>
             <div class="card-footer">
                 <button [disabled]="miFormulario.invalid || mostrarSpinner" class="btn btn-primary" type="submit">
-                    <span *ngIf="mostrarSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
+                    <span *ngIf="mostrarSpinner" class="spinner-border spinner-border-sm" role="status"
+                        aria-hidden="true"></span>
                     Enviar
                 </button>
                 <span class="spacer"></span>
