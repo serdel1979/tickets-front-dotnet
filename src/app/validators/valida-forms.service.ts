@@ -10,8 +10,6 @@ export class ValidaFormsService {
 
   passInvalid(control: AbstractControl): ValidationErrors | null{
     const password = control.value?.trim();
-   
-    console.log(password);
     // Validar longitud
     if (password.length <= 6) {
       return { invalidLength: true };

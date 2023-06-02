@@ -86,6 +86,23 @@ export class RegisterComponent {
       return this.miFormulario.get(campo)?.invalid && this.miFormulario.get(campo)?.touched
     }
 
+    get passErrorMsg():string {
+      const errors = this.miFormulario.get('password')?.errors;
+      if(errors?.['required']){
+        return "El password es obligatorio";
+      }else if(errors?.['invalidLength']){
+        return "Longitud mínima debe ser de 6 caracteres";
+      }else if(errors?.['noUppercase']){
+        return "Debe tener una mayúscula";
+      }else if(errors?.['noNumber']){
+        return "Debe tener un número"
+      }
+      return("Debe contener un símbolo");
+    }
+
+    passwordNoValido(passw: string){
+      return this.miFormulario.get(passw)?.invalid && this.miFormulario.get(passw)?.touched
+    }
 
    
 
