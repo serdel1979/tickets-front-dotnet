@@ -70,11 +70,17 @@
                                         {{estado.estado}}
                                     </option>
                                 </select>
+                                <span *ngIf="campoNoValido('estadoActual')" class="form-text text-danger">
+                                    Debe definir un estado
+                                </span>
                             </div>
                             <div>
                                 <label for="comentarioInput">Comentario</label>
                                 <textarea id="comentarioInput" name="comentario" class="form-control"
                                     formControlName="comentario" type="text"></textarea>
+                                <span *ngIf="campoNoValido('comentario')" class="form-text text-danger">
+                                    {{ comentErrorMsg }}
+                                </span>
                             </div>
                             <div class="clearfix">
                                 <button (click)="volver()" class="btn btn-primary float-left">Volver</button>

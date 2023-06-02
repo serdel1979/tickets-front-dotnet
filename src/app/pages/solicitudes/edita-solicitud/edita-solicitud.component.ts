@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Solicitud } from 'src/app/interfaces/solicitud.interface';
 import { SolicitudesService } from 'src/app/services/solicitudes.service';
+import { ValidaFormsService } from 'src/app/validators/valida-forms.service';
 
 @Component({
   selector: 'app-edita-solicitud',
@@ -26,7 +27,7 @@ export class EditaSolicitudComponent implements OnInit {
 
   estadoForm: FormGroup = this.fb.group({
     estadoActual: ['', [Validators.required]],
-    comentario: ['', [Validators.required]],
+    comentario: ['', [Validators.required,this.validaText.textInvalid]],
     solicitudId: ['', [Validators.required]],
     fecha: [new Date(), [Validators.required]]
   });
@@ -35,6 +36,7 @@ export class EditaSolicitudComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router, 
+    private validaText: ValidaFormsService,
     private solicitudesService: SolicitudesService){}
 
   ngOnInit(): void {
@@ -72,5 +74,23 @@ export class EditaSolicitudComponent implements OnInit {
       solicitudId: solicitudId,
     });
   }
+
+
+  campoNoValido(campo:string){
+    return this.estadoForm.get(campo)?.invalid && this.estadoForm.get(campo)?.touched
+  }
+
+  get comentErrorMsg():string {
+    const errors = this.estadoForm.get('comentario')?.errors;
+    if(errors?.['required']){
+      return "La descripción es obligatoria";
+    }else if(errors?.['notOnlyWhitespace']){
+      return "No puede escribir solo espacios en blanco"
+    }
+    return("Longitud máxima debe ser de 256 caracteres");
+  }
+
+
+
 
 }
