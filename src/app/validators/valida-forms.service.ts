@@ -35,5 +35,17 @@ export class ValidaFormsService {
     
   }
 
+  textInvalid(control: AbstractControl): ValidationErrors | null{
+    const text = control.value?.trim().replace(/\s+/g, '');
+    if (text && text.length > 256) {
+      return { invalidLength: true };
+    }else if (text && text.value && control.value() === '') {
+      return { notOnlyWhitespace: true };
+    }else if(text === ''){
+      return { required: true };
+    }
+    return null;
+  }
+
 
 }

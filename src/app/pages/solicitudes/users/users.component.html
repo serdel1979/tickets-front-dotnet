@@ -80,8 +80,8 @@
           </table>
         </div>
 
-        <pagination-controls (pageChange)="onPageChange($event)" previousLabel=&laquo;
-          nextLabel= &raquo;></pagination-controls>
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel=&laquo; nextLabel=&raquo;>
+        </pagination-controls>
       </div>
     </div>
   </div>
@@ -100,14 +100,23 @@
         <div class="form-group">
           <input type="text" class="form-control" id="usuario" formControlName="usuario" autocomplete="off"
             placeholder="Ingrese su nombre">
+          <span *ngIf="campoNoValido('usuario')" class="form-text text-danger">
+            Debe indicar un usuario
+          </span>
         </div>
         <div class="form-group">
           <input type="text" class="form-control" id="equipo" formControlName="equipo" autocomplete="off"
             placeholder="Ingrese cual es el equipo que tiene problema">
+          <span *ngIf="campoNoValido('equipo')" class="form-text text-danger">
+            Debe indicar el equipo que tiene problemas
+          </span>
         </div>
         <div class="form-group">
           <textarea class="form-control" id="descripcion" formControlName="descripcion" autocomplete="off"
             placeholder="Ingrese una descripción del problema"></textarea>
+          <span *ngIf="campoNoValido('descripcion')" class="form-text text-danger">
+            {{ comentErrorMsg }}
+          </span>
         </div>
         <div class="form-group">
           <label for="imagen">Imagen (opcional)</label>

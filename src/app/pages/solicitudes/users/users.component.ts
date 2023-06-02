@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Solicitud } from 'src/app/interfaces/solicitud.interface';
+import { ValidaFormsService } from 'src/app/validators/valida-forms.service';
 
 @Component({
   selector: 'app-users',
@@ -48,7 +49,7 @@ export class UsersComponent implements OnInit {
     usuario: ['', [Validators.required]],
     departamento: ['', [Validators.required]],
     equipo: ['', [Validators.required]],
-    descripcion: ['', [Validators.required]],
+    descripcion: ['', [Validators.required,this.validaText.textInvalid]],
     imagen: [''],
     fecha: [new Date(), [Validators.required]]
   });
@@ -64,6 +65,7 @@ export class UsersComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private modalService: NgbModal,
+    public validaText: ValidaFormsService,
     private solicitudesServices: SolicitudesService) {}
 
   public misSolicitudes: Solicitud[] = [];
@@ -241,6 +243,21 @@ export class UsersComponent implements OnInit {
 
   onPageChange(event: any) {
     this.page = event;
+  }
+
+
+  campoNoValido(campo:string){
+    return this.solicitudesForm.get(campo)?.invalid && this.solicitudesForm.get(campo)?.touched
+  }
+
+  get comentErrorMsg():string {
+    const errors = this.solicitudesForm.get('descripcion')?.errors;
+    if(errors?.['required']){
+      return "La descripción es obligatoria";
+    }else if(errors?.['notOnlyWhitespace']){
+      return "No puede escribir solo espacios en blanco"
+    }
+    return("Longitud máxima debe ser de 256 caracteres");
   }
 
 }
