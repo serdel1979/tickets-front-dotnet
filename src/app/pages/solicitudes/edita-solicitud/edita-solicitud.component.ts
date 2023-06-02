@@ -55,7 +55,6 @@ export class EditaSolicitudComponent implements OnInit {
   }
 
   agregarEstado(){
-    console.log(this.estadoForm.value);
     this.solicitudesService.agregaEstado(this.estadoForm.value,this.idSolicitud).subscribe(resp=>{
       console.log(resp);
       this.volver();
