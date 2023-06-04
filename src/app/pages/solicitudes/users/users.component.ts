@@ -8,6 +8,18 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Solicitud } from 'src/app/interfaces/solicitud.interface';
 import { ValidaFormsService } from 'src/app/validators/valida-forms.service';
+import { environment } from 'src/environments/environment';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+
+
+const URLHub = environment.urlHub;
+
+interface NewMessage {
+  userName: string;
+  message: string;
+  groupName?: string;
+}
+
 
 @Component({
   selector: 'app-users',
@@ -21,6 +33,15 @@ export class UsersComponent implements OnInit {
   @ViewChild("myModalConf", { static: false }) myModalConf!: TemplateRef<any>;
 
   @ViewChild('messageInput') messageInput!: ElementRef;
+
+  public userName = '';
+  public groupName = '';
+  public messageToSend = '';
+  public joined = false;
+  public conversation: NewMessage[] = [{
+    message: 'Bienvenido',
+    userName: 'Sistema'
+  }];
 
   public mostrarSpinner: boolean = false;
 
@@ -38,6 +59,7 @@ export class UsersComponent implements OnInit {
   itemsPerPage: number = 10;
   
   public page!: number;
+  private connection: HubConnection;
   // Variables de paginación
   pageSize: number = 3; // Tamaño de página (número de solicitudes por página)
   totalPages: number = 0; // Total de páginas
@@ -66,7 +88,15 @@ export class UsersComponent implements OnInit {
     private authService: AuthService,
     private modalService: NgbModal,
     public validaText: ValidaFormsService,
-    private solicitudesServices: SolicitudesService) {}
+    private solicitudesServices: SolicitudesService) {
+      this.connection = new HubConnectionBuilder()
+      .withUrl(URLHub) // URL del concentrador en tu servidor
+      .build();
+
+      this.connection.on("NewUser", message => this.newUser(message));
+      this.connection.on("NewMessage", message => this.newMessage(message));
+      this.connection.on("LeftUser", message => this.leftUser(message));
+    }
 
   public misSolicitudes: Solicitud[] = [];
 
@@ -78,10 +108,46 @@ export class UsersComponent implements OnInit {
         this.misSolicitudes = resp;
       })
       this.setValoresPorDefecto();
-    }
+    };
+    this.connection.start()
+    .then(()=> {
+      console.log('Connection Started');
+      //------------------
+      this.connection.invoke('JoinGroup', 'refresh', 'soporte')
+      .then(_ => {
+        this.joined = true;
+      });
+      //------------------
+    }).catch((error:any) => {
+      return console.error(error);
+    });
   }
 
+  public leave() {
+    this.connection.invoke('LeaveGroup', this.groupName, this.userName)
+      .then(_ => this.joined = false);
+  }
 
+  private newUser(message: string) {
+    console.log(message);
+    this.conversation.push({
+      userName: 'Sistema',
+      message: message
+    });
+  }
+
+  private newMessage(message: NewMessage) {
+    console.log(message);
+    this.conversation.push(message);
+  }
+
+  private leftUser(message: string) {
+    console.log(message);
+    this.conversation.push({
+      userName: 'Sistema',
+      message: message
+    });
+  }
   
 
   onFileSelected(event: any) {
@@ -190,6 +256,15 @@ export class UsersComponent implements OnInit {
         this.solicitudesServices.getMisSolicitudes(this.id).subscribe(resp => {
           this.misSolicitudes = resp;
         });
+
+        const newMessage: NewMessage = {
+          message: 'refrescar',
+          userName: 'soporte',
+          groupName: 'refresh'
+        };
+        this.connection.invoke('SendMessage', newMessage)
+        .then(_ => this.messageToSend = '');
+
         this.mostrarSpinner = false;
       },
       error: (error) => {

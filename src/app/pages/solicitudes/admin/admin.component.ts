@@ -10,12 +10,30 @@ import { url } from 'inspector';
 
 const URLHub = environment.urlHub;
 
+interface NewMessage {
+  userName: string;
+  message: string;
+  groupName?: string;
+}
+
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
+
+
+  public userName = '';
+  public groupName = '';
+  public messageToSend = '';
+  public joined = false;
+  public conversation: NewMessage[] = [{
+    message: 'Bienvenido',
+    userName: 'Sistema'
+  }];
+
 
   public isLogued: boolean = false;
   public page!: number;
@@ -29,21 +47,26 @@ export class AdminComponent implements OnInit {
       .withUrl(URLHub) // URL del concentrador en tu servidor
       .build();
 
-    // Inicia la conexión con el servidor
-    
+      this.connection.on("NewUser", message => this.newUser(message));
+      this.connection.on("NewMessage", message => this.refresh());
+      this.connection.on("LeftUser", message => this.leftUser(message));
   }
 
-  async ngOnInit(): Promise<void> {
+   ngOnInit(): void {
     this.connection.start().then(() => {
       // La conexión se ha establecido correctamente
       console.log("conexión socket ok...");
-      this.connection.on("Refresh", () => {
-        this.refresh(); // Llamar al método refresh para actualizar los datos
-    });
+       //------------------
+       this.connection.invoke('JoinGroup', 'refresh', 'soporte')
+       .then(_ => {
+         this.joined = true;
+       });
+       //------------------
+
     }).catch(err => {
       console.error(err.toString());
     });
-    await this.refresh()
+    this.refresh();
   }
 
 
@@ -63,5 +86,32 @@ export class AdminComponent implements OnInit {
 
   verSolicitud(id: number) {
     this.router.navigate([`/solicitudes/ver/${id}`]);
+  }
+
+
+  public leave() {
+    this.connection.invoke('LeaveGroup', this.groupName, this.userName)
+      .then(_ => this.joined = false);
+  }
+
+  private newUser(message: string) {
+    console.log(message);
+    this.conversation.push({
+      userName: 'Sistema',
+      message: message
+    });
+  }
+
+  private newMessage(message: NewMessage) {
+    console.log(message);
+    this.conversation.push(message);
+  }
+
+  private leftUser(message: string) {
+    console.log(message);
+    this.conversation.push({
+      userName: 'Sistema',
+      message: message
+    });
   }
 }
