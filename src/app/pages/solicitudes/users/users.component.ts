@@ -94,13 +94,29 @@ export class UsersComponent implements OnInit {
       .build();
 
       this.connection.on("NewUser", message => this.newUser(message));
-      this.connection.on("NewMessage", message => this.newMessage(message));
+      this.connection.on("NewMessage",()=>this.refresh());
       this.connection.on("LeftUser", message => this.leftUser(message));
     }
 
   public misSolicitudes: Solicitud[] = [];
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.refresh();
+    this.connection.start()
+    .then(()=> {
+      console.log('Connection Started');
+      //------------------
+      this.connection.invoke('JoinGroup', 'refresh', 'user')
+      .then(_ => {
+        this.joined = true;
+      });
+      //------------------
+    }).catch((error:any) => {
+      return console.error(error);
+    });
+  }
+
+  async refresh(){
     this.isLogued = this.authService.isLogued();
     if (this.isLogued) {
       this.id = this.authService.getIdLogued();
@@ -109,18 +125,6 @@ export class UsersComponent implements OnInit {
       })
       this.setValoresPorDefecto();
     };
-    this.connection.start()
-    .then(()=> {
-      console.log('Connection Started');
-      //------------------
-      this.connection.invoke('JoinGroup', 'refresh', 'soporte')
-      .then(_ => {
-        this.joined = true;
-      });
-      //------------------
-    }).catch((error:any) => {
-      return console.error(error);
-    });
   }
 
   public leave() {
@@ -314,6 +318,16 @@ export class UsersComponent implements OnInit {
       this.message = '';
       this.messageInput.nativeElement.focus();
     }
+  }
+
+  async notificarCambio(){
+    const newMessage: NewMessage = {
+      message: 'refrescar',
+      userName: 'soporte',
+      groupName: 'refresh'
+    };
+    this.connection.invoke('SendMessage', newMessage)
+    .then(_ => this.messageToSend = '');
   }
 
   onPageChange(event: any) {

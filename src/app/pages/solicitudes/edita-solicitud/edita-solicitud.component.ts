@@ -1,9 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { Solicitud } from 'src/app/interfaces/solicitud.interface';
 import { SolicitudesService } from 'src/app/services/solicitudes.service';
 import { ValidaFormsService } from 'src/app/validators/valida-forms.service';
+import { environment } from 'src/environments/environment';
+
+
+const URLHub = environment.urlHub;
+
+
+interface NewMessage {
+  userName: string;
+  message: string;
+  groupName?: string;
+}
 
 @Component({
   selector: 'app-edita-solicitud',
@@ -12,6 +24,15 @@ import { ValidaFormsService } from 'src/app/validators/valida-forms.service';
 })
 export class EditaSolicitudComponent implements OnInit {
 
+  public userName = '';
+  public groupName = '';
+  public messageToSend = '';
+  public joined = false;
+  public conversation: NewMessage[] = [{
+    message: 'Bienvenido',
+    userName: 'Sistema'
+  }];
+  private connection: HubConnection;
 
   public idSolicitud!: number;
 
@@ -27,7 +48,7 @@ export class EditaSolicitudComponent implements OnInit {
 
   estadoForm: FormGroup = this.fb.group({
     estadoActual: ['', [Validators.required]],
-    comentario: ['', [Validators.required,this.validaText.textInvalid]],
+    comentario: ['', [Validators.required, this.validaText.textInvalid]],
     solicitudId: ['', [Validators.required]],
     fecha: [new Date(), [Validators.required]]
   });
@@ -35,32 +56,55 @@ export class EditaSolicitudComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private router: Router, 
+    private router: Router,
     private validaText: ValidaFormsService,
-    private solicitudesService: SolicitudesService){}
+    private solicitudesService: SolicitudesService) {
+    this.connection = new HubConnectionBuilder()
+      .withUrl(URLHub) // URL del concentrador en tu servidor
+      .build();
 
-  ngOnInit(): void {
-      this.idSolicitud = this.route.snapshot.params['id'];
-      this.setValoresPorDefecto();
-      this.solicitudesService.getSolicitud(this.idSolicitud).subscribe(resp=>{
-        this.solicitud = resp;
-        this.solicitudesService.getEstadosPosibles(this.idSolicitud).subscribe(estados=>{
-          this.estadosPosibles = estados;
-        })
-      })
+    this.connection.on("NewUser", message => this.newUser(message));
+    this.connection.on("NewMessage", () => console.log('editado'));
+    this.connection.on("LeftUser", message => this.leftUser(message));
   }
 
-  volver(){
+  ngOnInit(): void {
+    this.idSolicitud = this.route.snapshot.params['id'];
+    this.setValoresPorDefecto();
+    this.solicitudesService.getSolicitud(this.idSolicitud).subscribe(async resp => {
+      this.solicitud = resp;
+      this.connection.start().then(async () => {
+        // La conexión se ha establecido correctamente
+        console.log("conexión socket ok...");
+        //------------------
+        this.connection.invoke('JoinGroup', 'refresh', 'soporte')
+          .then(_ => {
+            this.joined = true;
+          });
+        //------------------
+        await this.notificarCambio();
+      }).catch(err => {
+        console.error(err.toString());
+      });
+      this.solicitudesService.getEstadosPosibles(this.idSolicitud).subscribe(estados => {
+        this.estadosPosibles = estados;
+      })
+    })
+  }
+
+
+  volver() {
     this.router.navigate([`/solicitudes`]);
   }
 
-  agregarEstado(){
-    this.solicitudesService.agregaEstado(this.estadoForm.value,this.idSolicitud).subscribe(resp=>{
+  agregarEstado() {
+    this.solicitudesService.agregaEstado(this.estadoForm.value, this.idSolicitud).subscribe(async resp => {
+      await this.notificarCambio();
       this.volver();
     },
-    err=>{
-      console.log(err);
-    })
+      err => {
+        console.log(err);
+      })
   }
 
   setValoresPorDefecto() {
@@ -74,20 +118,56 @@ export class EditaSolicitudComponent implements OnInit {
   }
 
 
-  campoNoValido(campo:string){
+  campoNoValido(campo: string) {
     return this.estadoForm.get(campo)?.invalid && this.estadoForm.get(campo)?.touched
   }
 
-  get comentErrorMsg():string {
+  get comentErrorMsg(): string {
     const errors = this.estadoForm.get('comentario')?.errors;
-    if(errors?.['required']){
+    if (errors?.['required']) {
       return "La descripción es obligatoria";
-    }else if(errors?.['notOnlyWhitespace']){
+    } else if (errors?.['notOnlyWhitespace']) {
       return "No puede escribir solo espacios en blanco"
     }
-    return("Longitud máxima debe ser de 256 caracteres");
+    return ("Longitud máxima debe ser de 256 caracteres");
   }
 
+
+  public leave() {
+    this.connection.invoke('LeaveGroup', this.groupName, this.userName)
+      .then(_ => this.joined = false);
+  }
+
+  async notificarCambio() {
+    const newMessage: NewMessage = {
+      message: 'refrescar',
+      userName: 'user',
+      groupName: 'refresh'
+    };
+    this.connection.invoke('SendMessage', newMessage)
+      .then(_ => this.messageToSend = '');
+  }
+
+  private newUser(message: string) {
+    console.log(message);
+    this.conversation.push({
+      userName: 'Sistema',
+      message: message
+    });
+  }
+
+  private newMessage(message: NewMessage) {
+    console.log(message);
+    this.conversation.push(message);
+  }
+
+  private leftUser(message: string) {
+    console.log(message);
+    this.conversation.push({
+      userName: 'Sistema',
+      message: message
+    });
+  }
 
 
 

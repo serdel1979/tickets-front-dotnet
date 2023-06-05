@@ -33,11 +33,11 @@ export class AdminComponent implements OnInit {
     message: 'Bienvenido',
     userName: 'Sistema'
   }];
-
+  private connection: HubConnection;
 
   public isLogued: boolean = false;
   public page!: number;
-  private connection: HubConnection;
+  
   public solicitudes!: Solicitud[];
 
   constructor(private solicitudesService: SolicitudesService,
@@ -48,7 +48,7 @@ export class AdminComponent implements OnInit {
       .build();
 
       this.connection.on("NewUser", message => this.newUser(message));
-      this.connection.on("NewMessage", message => this.refresh());
+      this.connection.on("NewMessage", () => this.refresh());
       this.connection.on("LeftUser", message => this.leftUser(message));
   }
 
@@ -71,7 +71,6 @@ export class AdminComponent implements OnInit {
 
 
   async refresh() {
-    console.log("haciendo refresh");
     this.isLogued = this.authService.isLogued();
     if (this.isLogued) {
       this.solicitudesService.getSolicitudes().subscribe(resp => {
