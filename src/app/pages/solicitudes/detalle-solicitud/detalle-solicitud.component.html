@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <strong>Estado Actual:
-                        <span class="green-text">{{ solicitud.estadoActual }}</span> </strong>
+                        <span [ngStyle]="getColorStyles(solicitud.estadoActual)" class="green-text">{{ solicitud.estadoActual }}</span> </strong>
                 </div>
                 <div>
                     <strong>Fecha: </strong>
@@ -47,7 +47,7 @@
                     <strong>Estados:</strong>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" *ngFor="let estado of solicitud.estados">
-                            <strong>Estado:</strong> {{ estado.estadoActual }}
+                            <strong>Estado:</strong>  <span [ngStyle]="getColorStyles(estado.estadoActual)">{{ estado.estadoActual }}</span> 
                             <strong *ngIf="estado.comentario !== ''">Comentario:</strong> {{ estado.comentario }}
                             <strong>Fecha:</strong> {{ estado.fecha | date }}
                             <strong>Hora:</strong> {{ estado.fecha | date: 'mediumTime' }}

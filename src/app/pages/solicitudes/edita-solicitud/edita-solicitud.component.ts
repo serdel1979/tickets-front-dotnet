@@ -169,6 +169,21 @@ export class EditaSolicitudComponent implements OnInit {
     });
   }
 
+  
+  getColorStyles(estado: string) {
+    switch (estado) {
+      case 'CERRADO':
+      return { color: 'black', 'font-weight': 'bold' };
+    case 'Solucionado':
+      return { color: 'green', 'font-weight': 'bold' };
+    case 'PENDIENTE':
+      return { color: 'red', 'font-weight': 'bold' };
+    case 'Visto':
+      return { color: 'brown', 'font-weight': 'bold' };
+    default:
+      return { 'font-weight': 'bold' };
+    }
+  }
 
 
 }

@@ -41,7 +41,7 @@
                 <td>
                   {{ solicitud.descripcion }}
                 </td>
-                <td>
+                <td [ngStyle]="getColorStyles(solicitud.estadoActual)">
                   {{ solicitud.estadoActual }}
                 </td>
                 <td style="width: 30mm;">
