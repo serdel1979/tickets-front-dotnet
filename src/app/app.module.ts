@@ -18,6 +18,8 @@ import { AuthInterceptor } from './middleware/auth.interceptor';
 import { DetalleSolicitudComponent } from './pages/solicitudes/detalle-solicitud/detalle-solicitud.component';
 import { EditaSolicitudComponent } from './pages/solicitudes/edita-solicitud/edita-solicitud.component';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,

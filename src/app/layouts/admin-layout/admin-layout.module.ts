@@ -11,6 +11,7 @@ import { EquiposComponent } from 'src/app/pages/equipos/equipos.component';
 import { AdminComponent } from '../../pages/solicitudes/admin/admin.component';
 import { UsersComponent } from 'src/app/pages/solicitudes/users/users.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ChatComponent } from 'src/app/pages/chat/chat.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
         UsuariosComponent,
         EquiposComponent,
         AdminComponent,
-        UsersComponent
+        UsersComponent,
+        ChatComponent
     ],
     imports: [
         NgxPaginationModule,

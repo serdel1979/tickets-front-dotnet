@@ -32,6 +32,7 @@ export class UsersComponent implements OnInit {
   @ViewChild("myModalInfo", { static: false }) myModalInfo!: TemplateRef<any>;
   @ViewChild("myModalConf", { static: false }) myModalConf!: TemplateRef<any>;
 
+
   @ViewChild('messageInput') messageInput!: ElementRef;
 
   public userName = '';
@@ -205,6 +206,8 @@ export class UsersComponent implements OnInit {
 
 
 
+
+
   getImagenURL(file: Blob): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -238,11 +241,6 @@ export class UsersComponent implements OnInit {
         formData.append(key, this.solicitudesForm.value[key]);
       }
     });
-    // Aquí puedes hacer la solicitud HTTP utilizando Angular HttpClient
-    // Ejemplo:
-    // this.http.post('URL_DEL_ENDPOINT', formData).subscribe(response => {
-    //   // Manejar la respuesta del servidor
-    // });
     this.solicitudesServices.enviaSolicitud(formData).subscribe({
       next: () => {
         this.resetForm();
