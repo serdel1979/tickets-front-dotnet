@@ -33,7 +33,6 @@ export class UsersComponent implements OnInit {
   @ViewChild("myModalConf", { static: false }) myModalConf!: TemplateRef<any>;
 
 
-  @ViewChild('messageInput') messageInput!: ElementRef;
 
   public userName = '';
   public groupName = '';
@@ -307,16 +306,7 @@ export class UsersComponent implements OnInit {
   }
 
 
-  sendMessage() {
-    if (this.message) {
-      if (this.messages.length >= 8) {
-        this.messages.shift(); // Elimina el primer elemento
-      }
-      this.messages.push(this.message);
-      this.message = '';
-      this.messageInput.nativeElement.focus();
-    }
-  }
+
 
   async notificarCambio(){
     const newMessage: NewMessage = {
