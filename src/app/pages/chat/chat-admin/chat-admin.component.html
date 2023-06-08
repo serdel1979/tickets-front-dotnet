@@ -12,7 +12,7 @@
         </div>
         <div class="input-group">
             <input #messageInput type="text" class="form-control bg-light border-0" placeholder="Escribe un mensaje"
-                [(ngModel)]="messageToSend" (keyup.enter)="sendMessage()">
+                [(ngModel)]="messageToSend" (keyup.enter)="sendMessage()" (input)="onTyping($event)">
 
             <div class="input-group-append mr-5">
                 <button class="btn btn-primary mr-5" type="button" (click)="sendMessage()">Enviar</button>

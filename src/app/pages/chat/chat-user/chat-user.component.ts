@@ -20,6 +20,7 @@ interface NewMessage {
   styleUrls: ['./chat-user.component.css']
 })
 export class ChatUserComponent implements OnInit{
+  isTyping: boolean = false;
   message: string = '';
   @ViewChild('messageInput') messageInput!: ElementRef;
   @ViewChild('messageList') messageList!: ElementRef;
@@ -99,6 +100,17 @@ export class ChatUserComponent implements OnInit{
       .then(_ => this.messageToSend = '');
   }
 
+  onTyping(event: Event) {
+    const newMessage: NewMessage = {
+      message: '***',
+      userName: this.userName,
+      groupName: this.groupName
+    };
+
+    this.connection.invoke('SendMessage', newMessage)
+      .then(_ => this.messageToSend = '');
+  }
+
 
 
   private newUser(message: string) {
@@ -111,12 +123,18 @@ export class ChatUserComponent implements OnInit{
 
   private newMessage(message: NewMessage) {
     console.log(message.message);
-    if (this.conversation.length >= 10) {
-      this.conversation.shift(); // Elimina el primer elemento
+    if(message.message === '***'){
+      this.isTyping = true;
+      return
+    }else{
+      this.isTyping = false;
+      if (this.conversation.length >= 10) {
+        this.conversation.shift(); // Elimina el primer elemento
+      }
+      this.conversation.push(message);
+      this.messageToSend = '';
+      this.messageInput.nativeElement.focus();
     }
-    this.conversation.push(message);
-    this.messageToSend = '';
-    this.messageInput.nativeElement.focus();
   }
 
   private leftUser(message: string) {

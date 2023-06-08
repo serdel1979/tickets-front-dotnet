@@ -88,13 +88,14 @@ export class ChatAdminComponent implements OnInit {
 
  
   onTyping(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.isTyping = input.value.trim() !== '';
+    const newMessage: NewMessage = {
+      message: '***',
+      userName: this.userName,
+      groupName: 'musica'
+    };
 
-    this.connection.invoke('NotifyTyping', this.isTyping)
-      .catch(error => {
-        console.error('Error al enviar señal de escritura a SignalR: ' + error);
-      });
+    this.connection.invoke('SendMessage', newMessage)
+      .then(_ => this.messageToSend = '');
   }
 
 
@@ -108,13 +109,18 @@ export class ChatAdminComponent implements OnInit {
   }
 
   private newMessage(message: NewMessage) {
-    console.log(message.message);
-    if (this.conversation.length >= 10) {
-      this.conversation.shift(); // Elimina el primer elemento
+    if(message.message === '***'){
+      this.isTyping = true;
+      return
+    }else{
+      this.isTyping = false;
+      if (this.conversation.length >= 10) {
+        this.conversation.shift(); // Elimina el primer elemento
+      }
+      this.conversation.push(message);
+      this.messageToSend = '';
+      this.messageInput.nativeElement.focus();
     }
-    this.conversation.push(message);
-    this.messageToSend = '';
-    this.messageInput.nativeElement.focus();
   }
 
   private leftUser(message: string) {
