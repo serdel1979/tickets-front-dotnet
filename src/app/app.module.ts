@@ -19,7 +19,6 @@ import { DetalleSolicitudComponent } from './pages/solicitudes/detalle-solicitud
 import { EditaSolicitudComponent } from './pages/solicitudes/edita-solicitud/edita-solicitud.component';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,

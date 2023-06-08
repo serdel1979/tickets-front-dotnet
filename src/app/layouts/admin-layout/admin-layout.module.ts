@@ -12,6 +12,8 @@ import { AdminComponent } from '../../pages/solicitudes/admin/admin.component';
 import { UsersComponent } from 'src/app/pages/solicitudes/users/users.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ChatComponent } from 'src/app/pages/chat/chat.component';
+import { ChatAdminComponent } from 'src/app/pages/chat/chat-admin/chat-admin.component';
+import { ChatUserComponent } from 'src/app/pages/chat/chat-user/chat-user.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { ChatComponent } from 'src/app/pages/chat/chat.component';
         EquiposComponent,
         AdminComponent,
         UsersComponent,
-        ChatComponent
+        ChatComponent,
+        ChatAdminComponent,
+        ChatUserComponent
     ],
     imports: [
         NgxPaginationModule,

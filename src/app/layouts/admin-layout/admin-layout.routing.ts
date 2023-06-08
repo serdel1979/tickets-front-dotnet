@@ -22,5 +22,5 @@ export const AdminLayoutRoutes: Routes = [
      { path: 'historial',      component: HistorialComponent, canActivate:[isLoguedGuard] },
      { path: 'usuarios',           component: UsuariosComponent, canActivate:[isLoguedGuard,isAdminGuard] },
      { path: 'equipos',          component: EquiposComponent, canActivate:[isLoguedGuard,isAdminGuard] },
-     { path: 'chat', component:ChatComponent}
+     { path: 'chat', component:ChatComponent, canActivate:[isLoguedGuard]}
 ];
