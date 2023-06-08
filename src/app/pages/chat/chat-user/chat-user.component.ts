@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../../auth/auth.service';
@@ -19,7 +19,7 @@ interface NewMessage {
   templateUrl: './chat-user.component.html',
   styleUrls: ['./chat-user.component.css']
 })
-export class ChatUserComponent implements OnInit{
+export class ChatUserComponent implements OnInit {
   isTyping: boolean = false;
   message: string = '';
   @ViewChild('messageInput') messageInput!: ElementRef;
@@ -37,57 +37,38 @@ export class ChatUserComponent implements OnInit{
   private connection: HubConnection;
 
 
-  constructor(private authService: AuthService){
+  constructor(private authService: AuthService, private ngZone: NgZone) {
     this.connection = new HubConnectionBuilder()
       .withUrl(URLHub) // URL del concentrador en tu servidor
       .build();
 
-      this.connection.on("NewUser", message => this.newUser(message));
-      this.connection.on("NewMessage", message => this.newMessage(message));
-      this.connection.on("LeftUser", message => this.leftUser(message));
+    this.connection.on("NewUser", message => this.newUser(message));
+    this.connection.on("NewMessage", message => this.newMessage(message));
+    this.connection.on("LeftUser", message => this.leftUser(message));
   }
 
   ngOnInit(): void {
     this.userName = this.authService.getUserLogued();
     this.groupName = this.userName;
     this.connection.start()
-    .then(()=> {
-      console.log('Connection Started');
-      this.connection.invoke('JoinGroup', this.groupName, this.userName)
-      .then(_ => {
-        this.joined = true;
+      .then(() => {
+        console.log('Connection Started');
+        this.connection.invoke('JoinGroup', this.groupName, this.userName)
+          .then(_ => {
+            this.joined = true;
+          });
+      }).catch((error: any) => {
+        return console.error(error);
       });
-    }).catch((error:any) => {
-      return console.error(error);
-    });
   }
 
 
 
   messages: string[] = [];
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
-  scrollToBottom() {
-    try {
-      this.messageList.nativeElement.scrollTop = this.messageList.nativeElement.scrollHeight;
-    } catch(err) { }
-  }
 
 
-  sendMessageM() {
-    if (this.message) {
-      if (this.messages.length >= 10) {
-        this.messages.shift(); // Elimina el primer elemento
-      }
-      this.messages.push(this.message);
-      this.message = '';
-      this.scrollToBottom();
-      this.messageInput.nativeElement.focus();
-    }
-  }
+
 
   public sendMessage() {
     const newMessage: NewMessage = {
@@ -108,7 +89,7 @@ export class ChatUserComponent implements OnInit{
     };
 
     this.connection.invoke('SendMessage', newMessage)
-      .then(_ => this.messageToSend = '');
+      .then(_ => this.messageToSend = this.messageToSend);
   }
 
 
@@ -121,18 +102,28 @@ export class ChatUserComponent implements OnInit{
     });
   }
 
+  resetIsTyping() {
+    this.ngZone.run(() => {
+      setTimeout(() => {
+        this.isTyping = false;
+      }, 2000); // 4 segundos (4000 milisegundos)
+    });
+  }
+
+
   private newMessage(message: NewMessage) {
-    console.log(message.message);
-    if(message.message === '***'){
-      this.isTyping = true;
-      return
-    }else{
-      this.isTyping = false;
+    if (message.message === '***') {
+      if(message.userName !== this.authService.getUserLogued()){
+        this.isTyping = true;
+        this.resetIsTyping();
+      }
+    } else {
       if (this.conversation.length >= 10) {
         this.conversation.shift(); // Elimina el primer elemento
       }
       this.conversation.push(message);
       this.messageToSend = '';
+      this.isTyping = false;
       this.messageInput.nativeElement.focus();
     }
   }
