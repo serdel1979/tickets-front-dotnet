@@ -20,6 +20,9 @@ interface NewMessage {
 })
 export class ChatAdminComponent implements OnInit {
 
+
+  isTyping: boolean = false;
+
   message: string = '';
   @ViewChild('messageInput') messageInput!: ElementRef;
   @ViewChild('messageList') messageList!: ElementRef;
@@ -84,6 +87,15 @@ export class ChatAdminComponent implements OnInit {
   }
 
  
+  onTyping(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.isTyping = input.value.trim() !== '';
+
+    this.connection.invoke('NotifyTyping', this.isTyping)
+      .catch(error => {
+        console.error('Error al enviar señal de escritura a SignalR: ' + error);
+      });
+  }
 
 
 
