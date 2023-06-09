@@ -2,13 +2,14 @@
     <div class="card col-md-3 rounded-0">
         <div class="card-body">
             <ul class="list-group" style="max-height: 300px; overflow-y: auto;">
-              <li *ngFor="let user of userList" class="list-group-item" (click)="selectUserChat(user)">{{user}}</li>
+                <li *ngFor="let user of userList" [class.selected-user]="user === userChatActual"
+                    class="list-group-item" (click)="selectUserChat(user)">{{user | uppercase}}</li>
             </ul>
         </div>
     </div>
     <div class="card col-md-5 rounded-0">
         <div class="card-header">
-            <h4 class="card-title">Conversación</h4>
+            <h4 class="card-title">{{ userChatActual | uppercase }}</h4>
         </div>
         <div class="card-body">
             <ul class="list-group-flush" id="messageList">

@@ -1,16 +1,12 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { NewMessage } from 'src/app/interfaces/messages.interface';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../../auth/auth.service';
 
 
 const URLHub = environment.urlHub;
 
-interface NewMessage {
-  userName: string;
-  message: string;
-  groupName?: string;
-}
 
 
 
@@ -29,10 +25,7 @@ export class ChatUserComponent implements OnInit {
   public groupName = '';
   public messageToSend = '';
   public joined = false;
-  public conversation: NewMessage[] = [{
-    message: 'Bienvenido',
-    userName: 'Sistema'
-  }];
+  public conversation: NewMessage[] = [];
 
   private connection: HubConnection;
 
@@ -42,9 +35,9 @@ export class ChatUserComponent implements OnInit {
       .withUrl(URLHub) // URL del concentrador en tu servidor
       .build();
 
-    this.connection.on("NewUser", message => this.newUser(message));
+    //this.connection.on("NewUser", message => this.newUser(message));
     this.connection.on("NewMessage", message => this.newMessage(message));
-    this.connection.on("LeftUser", message => this.leftUser(message));
+    //this.connection.on("LeftUser", message => this.leftUser(message));
   }
 
   ngOnInit(): void {

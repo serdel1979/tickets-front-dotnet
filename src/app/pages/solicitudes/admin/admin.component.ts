@@ -5,7 +5,6 @@ import { Solicitud } from 'src/app/interfaces/solicitud.interface';
 import { Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
-import { url } from 'inspector';
 
 
 const URLHub = environment.urlHub;
@@ -55,7 +54,6 @@ export class AdminComponent implements OnInit {
    ngOnInit(): void {
     this.connection.start().then(() => {
       // La conexión se ha establecido correctamente
-      console.log("conexión socket ok...");
        //------------------
        this.connection.invoke('JoinGroup', 'refresh', 'soporte')
        .then(_ => {
@@ -72,9 +70,14 @@ export class AdminComponent implements OnInit {
 
   async refresh() {
     this.isLogued = this.authService.isLogued();
+    this.userName = this.authService.getUserLogued();
     if (this.isLogued) {
       this.solicitudesService.getSolicitudes().subscribe(resp => {
         this.solicitudes = resp;
+        resp.forEach(async solicitud => {
+          this.groupName = solicitud.departamento;
+          await this.join();
+        });
       })
     }
   }
@@ -94,7 +97,6 @@ export class AdminComponent implements OnInit {
   }
 
   private newUser(message: string) {
-    console.log(message);
     this.conversation.push({
       userName: 'Sistema',
       message: message
@@ -130,5 +132,11 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  public join() {
+    this.connection.invoke('JoinGroup', this.groupName, this.userName)
+      .then(_ => {
+        this.joined = true;
+      });
+  }
 
 }

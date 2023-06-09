@@ -1,19 +1,17 @@
 import { Component, ElementRef, ViewChild, OnInit, NgZone } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { AuthService } from 'src/app/auth/auth.service';
+import { NewMessage } from 'src/app/interfaces/messages.interface';
 import { Solicitud } from 'src/app/interfaces/solicitud.interface';
 import { SolicitudesService } from 'src/app/services/solicitudes.service';
 import { environment } from 'src/environments/environment';
+import { ChatService } from '../../../services/chat.service';
 
 const URLHub = environment.urlHub;
 
-interface NewMessage {
-  userName: string;
-  message: string;
-  groupName?: string;
-}
 
 
+const mapUsersChat: Map<string, NewMessage[]> = new Map();
 
 @Component({
   selector: 'app-chat-admin',
@@ -24,6 +22,8 @@ export class ChatAdminComponent implements OnInit {
 
 
   public userList: string[] = [];
+
+  public userChatActual: string = '';
 
   isTyping: boolean = false;
 
@@ -36,21 +36,19 @@ export class ChatAdminComponent implements OnInit {
   public groupName = '';
   public messageToSend = '';
   public joined = false;
-  public conversation: NewMessage[] = [{
-    message: 'Bienvenido',
-    userName: 'Sistema'
-  }];
+  public conversation: NewMessage[] = [];
 
   private connection: HubConnection;
   constructor(private authService: AuthService, private ngZone: NgZone, 
-    private solicitudesService: SolicitudesService) {
+    private solicitudesService: SolicitudesService,
+    private chatService: ChatService) {
     this.connection = new HubConnectionBuilder()
       .withUrl(URLHub) // URL del concentrador en tu servidor
       .build();
 
-    this.connection.on("NewUser", message => this.newUser(message));
+    //this.connection.on("NewUser", message => this.newUser(message));
     this.connection.on("NewMessage", message => this.newMessage(message));
-    this.connection.on("LeftUser", message => this.leftUser(message));
+    //this.connection.on("LeftUser", message => this.leftUser(message));
   }
 
   ngOnInit(): void {
@@ -115,7 +113,16 @@ export class ChatAdminComponent implements OnInit {
   }
 
   selectUserChat( nombre: string){ 
-    this.leave();
+   // this.leave();
+    if(this.userChatActual !== ''){
+      mapUsersChat.set(this.userChatActual, this.conversation);
+      this.conversation = [];
+      if(mapUsersChat.get(nombre)){
+         const chatUser = mapUsersChat.get(nombre);
+         if(chatUser)this.conversation=chatUser;
+      }
+    }
+    this.userChatActual = nombre;
     this.groupName = nombre;
     this.join();
   }
@@ -130,18 +137,24 @@ export class ChatAdminComponent implements OnInit {
 
   private newMessage(message: NewMessage) {
     if (message.message === '***') {
-      if(message.userName !== this.authService.getUserLogued()){
+      if(message.userName !== this.authService.getUserLogued() &&(this.userChatActual === message.userName)){
         this.isTyping = true;
         this.resetIsTyping();
       }
     } else {
-      if (this.conversation.length >= 10) {
-        this.conversation.shift(); // Elimina el primer elemento
-      }
-      this.conversation.push(message);
-      this.messageToSend = '';
-      this.isTyping = false;
-      this.messageInput.nativeElement.focus();
+      if(this.userChatActual !== message.userName && this.userName !== message.userName){
+        const chatUserMsj = mapUsersChat.get(message.userName);
+        chatUserMsj?.push(message);
+        if(chatUserMsj)mapUsersChat.set(message.userName,chatUserMsj);
+      }else{
+        if (this.conversation.length >= 10) {
+          this.conversation.shift(); // Elimina el primer elemento
+        }
+        this.conversation.push(message);
+        this.messageToSend = '';
+        this.isTyping = false;
+        this.messageInput.nativeElement.focus();
+      }      
     }
   }
 
@@ -151,7 +164,6 @@ export class ChatAdminComponent implements OnInit {
   }
 
   private leftUser(message: string) {
-    console.log(message);
     this.conversation.push({
       userName: 'Sistema',
       message: message
@@ -163,6 +175,10 @@ export class ChatAdminComponent implements OnInit {
       .then(_ => {
         this.joined = true;
       });
+  }
+
+  isSelectedUser(user:string): boolean{
+    return user===this.userChatActual;
   }
 
 }
