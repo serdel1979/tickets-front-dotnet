@@ -42,9 +42,10 @@ export class ChatAdminComponent implements OnInit {
   constructor(private authService: AuthService, private ngZone: NgZone, 
     private solicitudesService: SolicitudesService,
     private chatService: ChatService) {
-    this.connection = new HubConnectionBuilder()
-      .withUrl(URLHub) // URL del concentrador en tu servidor
-      .build();
+    // this.connection = new HubConnectionBuilder()
+    //   .withUrl(URLHub) // URL del concentrador en tu servidor
+    //   .build();
+    this.connection = this.chatService.getConnection();
 
     //this.connection.on("NewUser", message => this.newUser(message));
     this.connection.on("NewMessage", message => this.newMessage(message));
@@ -63,16 +64,7 @@ export class ChatAdminComponent implements OnInit {
     )
     this.userName = this.authService.getUserLogued();
     this.groupName = this.userName;
-    this.connection.start()
-      .then(() => {
-        console.log('Connection Started');
-        // this.connection.invoke('JoinGroup', 'musica', this.userName)
-        //   .then(_ => {
-        //     this.joined = true;
-        //   });
-      }).catch((error: any) => {
-        return console.error(error);
-      });
+    
   }
 
 

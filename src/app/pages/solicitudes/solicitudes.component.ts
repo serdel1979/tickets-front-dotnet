@@ -1,23 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from 'src/app/auth/auth.service';
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'app-solicitudes',
   templateUrl: './solicitudes.component.html',
   styleUrls: ['./solicitudes.component.css']
 })
-export class SolicitudesComponent implements OnInit  {
+export class SolicitudesComponent implements OnInit {
 
 
   public isAdmin: boolean = false;
 
-  constructor(private authService: AuthService){}
-  
+  constructor(private authService: AuthService,
+    private chatService: ChatService) { }
+
   ngOnInit() {
     this.isAdmin = this.authService.isAdmin();
+    this.chatService.startConnection().then().catch(err=>{
+      console.log(err)
+    })
   }
 
 
 
-  
+
 }

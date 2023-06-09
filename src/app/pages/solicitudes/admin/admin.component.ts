@@ -5,6 +5,7 @@ import { Solicitud } from 'src/app/interfaces/solicitud.interface';
 import { Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
+import { ChatService } from '../../../services/chat.service';
 
 
 const URLHub = environment.urlHub;
@@ -41,11 +42,12 @@ export class AdminComponent implements OnInit {
 
   constructor(private solicitudesService: SolicitudesService,
     private authService: AuthService,
-    private router: Router) {
-    this.connection = new HubConnectionBuilder()
-      .withUrl(URLHub) // URL del concentrador en tu servidor
-      .build();
-
+    private router: Router,
+    private chatService: ChatService) {
+    // this.connection = new HubConnectionBuilder()
+    //   .withUrl(URLHub) // URL del concentrador en tu servidor
+    //   .build();
+      this.connection = this.chatService.getConnection();
       this.connection.on("NewUser", message => this.newUser(message));
       this.connection.on("NewMessage", () => this.refresh());
       this.connection.on("LeftUser", message => this.leftUser(message));
