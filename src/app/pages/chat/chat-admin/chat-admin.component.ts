@@ -6,12 +6,11 @@ import { Solicitud } from 'src/app/interfaces/solicitud.interface';
 import { SolicitudesService } from 'src/app/services/solicitudes.service';
 import { environment } from 'src/environments/environment';
 import { ChatService } from '../../../services/chat.service';
-
-const URLHub = environment.urlHub;
-
+import { mergeNsAndName } from '@angular/compiler';
 
 
-const mapUsersChat: Map<string, NewMessage[]> = new Map();
+
+
 
 @Component({
   selector: 'app-chat-admin',
@@ -20,6 +19,8 @@ const mapUsersChat: Map<string, NewMessage[]> = new Map();
 })
 export class ChatAdminComponent implements OnInit {
 
+
+  private mapUsersChat: Map<string, NewMessage[]> = new Map();
 
   public userList: string[] = [];
 
@@ -42,33 +43,27 @@ export class ChatAdminComponent implements OnInit {
   constructor(private authService: AuthService, private ngZone: NgZone, 
     private solicitudesService: SolicitudesService,
     private chatService: ChatService) {
-    // this.connection = new HubConnectionBuilder()
-    //   .withUrl(URLHub) // URL del concentrador en tu servidor
-    //   .build();
+
     this.connection = this.chatService.getConnection();
 
-    //this.connection.on("NewUser", message => this.newUser(message));
-    //this.connection.on("NewMessage", message => this.newMessage(message));
-    //this.connection.on("LeftUser", message => this.leftUser(message));
+    this.userName = this.authService.getUserLogued();
+    this.groupName = this.userName;
+    this.chatService.mensajes$.subscribe((message: NewMessage) => {
+      console.log(message);
+      this.newMessage(message);
+    });
   }
 
   ngOnInit(): void {
     this.solicitudesService.getSolicitudes().subscribe(
       resp => {
         const departamentosUnicos = new Set<string>(); // Utilizamos un Set para almacenar departamentos únicos
-        resp.forEach(solicitud => {
-          departamentosUnicos.add(solicitud.departamento); // Agregamos cada departamento al Set
-          mapUsersChat.set(solicitud.departamento, this.conversation);
-        });
+        
+        this.mapUsersChat = this.chatService.getMapUsersChat();
         this.userList = Array.from(departamentosUnicos); // Convertimos el Set en un array y lo asignamos a userList
       }
     )
-    console.log(mapUsersChat);
-    this.userName = this.authService.getUserLogued();
-    this.groupName = this.userName;
-    this.chatService.mensajes$.subscribe((message: NewMessage) => {
-      this.newMessage(message);
-    });
+    
   }
 
 
@@ -111,10 +106,10 @@ export class ChatAdminComponent implements OnInit {
   selectUserChat( nombre: string){ 
    // this.leave();
     if(this.userChatActual !== ''){
-      mapUsersChat.set(this.userChatActual, this.conversation);
+      this.mapUsersChat.set(this.userChatActual, this.conversation);
       this.conversation = [];
-      if(mapUsersChat.get(nombre)){
-         const chatUser = mapUsersChat.get(nombre);
+      if(this.mapUsersChat.get(nombre)){
+         const chatUser = this.mapUsersChat.get(nombre);
          if(chatUser)this.conversation=chatUser;
       }
     }
@@ -141,16 +136,16 @@ export class ChatAdminComponent implements OnInit {
     } else {
       if(this.userChatActual !== message.userName && this.userName !== message.userName){
         console.log(this.conversation);
-        const chatUserMsj = mapUsersChat.get(message.userName);
+        const chatUserMsj = this.mapUsersChat.get(message.userName);
         chatUserMsj?.push(message);
-        if(chatUserMsj)mapUsersChat.set(message.userName,chatUserMsj);
+        if(chatUserMsj)this.mapUsersChat.set(message.userName,chatUserMsj);
       }else{
         if (this.conversation.length >= 10) {
           this.conversation.shift(); // Elimina el primer elemento
         }
-        const chatUserMsj = mapUsersChat.get(message.userName);
+        const chatUserMsj = this.mapUsersChat.get(message.userName);
         chatUserMsj?.push(message);
-        if(chatUserMsj)mapUsersChat.set(message.userName,chatUserMsj);
+        if(chatUserMsj)this.mapUsersChat.set(message.userName,chatUserMsj);
         this.conversation.push(message);
         this.messageToSend = '';
         this.isTyping = false;

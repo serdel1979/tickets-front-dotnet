@@ -76,13 +76,6 @@ export class AdminComponent implements OnInit {
     if (this.isLogued) {
       this.solicitudesService.getSolicitudes().subscribe(async resp => {
         this.solicitudes = resp;
-        console.log(resp);
-        await resp.forEach(async solicitud => {
-          this.groupName = solicitud.departamento;
-          await this.chatService.join(this.groupName,this.userName).then(()=>{
-            console.log(`${this.userName} conectado al grupo${this.groupName}`);
-          })    
-        });
       })
     }
   }
