@@ -48,7 +48,7 @@ export class ChatAdminComponent implements OnInit {
     this.connection = this.chatService.getConnection();
 
     //this.connection.on("NewUser", message => this.newUser(message));
-    this.connection.on("NewMessage", message => this.newMessage(message));
+    //this.connection.on("NewMessage", message => this.newMessage(message));
     //this.connection.on("LeftUser", message => this.leftUser(message));
   }
 
@@ -58,13 +58,17 @@ export class ChatAdminComponent implements OnInit {
         const departamentosUnicos = new Set<string>(); // Utilizamos un Set para almacenar departamentos únicos
         resp.forEach(solicitud => {
           departamentosUnicos.add(solicitud.departamento); // Agregamos cada departamento al Set
+          mapUsersChat.set(solicitud.departamento, this.conversation);
         });
         this.userList = Array.from(departamentosUnicos); // Convertimos el Set en un array y lo asignamos a userList
       }
     )
+    console.log(mapUsersChat);
     this.userName = this.authService.getUserLogued();
     this.groupName = this.userName;
-    
+    this.chatService.mensajes$.subscribe((message: NewMessage) => {
+      this.newMessage(message);
+    });
   }
 
 
@@ -116,7 +120,7 @@ export class ChatAdminComponent implements OnInit {
     }
     this.userChatActual = nombre;
     this.groupName = nombre;
-    this.join();
+    // this.join();
   }
 
   private newUser(message: string) {
@@ -129,12 +133,14 @@ export class ChatAdminComponent implements OnInit {
 
   private newMessage(message: NewMessage) {
     if (message.message === '***') {
+      console.log(this.conversation);
       if(message.userName !== this.authService.getUserLogued() &&(this.userChatActual === message.userName)){
         this.isTyping = true;
         this.resetIsTyping();
       }
     } else {
       if(this.userChatActual !== message.userName && this.userName !== message.userName){
+        console.log(this.conversation);
         const chatUserMsj = mapUsersChat.get(message.userName);
         chatUserMsj?.push(message);
         if(chatUserMsj)mapUsersChat.set(message.userName,chatUserMsj);
@@ -142,10 +148,14 @@ export class ChatAdminComponent implements OnInit {
         if (this.conversation.length >= 10) {
           this.conversation.shift(); // Elimina el primer elemento
         }
+        const chatUserMsj = mapUsersChat.get(message.userName);
+        chatUserMsj?.push(message);
+        if(chatUserMsj)mapUsersChat.set(message.userName,chatUserMsj);
         this.conversation.push(message);
         this.messageToSend = '';
         this.isTyping = false;
         this.messageInput.nativeElement.focus();
+        console.log(this.conversation);
       }      
     }
   }

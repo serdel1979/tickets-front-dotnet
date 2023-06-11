@@ -44,10 +44,10 @@ export class AdminComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private chatService: ChatService) {
-    // this.connection = new HubConnectionBuilder()
-    //   .withUrl(URLHub) // URL del concentrador en tu servidor
-    //   .build();
-      this.connection = this.chatService.getConnection();
+    this.connection = new HubConnectionBuilder()
+      .withUrl(URLHub) // URL del concentrador en tu servidor
+      .build();
+
       this.connection.on("NewUser", message => this.newUser(message));
       this.connection.on("NewMessage", () => this.refresh());
       this.connection.on("LeftUser", message => this.leftUser(message));
@@ -74,11 +74,14 @@ export class AdminComponent implements OnInit {
     this.isLogued = this.authService.isLogued();
     this.userName = this.authService.getUserLogued();
     if (this.isLogued) {
-      this.solicitudesService.getSolicitudes().subscribe(resp => {
+      this.solicitudesService.getSolicitudes().subscribe(async resp => {
         this.solicitudes = resp;
-        resp.forEach(async solicitud => {
+        console.log(resp);
+        await resp.forEach(async solicitud => {
           this.groupName = solicitud.departamento;
-          await this.join();
+          await this.chatService.join(this.groupName,this.userName).then(()=>{
+            console.log(`${this.userName} conectado al grupo${this.groupName}`);
+          })    
         });
       })
     }

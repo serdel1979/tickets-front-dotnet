@@ -12,14 +12,11 @@ export class SolicitudesComponent implements OnInit {
 
   public isAdmin: boolean = false;
 
-  constructor(private authService: AuthService,
-    private chatService: ChatService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.isAdmin = this.authService.isAdmin();
-    this.chatService.startConnection().then().catch(err=>{
-      console.log(err)
-    })
+    
   }
 
 
