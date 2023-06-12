@@ -20,7 +20,8 @@ import { mergeNsAndName } from '@angular/compiler';
 export class ChatAdminComponent implements OnInit {
 
 
-  private mapUsersChat: Map<string, NewMessage[]> = new Map();
+  public mapUsersChat: Map<string, NewMessage[]> = new Map();
+  public cantMsgChat: Map<string, number> = new Map();
 
   public userList: string[] = [];
 
@@ -47,7 +48,15 @@ export class ChatAdminComponent implements OnInit {
 
     this.mapUsersChat = this.chatService.getMapUsersChat();
 
+    this.chatService.setEndSave();
+
     this.userList = Array.from(this.mapUsersChat.keys());
+    for (const key of this.mapUsersChat.keys()) {
+      const messages = this.mapUsersChat.get(key); // Obtener el array NewMessage correspondiente a la clave
+      const messageCount = messages ? messages.length : 0; // Obtener la cantidad de elementos en el array o 0 si no existe
+
+      this.cantMsgChat.set(key, messageCount); // Asignar la cantidad al mapa cantMsgChat
+    }
 
     this.userName = this.authService.getUserLogued();
     this.groupName = this.userName;
@@ -61,6 +70,15 @@ export class ChatAdminComponent implements OnInit {
   }
 
 
+  getCantMsgChatValue(key: string): number {
+    if (this.cantMsgChat.has(key)) {
+      const cant = this.cantMsgChat.get(key);
+      if (cant && cant > 0) {
+        return cant;
+      }
+    }
+    return 0;
+  }
 
 
   public sendMessage() {
@@ -99,10 +117,18 @@ export class ChatAdminComponent implements OnInit {
 
   selectUserChat(nombre: string) {
     // this.leave();
-    if (this.mapUsersChat.get(nombre)) {
-      const chatUser = this.mapUsersChat.get(nombre);
-      if (chatUser) this.conversation = chatUser;
-    }
+    // if (this.mapUsersChat.get(nombre)) {
+    //   const chatUser = this.mapUsersChat.get(nombre);
+    // }
+    this.cantMsgChat.set(nombre, 0);
+
+    //cuando llega msj incrementar
+    // const valorActual = this.cantMsgChat.get(nombre);
+    // if (valorActual !== undefined) {
+    //   const nuevoValor = valorActual + 1;
+    //   this.cantMsgChat.set(nombre, nuevoValor);
+    // }
+
     // if (this.userChatActual !== '') {
     //   this.mapUsersChat.set(this.userChatActual, this.conversation);
     //   this.conversation = [];
@@ -119,30 +145,33 @@ export class ChatAdminComponent implements OnInit {
 
   private newMessage(message: NewMessage) {
     if (message.message === '***') {
-      console.log(this.conversation);
       if (message.userName !== this.authService.getUserLogued() && (this.userChatActual === message.userName)) {
         this.isTyping = true;
         this.resetIsTyping();
       }
     } else {
-      if (this.userChatActual !== message.userName && this.userName !== message.userName) {
-        console.log(this.conversation);
-        const chatUserMsj = this.mapUsersChat.get(message.userName);
+      if (this.userName === message.userName) { //si el usuario es
+        const chatUserMsj = this.mapUsersChat.get(this.userChatActual);
         chatUserMsj?.push(message);
-        if (chatUserMsj) this.mapUsersChat.set(message.userName, chatUserMsj);
-      } else {
-        if (this.conversation.length >= 10) {
-          this.conversation.shift(); // Elimina el primer elemento
+        if (chatUserMsj) {
+          if (chatUserMsj.length >= 10) {
+            chatUserMsj.shift();
+          }
+          this.mapUsersChat.set(this.userChatActual, chatUserMsj);
         }
+      }else{
         const chatUserMsj = this.mapUsersChat.get(message.userName);
         chatUserMsj?.push(message);
-        if (chatUserMsj) this.mapUsersChat.set(message.userName, chatUserMsj);
-        this.conversation.push(message);
-        this.messageToSend = '';
-        this.isTyping = false;
-        this.messageInput.nativeElement.focus();
-        console.log(this.conversation);
+        if (chatUserMsj) {
+          if (chatUserMsj.length >= 10) {
+            chatUserMsj.shift();
+          }
+          this.mapUsersChat.set(message.userName, chatUserMsj);
+        }
       }
+      this.messageToSend = '';
+      this.isTyping = false;
+      this.messageInput.nativeElement.focus();
     }
   }
 
@@ -151,12 +180,6 @@ export class ChatAdminComponent implements OnInit {
       .then(_ => this.joined = false);
   }
 
-  private leftUser(message: string) {
-    this.conversation.push({
-      userName: 'Sistema',
-      message: message
-    });
-  }
 
   public join() {
     this.connection.invoke('JoinGroup', this.groupName, this.userName)

@@ -2,8 +2,17 @@
     <div class="card col-md-3 rounded-0">
         <div class="card-body">
             <ul class="list-group" style="max-height: 300px; overflow-y: auto;">
-                <li *ngFor="let user of userList" [class.selected-user]="user === userChatActual"
-                    class="list-group-item" (click)="selectUserChat(user)">{{user | uppercase}}</li>
+                <li *ngFor="let entry of mapUsersChat | keyvalue" [class.selected-user]="entry.key === userChatActual"
+                    class="list-group-item" (click)="selectUserChat(entry.key)">
+                    <span
+                        [ngClass]="{'bold-text': getCantMsgChatValue(entry.key) && getCantMsgChatValue(entry.key) > 0}"
+                        *ngIf="getCantMsgChatValue(entry.key) && getCantMsgChatValue(entry.key) > 0">
+                        {{ entry.key | uppercase }} {{ getCantMsgChatValue(entry.key) }}
+                    </span>
+                    <span *ngIf="!(getCantMsgChatValue(entry.key) && getCantMsgChatValue(entry.key) > 0)">
+                        {{ entry.key | uppercase }}
+                    </span>
+                </li>
             </ul>
         </div>
     </div>
@@ -13,8 +22,8 @@
         </div>
         <div class="card-body">
             <ul class="list-group-flush" id="messageList">
-                <li *ngFor="let message of conversation" class="list-group-item">
-                    <div><strong>{{message.userName}}:</strong> {{message.message}}</div>
+                <li *ngFor="let message of mapUsersChat.get(userChatActual)" class="list-group-item">
+                    <div><strong>{{ message.userName }}:</strong> {{ message.message }}</div>
                 </li>
             </ul>
         </div>

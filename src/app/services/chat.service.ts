@@ -19,6 +19,7 @@ export class ChatService {
 
   public connection: HubConnection;
 
+  private endSave: boolean = false;
 
   private mensajesSubject = new Subject<any>();
   mensajes$: Observable<NewMessage> = this.mensajesSubject.asObservable();
@@ -43,11 +44,11 @@ export class ChatService {
 
     this.connection.on('NewMessage', (mensaje: NewMessage) => {
       
-      if(mensaje.message !== '***'){
+      if(mensaje.message !== '***' && mensaje.message !== '' && !this.endSave){
           const chatUserMsj = mapUsersChat.get(mensaje.userName);
           chatUserMsj?.push(mensaje);
+          console.log('agrega=> ',mensaje.message)
           if(chatUserMsj)mapUsersChat.set(mensaje.userName,chatUserMsj);
-          console.log(mapUsersChat);
       }
       this.mensajesSubject.next(mensaje);
     });
@@ -71,6 +72,9 @@ export class ChatService {
       });
   }
 
+  setEndSave(){
+    this.endSave = true;
+  }
 
 
 
