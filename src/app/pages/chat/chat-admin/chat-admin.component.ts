@@ -48,13 +48,14 @@ export class ChatAdminComponent implements OnInit {
 
     this.userName = this.authService.getUserLogued();
     this.groupName = this.userName;
+    
+  }
+
+  ngOnInit(): void {
     this.chatService.mensajes$.subscribe((message: NewMessage) => {
       console.log(message);
       this.newMessage(message);
     });
-  }
-
-  ngOnInit(): void {
     this.solicitudesService.getSolicitudes().subscribe(
       resp => {
         const departamentosUnicos = new Set<string>(); // Utilizamos un Set para almacenar departamentos únicos

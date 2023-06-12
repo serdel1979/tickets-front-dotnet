@@ -69,6 +69,10 @@ export class AdminComponent implements OnInit {
     this.refresh();
   }
 
+  loadDynamicComponent() {
+    console.log('carga dinamica?');
+    this.router.navigate([`/chat`]);
+  }
 
   async refresh() {
     this.isLogued = this.authService.isLogued();
