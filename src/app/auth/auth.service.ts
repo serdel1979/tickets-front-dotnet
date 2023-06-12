@@ -114,5 +114,11 @@ export class AuthService {
     return '';
   }
 
+  getAllUsers(){
+    return this.http.get<any[]>(`${environment.baseUrl}/usuarios/chat`);
+  }
+
+  
+
 
 }

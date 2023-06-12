@@ -40,31 +40,24 @@ export class ChatAdminComponent implements OnInit {
   public conversation: NewMessage[] = [];
 
   private connection: HubConnection;
-  constructor(private authService: AuthService, private ngZone: NgZone, 
-    private solicitudesService: SolicitudesService,
+  constructor(private authService: AuthService, private ngZone: NgZone,
     private chatService: ChatService) {
 
     this.connection = this.chatService.getConnection();
 
+    this.mapUsersChat = this.chatService.getMapUsersChat();
+
+    this.userList = Array.from(this.mapUsersChat.keys());
+
     this.userName = this.authService.getUserLogued();
     this.groupName = this.userName;
-    
+
   }
 
   ngOnInit(): void {
     this.chatService.mensajes$.subscribe((message: NewMessage) => {
-      console.log(message);
       this.newMessage(message);
     });
-    this.solicitudesService.getSolicitudes().subscribe(
-      resp => {
-        const departamentosUnicos = new Set<string>(); // Utilizamos un Set para almacenar departamentos únicos
-        
-        this.mapUsersChat = this.chatService.getMapUsersChat();
-        this.userList = Array.from(departamentosUnicos); // Convertimos el Set en un array y lo asignamos a userList
-      }
-    )
-    
   }
 
 
@@ -104,55 +97,52 @@ export class ChatAdminComponent implements OnInit {
       .then(_ => this.messageToSend = this.messageToSend);
   }
 
-  selectUserChat( nombre: string){ 
-   // this.leave();
-    if(this.userChatActual !== ''){
-      this.mapUsersChat.set(this.userChatActual, this.conversation);
-      this.conversation = [];
-      if(this.mapUsersChat.get(nombre)){
-         const chatUser = this.mapUsersChat.get(nombre);
-         if(chatUser)this.conversation=chatUser;
-      }
+  selectUserChat(nombre: string) {
+    // this.leave();
+    if (this.mapUsersChat.get(nombre)) {
+      const chatUser = this.mapUsersChat.get(nombre);
+      if (chatUser) this.conversation = chatUser;
     }
+    // if (this.userChatActual !== '') {
+    //   this.mapUsersChat.set(this.userChatActual, this.conversation);
+    //   this.conversation = [];
+    //   if (this.mapUsersChat.get(nombre)) {
+    //     const chatUser = this.mapUsersChat.get(nombre);
+    //     if (chatUser) this.conversation = chatUser;
+    //   }
+    // }
     this.userChatActual = nombre;
     this.groupName = nombre;
     // this.join();
   }
 
-  private newUser(message: string) {
-    console.log(message);
-    this.conversation.push({
-      userName: 'Sistema',
-      message: message
-    });
-  }
 
   private newMessage(message: NewMessage) {
     if (message.message === '***') {
       console.log(this.conversation);
-      if(message.userName !== this.authService.getUserLogued() &&(this.userChatActual === message.userName)){
+      if (message.userName !== this.authService.getUserLogued() && (this.userChatActual === message.userName)) {
         this.isTyping = true;
         this.resetIsTyping();
       }
     } else {
-      if(this.userChatActual !== message.userName && this.userName !== message.userName){
+      if (this.userChatActual !== message.userName && this.userName !== message.userName) {
         console.log(this.conversation);
         const chatUserMsj = this.mapUsersChat.get(message.userName);
         chatUserMsj?.push(message);
-        if(chatUserMsj)this.mapUsersChat.set(message.userName,chatUserMsj);
-      }else{
+        if (chatUserMsj) this.mapUsersChat.set(message.userName, chatUserMsj);
+      } else {
         if (this.conversation.length >= 10) {
           this.conversation.shift(); // Elimina el primer elemento
         }
         const chatUserMsj = this.mapUsersChat.get(message.userName);
         chatUserMsj?.push(message);
-        if(chatUserMsj)this.mapUsersChat.set(message.userName,chatUserMsj);
+        if (chatUserMsj) this.mapUsersChat.set(message.userName, chatUserMsj);
         this.conversation.push(message);
         this.messageToSend = '';
         this.isTyping = false;
         this.messageInput.nativeElement.focus();
         console.log(this.conversation);
-      }      
+      }
     }
   }
 
@@ -175,8 +165,8 @@ export class ChatAdminComponent implements OnInit {
       });
   }
 
-  isSelectedUser(user:string): boolean{
-    return user===this.userChatActual;
+  isSelectedUser(user: string): boolean {
+    return user === this.userChatActual;
   }
 
 }

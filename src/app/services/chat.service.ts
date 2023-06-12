@@ -39,12 +39,19 @@ export class ChatService {
       })
     });
 
-    console.log(`mapeo creado en servicio? ${mapUsersChat}`);
+    console.log(`mapeo creado en servicio?`,mapUsersChat);
 
     this.connection.on('NewMessage', (mensaje: NewMessage) => {
-      console.log(mensaje);
+      
+      if(mensaje.message !== '***'){
+          const chatUserMsj = mapUsersChat.get(mensaje.userName);
+          chatUserMsj?.push(mensaje);
+          if(chatUserMsj)mapUsersChat.set(mensaje.userName,chatUserMsj);
+          console.log(mapUsersChat);
+      }
       this.mensajesSubject.next(mensaje);
     });
+
   }
 
 
