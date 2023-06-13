@@ -16,6 +16,7 @@ export class AuthService {
 
   private userName: string = '';
 
+  
 
   public isLoggedInChange: Subject<boolean> = new Subject<boolean>();
 
@@ -118,7 +119,5 @@ export class AuthService {
     return this.http.get<any[]>(`${environment.baseUrl}/usuarios/chat`);
   }
 
-  
-
-
+ 
 }

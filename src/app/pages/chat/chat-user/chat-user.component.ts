@@ -3,6 +3,7 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { NewMessage } from 'src/app/interfaces/messages.interface';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../../auth/auth.service';
+import { ChatService } from '../../../services/chat.service';
 
 
 const URLHub = environment.urlHub;
@@ -27,10 +28,12 @@ export class ChatUserComponent implements OnInit {
   public joined = false;
   public conversation: NewMessage[] = [];
 
+  public adminConnect: boolean = false;
+
   private connection: HubConnection;
 
 
-  constructor(private authService: AuthService, private ngZone: NgZone) {
+  constructor(private authService: AuthService, private ngZone: NgZone, private chatService: ChatService) {
     this.connection = new HubConnectionBuilder()
       .withUrl(URLHub) // URL del concentrador en tu servidor
       .build();
@@ -41,6 +44,14 @@ export class ChatUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.chatService.adminConnect$.subscribe(
+      (resp) => {
+        this.adminConnect = resp;
+        console.log(resp);
+      }
+    );
+
     this.userName = this.authService.getUserLogued();
     this.groupName = this.userName;
     this.connection.start()
@@ -106,7 +117,7 @@ export class ChatUserComponent implements OnInit {
 
   private newMessage(message: NewMessage) {
     if (message.message === '***') {
-      if(message.userName !== this.authService.getUserLogued()){
+      if (message.userName !== this.authService.getUserLogued()) {
         this.isTyping = true;
         this.resetIsTyping();
       }
@@ -128,5 +139,7 @@ export class ChatUserComponent implements OnInit {
       message: message
     });
   }
+
+
 
 }

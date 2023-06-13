@@ -47,9 +47,7 @@ export class ChatAdminComponent implements OnInit {
     this.connection = this.chatService.getConnection();
 
     this.mapUsersChat = this.chatService.getMapUsersChat();
-
-    this.chatService.setEndSave();
-
+    console.log('trae msjs del servicio en el constructor',this.mapUsersChat);
     this.userList = Array.from(this.mapUsersChat.keys());
     this.inicializaCantidadMensajes();
 
@@ -59,6 +57,10 @@ export class ChatAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
+    this.mapUsersChat = this.chatService.getMapUsersChat();
+    
+    console.log('trae msjs del servicio en onInit',this.mapUsersChat);
     this.chatService.mensajes$.subscribe((message: NewMessage) => {
       this.newMessage(message);
     });
@@ -140,25 +142,11 @@ export class ChatAdminComponent implements OnInit {
       }
     } else {
       if (this.userName === message.userName) { 
-        const chatUserMsj = this.mapUsersChat.get(this.userChatActual);
-        //this.incrementarCantidadDeMensajes(this.userChatActual);
-        chatUserMsj?.push(message);
-        if (chatUserMsj) {
-          if (chatUserMsj.length >= 10) {
-            chatUserMsj.shift();
-          }
-          this.mapUsersChat.set(this.userChatActual, chatUserMsj);
-        }
+        //enviar mensaje al servicio y que el lo guarde en la esrtructura
+        
+        this.chatService.guardarMensaje(this.userChatActual, message);
       } else {
-        const chatUserMsj = this.mapUsersChat.get(message.userName);
-        chatUserMsj?.push(message);
-        if(message.userName !== this.userChatActual)this.incrementarCantidadDeMensajes(message.userName);
-        if (chatUserMsj) {
-          if (chatUserMsj.length >= 10) {
-            chatUserMsj.shift();
-          }
-          this.mapUsersChat.set(message.userName, chatUserMsj);
-        }
+        this.chatService.guardarMensaje(message.userName, message);
       }
       this.messageToSend = '';
       this.isTyping = false;

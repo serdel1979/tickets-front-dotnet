@@ -133,7 +133,6 @@ export class UsersComponent implements OnInit {
   }
 
   private newUser(message: string) {
-    console.log(message);
     this.conversation.push({
       userName: 'Sistema',
       message: message

@@ -1,7 +1,8 @@
 <div class="row">
     <div class="card col-md-5 rounded-0">
         <div class="card-header">
-            <h4 class="card-title">Conversación</h4>
+            <span class="admin-status" [ngClass]="{'circle-green': adminConnect, 'circle-grey': !adminConnect}"></span>
+            <h4 class="card-title">Admin</h4>
         </div>
         <div class="card-body">
             <ul class="list-group-flush" id="messageList">
@@ -12,10 +13,14 @@
         </div>
         <div class="input-group">
             <input #messageInput type="text" class="form-control bg-light border-0" placeholder="Escribe un mensaje"
-                [(ngModel)]="messageToSend" (keyup.enter)="sendMessage()" (input)="onTyping($event)" >
+                [(ngModel)]="messageToSend" (keyup.enter)="adminConnect && sendMessage()"
+                (input)="onTyping($event)">
 
             <div class="input-group-append mr-5">
-                <button class="btn btn-primary mr-5" type="button" (click)="sendMessage()">Enviar</button>
+                <button class="btn btn-primary mr-5" type="button" (click)="sendMessage()"
+                    [disabled]="!adminConnect">
+                    Enviar
+                </button>
             </div>
         </div>
         <span *ngIf="isTyping" class="text-muted">El otro usuario está escribiendo...</span>

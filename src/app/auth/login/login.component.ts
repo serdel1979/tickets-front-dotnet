@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ export class LoginComponent {
     private toastr: ToastrService,
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private chatService: ChatService
     ){}
 
 
@@ -42,6 +44,18 @@ export class LoginComponent {
           localStorage.setItem('usrlog',JSON.stringify(resp));
 
           this.authService.loginOk();
+          // if(this.authService.isAdmin()){
+          //   const usr = this.authService.getUserLogued();
+          //   if (usr) {
+          //     this.chatService.joinAdmin(usr);
+          //   }
+          // }
+
+          const usrlog = this.authService.getUserLogued();
+          this.chatService.joinAdmin(usrlog).then(
+              ()=>this.chatService.avisaAdmin(usrlog)
+          );
+          
           this.toastr.success(
             '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Acceso correcto!!!</span>',
             "",
