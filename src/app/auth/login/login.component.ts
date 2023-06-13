@@ -51,10 +51,6 @@ export class LoginComponent {
           //   }
           // }
 
-          const usrlog = this.authService.getUserLogued();
-          this.chatService.joinAdmin(usrlog).then(
-              ()=>this.chatService.avisaAdmin(usrlog)
-          );
           
           this.toastr.success(
             '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Acceso correcto!!!</span>',

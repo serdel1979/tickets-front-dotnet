@@ -58,7 +58,6 @@ export class ChatAdminComponent implements OnInit {
   ngOnInit(): void {
     this.chatService.setNoPuedeGuardar();
     this.mapUsersChat = this.chatService.getMapUsersChat();
-    console.log(this.mapUsersChat);
     this.chatService.mensajes$.subscribe((message: NewMessage) => {
       this.newMessage(message);
     });
@@ -143,7 +142,12 @@ export class ChatAdminComponent implements OnInit {
         this.resetIsTyping();
       }
     } else {
-        this.chatService.guardarMensaje(this.userChatActual, message);
+        if(this.userChatActual === message.userName){
+          this.chatService.guardarMensaje(this.userChatActual, message);
+        }else{
+          this.chatService.guardarMensaje(message.userName, message);
+        }
+        
         this.messageToSend = '';
         this.isTyping = false;
         this.messageInput.nativeElement.focus();
