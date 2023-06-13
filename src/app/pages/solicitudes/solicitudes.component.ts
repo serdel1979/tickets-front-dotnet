@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ChatService } from '../../services/chat.service';
+import { NewMessage } from 'src/app/interfaces/messages.interface';
 
 @Component({
   selector: 'app-solicitudes',
@@ -12,14 +13,27 @@ export class SolicitudesComponent implements OnInit {
 
   public isAdmin: boolean = false;
 
-  constructor(private authService: AuthService) { }
+  public userName: string ='';
+  constructor(private authService: AuthService, private chatService: ChatService) { }
 
   ngOnInit() {
     this.isAdmin = this.authService.isAdmin();
-    
+    this.userName = this.authService.getUserLogued();
+    if(this.isAdmin){
+      this.chatService.mensajes$.subscribe((message: NewMessage) => {
+        this.newMessage(message);
+      });
+    }
   }
 
-
+  private newMessage(message: NewMessage) {
+    if (message.message !== '***') {
+      const puede = this.chatService.puedeEnviar();
+      if (puede) {
+        this.chatService.guardarMensaje(message.userName, message);
+      }
+    }
+  }
 
 
 }

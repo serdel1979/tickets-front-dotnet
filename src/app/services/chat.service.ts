@@ -24,7 +24,7 @@ export class ChatService {
 
   public connection: HubConnection;
 
-  private endSave: boolean = false;
+  private puedeGuardar: boolean = true;
 
   private mensajesSubject = new Subject<any>();
 
@@ -41,12 +41,15 @@ export class ChatService {
 
     this.connection.start().then(() => {
       const usrName = this.authService.getUserLogued();
-      this.http.get<any[]>(`${environment.baseUrl}/usuarios/chat`).subscribe(async usr => {
-        for (const usuario of usr) {
-          await this.join(usuario.userName, usrName);
-          this.mapUsersChat.set(usuario.userName, []);
-        }
-      })
+      const isAdmin = this.authService.isAdmin();
+      if(isAdmin){
+        this.http.get<any[]>(`${environment.baseUrl}/usuarios/chat`).subscribe(async usr => {
+          for (const usuario of usr) {
+            await this.join(usuario.userName, usrName);
+            this.mapUsersChat.set(usuario.userName, []);
+          }
+        })
+      }
     });
 
 
@@ -91,17 +94,21 @@ export class ChatService {
     return this.connection.invoke('JoinGroup', 'admin', user)
       .then(_ => {
         console.log('conectado ',user);
+        this.admin.next(true);
         true;
       });
   }
 
-  setEndSave() {
-    // this.mapUsersChat = new Map();
-    this.endSave = true;
+  setPuedeGuardar() {
+    this.puedeGuardar = true;
   }
 
-  resetEndSave() {
-    this.endSave = false;
+  puedeEnviar() {
+    return this.puedeGuardar;
+  }
+
+  setNoPuedeGuardar(){
+    this.puedeGuardar = false;
   }
 
   addAdminLogued(user: string){

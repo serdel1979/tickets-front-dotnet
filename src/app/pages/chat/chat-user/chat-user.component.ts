@@ -28,7 +28,7 @@ export class ChatUserComponent implements OnInit {
   public joined = false;
   public conversation: NewMessage[] = [];
 
-  public adminConnect: boolean = false;
+  public adminConnect: boolean = true;
 
   private connection: HubConnection;
 
@@ -44,13 +44,6 @@ export class ChatUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.chatService.adminConnect$.subscribe(
-      (resp) => {
-        this.adminConnect = resp;
-        console.log(resp);
-      }
-    );
 
     this.userName = this.authService.getUserLogued();
     this.groupName = this.userName;
@@ -98,14 +91,7 @@ export class ChatUserComponent implements OnInit {
 
 
 
-  private newUser(message: string) {
-    console.log(message);
-    this.conversation.push({
-      userName: 'Sistema',
-      message: message
-    });
-  }
-
+ 
   resetIsTyping() {
     this.ngZone.run(() => {
       setTimeout(() => {
@@ -132,13 +118,7 @@ export class ChatUserComponent implements OnInit {
     }
   }
 
-  private leftUser(message: string) {
-    console.log(message);
-    this.conversation.push({
-      userName: 'Sistema',
-      message: message
-    });
-  }
+  
 
 
 
