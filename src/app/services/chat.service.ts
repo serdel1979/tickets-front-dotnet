@@ -37,19 +37,11 @@ export class ChatService {
     this.connection = new HubConnectionBuilder()
       .withUrl(environment.urlHub)
       .build();
-    this.connection.start().then(() => {
-      const usrName = this.authService.getUserLogued();
-      this.http.get<any[]>(`${environment.baseUrl}/usuarios/chat`).subscribe(async usr => {
-        for (const usuario of usr) {
-          await this.join(usuario.userName, usrName);
-          this.mapUsersChat.set(usuario.userName, []);
-        }
-      })
-
+    this.connection.start().then(async () => {
+      //const usrName = this.authService.getUserLogued();
     });
     this.connection.on('NewMessage', (mensaje: NewMessage) => {
       if (mensaje.groupName === 'admin') {
-        console.log('emite');
         this.admin.next(true);
       }
       this.mensajesSubject.next(mensaje);
@@ -57,6 +49,14 @@ export class ChatService {
 
   }
 
+  async initUsersChat(userName: string){
+    this.http.get<any[]>(`${environment.baseUrl}/usuarios/chat/${userName}`).subscribe(async usr => {
+      for (const usuario of usr) {
+          await this.join(usuario.userName, userName);
+          this.mapUsersChat.set(usuario.userName, []);
+      }
+    })
+  }
 
   getConnection() {
     return this.connection;
@@ -68,6 +68,7 @@ export class ChatService {
   }
 
   guardarMensaje(usuario: string, mensaje: NewMessage) {
+    console.log(`${mensaje.userName} ${mensaje.message}`);
     const chatUserMsj = this.mapUsersChat.get(usuario);
     chatUserMsj?.push(mensaje);
     if (chatUserMsj) {

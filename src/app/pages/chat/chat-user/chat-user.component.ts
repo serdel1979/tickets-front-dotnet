@@ -39,14 +39,8 @@ export class ChatUserComponent implements OnInit {
 
 
   constructor(private authService: AuthService, private ngZone: NgZone, private chatService: ChatService) {
-
     this.connection = this.chatService.getConnection();
-
     this.mapUsersChat = this.chatService.getMapUsersChat();
-
-    //this.connection.on("NewUser", message => this.newUser(message));
-    this.connection.on("NewMessage", message => this.newMessage(message));
-    //this.connection.on("LeftUser", message => this.leftUser(message));
   }
 
   ngOnInit(): void {
@@ -55,7 +49,7 @@ export class ChatUserComponent implements OnInit {
     this.groupName = this.userName;
     this.mapUsersChat = this.chatService.getMapUsersChat();
     this.chatService.mensajes$.subscribe((message: NewMessage) => {
-      console.log('recibe');
+      console.log(`${message.userName} ${message.message} user`);
       this.newMessage(message);
     });
   }

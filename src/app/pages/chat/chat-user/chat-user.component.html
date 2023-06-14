@@ -4,6 +4,7 @@
             <span class="admin-status" [ngClass]="{'circle-green': adminConnect, 'circle-grey': !adminConnect}"></span>
             <h4 class="card-title">Admin</h4>
         </div>
+        {{mapUsersChat.get(userName) | json}}
         <div class="card-body">
             <ul class="list-group-flush" id="messageList">
                 <li *ngFor="let message of mapUsersChat.get(userName)" class="list-group-item">
@@ -13,12 +14,11 @@
         </div>
         <div class="input-group">
             <input #messageInput type="text" class="form-control bg-light border-0" placeholder="Escribe un mensaje"
-                [(ngModel)]="messageToSend" (keyup.enter)="adminConnect && sendMessage()"
+                [(ngModel)]="messageToSend" (keyup.enter)="sendMessage()"
                 (input)="onTyping($event)">
 
             <div class="input-group-append mr-5">
-                <button class="btn btn-primary mr-5" type="button" (click)="sendMessage()"
-                    [disabled]="!adminConnect">
+                <button class="btn btn-primary mr-5" type="button" (click)="sendMessage()">
                     Enviar
                 </button>
             </div>
