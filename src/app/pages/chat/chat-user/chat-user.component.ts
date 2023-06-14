@@ -55,6 +55,7 @@ export class ChatUserComponent implements OnInit {
     this.groupName = this.userName;
     this.mapUsersChat = this.chatService.getMapUsersChat();
     this.chatService.mensajes$.subscribe((message: NewMessage) => {
+      console.log('recibe');
       this.newMessage(message);
     });
   }

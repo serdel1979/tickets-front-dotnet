@@ -22,6 +22,7 @@ export class SolicitudesComponent implements OnInit {
     //if (this.isAdmin && this.chatService.puedeEnviar()) {
     this.chatService.mensajes$.subscribe((message: NewMessage) => {
       if (message.message !== '***') {
+        console.log('--recibe')
         this.chatService.guardarMensaje(message.userName, message);
       }
     });

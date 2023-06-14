@@ -49,9 +49,9 @@ export class ChatService {
     });
     this.connection.on('NewMessage', (mensaje: NewMessage) => {
       if (mensaje.groupName === 'admin') {
+        console.log('emite');
         this.admin.next(true);
       }
-      console.log('emite ',mensaje);
       this.mensajesSubject.next(mensaje);
     });
 

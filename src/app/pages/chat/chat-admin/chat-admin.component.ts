@@ -59,6 +59,7 @@ export class ChatAdminComponent implements OnInit {
     this.chatService.setNoPuedeGuardar();
     this.mapUsersChat = this.chatService.getMapUsersChat();
     this.chatService.mensajes$.subscribe((message: NewMessage) => {
+      console.log('recibe');
       this.newMessage(message);
     });
   }
