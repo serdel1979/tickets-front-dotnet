@@ -20,7 +20,7 @@ export class ChatUserComponent implements OnInit {
 
 
 
-  public mapUsersChat: Map<string, NewMessage[]> = new Map();
+  public misChats: NewMessage[] | undefined = [];
 
   isTyping: boolean = false;
   message: string = '';
@@ -40,16 +40,18 @@ export class ChatUserComponent implements OnInit {
 
   constructor(private authService: AuthService, private ngZone: NgZone, private chatService: ChatService) {
     this.connection = this.chatService.getConnection();
-    this.mapUsersChat = this.chatService.getMapUsersChat();
+    this.misChats = this.chatService.getMisChats();
+    this.userName = this.authService.getUserLogued();
+    this.groupName = this.userName;
   }
 
   ngOnInit(): void {
     this.chatService.setNoPuedeGuardar();
     this.userName = this.authService.getUserLogued();
     this.groupName = this.userName;
-    this.mapUsersChat = this.chatService.getMapUsersChat();
+    this.misChats = this.chatService.getMisChats();
+    console.log('ms chats',this.misChats);
     this.chatService.mensajes$.subscribe((message: NewMessage) => {
-      console.log(`${message.userName} ${message.message} user`);
       this.newMessage(message);
     });
   }
@@ -66,11 +68,13 @@ export class ChatUserComponent implements OnInit {
 
 
   public sendMessage() {
+    
     const newMessage: NewMessage = {
       message: this.messageToSend,
       userName: this.userName,
       groupName: this.groupName
     };
+    console.log('envíaa',newMessage);
     this.connection.invoke('SendMessage', newMessage)
       .then(_ => this.messageToSend = this.messageToSend);
   }

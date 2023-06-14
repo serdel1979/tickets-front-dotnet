@@ -62,6 +62,12 @@ export class ChatService {
     return this.connection;
   }
 
+  getMisChats(){
+    const chats = this.mapUsersChat.get(this.authService.getUserLogued());
+    if(chats) return this.mapUsersChat.get(this.authService.getUserLogued())
+    else
+    return []; 
+  }
 
   getMapUsersChat() {
     return this.mapUsersChat;

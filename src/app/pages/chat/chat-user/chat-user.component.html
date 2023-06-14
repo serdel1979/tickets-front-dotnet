@@ -4,10 +4,10 @@
             <span class="admin-status" [ngClass]="{'circle-green': adminConnect, 'circle-grey': !adminConnect}"></span>
             <h4 class="card-title">Admin</h4>
         </div>
-        {{mapUsersChat.get(userName) | json}}
+        {{misChats | json}}
         <div class="card-body">
             <ul class="list-group-flush" id="messageList">
-                <li *ngFor="let message of mapUsersChat.get(userName)" class="list-group-item">
+                <li *ngFor="let message of misChats" class="list-group-item">
                     <div><strong>{{ message.userName }}:</strong> {{ message.message }}</div>
                 </li>
             </ul>
