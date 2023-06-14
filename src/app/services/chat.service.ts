@@ -14,7 +14,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class ChatService {
 
-  private mapUsersChat: Map<string, NewMessage[]> = new Map();
+  public mapUsersChat: Map<string, NewMessage[]> = new Map();
 
 
   private adminsLogued: Set<string> = new Set();
@@ -37,24 +37,21 @@ export class ChatService {
     this.connection = new HubConnectionBuilder()
       .withUrl(environment.urlHub)
       .build();
-
     this.connection.start().then(() => {
       const usrName = this.authService.getUserLogued();
       this.http.get<any[]>(`${environment.baseUrl}/usuarios/chat`).subscribe(async usr => {
         for (const usuario of usr) {
-          console.log(usr);
           await this.join(usuario.userName, usrName);
           this.mapUsersChat.set(usuario.userName, []);
         }
       })
 
     });
-
-
     this.connection.on('NewMessage', (mensaje: NewMessage) => {
       if (mensaje.groupName === 'admin') {
         this.admin.next(true);
       }
+      console.log('emite ',mensaje);
       this.mensajesSubject.next(mensaje);
     });
 

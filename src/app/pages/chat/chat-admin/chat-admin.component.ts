@@ -142,7 +142,7 @@ export class ChatAdminComponent implements OnInit {
         this.resetIsTyping();
       }
     } else {
-        if(this.userChatActual === message.userName){
+        if(this.userChatActual === message.userName || this.authService.getUserLogued() === message.userName){
           this.chatService.guardarMensaje(this.userChatActual, message);
         }else{
           this.chatService.guardarMensaje(message.userName, message);

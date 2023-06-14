@@ -13,27 +13,29 @@ export class SolicitudesComponent implements OnInit {
 
   public isAdmin: boolean = false;
 
-  public userName: string ='';
+  public userName: string = '';
   constructor(private authService: AuthService, private chatService: ChatService) { }
 
   ngOnInit() {
     this.isAdmin = this.authService.isAdmin();
     this.userName = this.authService.getUserLogued();
-    if(this.isAdmin){
-      this.chatService.mensajes$.subscribe((message: NewMessage) => {
-        this.newMessage(message);
-      });
-    }
-  }
-
-  private newMessage(message: NewMessage) {
-    if (message.message !== '***') {
-      const puede = this.chatService.puedeEnviar();
-      if (puede) {
+    //if (this.isAdmin && this.chatService.puedeEnviar()) {
+    this.chatService.mensajes$.subscribe((message: NewMessage) => {
+      if (message.message !== '***') {
         this.chatService.guardarMensaje(message.userName, message);
       }
-    }
+    });
+    //}
   }
+
+  // private newMessage(message: NewMessage) {
+  //   // if (message.message !== '***') {
+  //   //   const puede = this.chatService.puedeEnviar();
+  //   //   if (puede) {
+  //   this.chatService.guardarMensaje(message.userName, message);
+  //   //   }
+  //   // }
+  // }
 
 
 }

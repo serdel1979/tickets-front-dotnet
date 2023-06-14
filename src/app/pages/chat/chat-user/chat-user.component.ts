@@ -17,6 +17,11 @@ const URLHub = environment.urlHub;
   styleUrls: ['./chat-user.component.css']
 })
 export class ChatUserComponent implements OnInit {
+
+
+
+  public mapUsersChat: Map<string, NewMessage[]> = new Map();
+
   isTyping: boolean = false;
   message: string = '';
   @ViewChild('messageInput') messageInput!: ElementRef;
@@ -26,7 +31,7 @@ export class ChatUserComponent implements OnInit {
   public groupName = '';
   public messageToSend = '';
   public joined = false;
-  public conversation: NewMessage[] = [];
+  public conversation: NewMessage[] | undefined = [];
 
   public adminConnect: boolean = true;
 
@@ -34,9 +39,10 @@ export class ChatUserComponent implements OnInit {
 
 
   constructor(private authService: AuthService, private ngZone: NgZone, private chatService: ChatService) {
-    this.connection = new HubConnectionBuilder()
-      .withUrl(URLHub) // URL del concentrador en tu servidor
-      .build();
+
+    this.connection = this.chatService.getConnection();
+
+    this.mapUsersChat = this.chatService.getMapUsersChat();
 
     //this.connection.on("NewUser", message => this.newUser(message));
     this.connection.on("NewMessage", message => this.newMessage(message));
@@ -44,21 +50,18 @@ export class ChatUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.chatService.setNoPuedeGuardar();
     this.userName = this.authService.getUserLogued();
     this.groupName = this.userName;
-    this.connection.start()
-      .then(() => {
-        console.log('Connection Started');
-        this.connection.invoke('JoinGroup', this.groupName, this.userName)
-          .then(_ => {
-            this.joined = true;
-          });
-      }).catch((error: any) => {
-        return console.error(error);
-      });
+    this.mapUsersChat = this.chatService.getMapUsersChat();
+    this.chatService.mensajes$.subscribe((message: NewMessage) => {
+      this.newMessage(message);
+    });
   }
 
+  ngOnDestroy(): void {
+    this.chatService.setPuedeGuardar();
+  }
 
 
   messages: string[] = [];
@@ -73,9 +76,8 @@ export class ChatUserComponent implements OnInit {
       userName: this.userName,
       groupName: this.groupName
     };
-
     this.connection.invoke('SendMessage', newMessage)
-      .then(_ => this.messageToSend = '');
+      .then(_ => this.messageToSend = this.messageToSend);
   }
 
   onTyping(event: Event) {
@@ -91,7 +93,7 @@ export class ChatUserComponent implements OnInit {
 
 
 
- 
+
   resetIsTyping() {
     this.ngZone.run(() => {
       setTimeout(() => {
@@ -108,17 +110,19 @@ export class ChatUserComponent implements OnInit {
         this.resetIsTyping();
       }
     } else {
-      if (this.conversation.length >= 10) {
-        this.conversation.shift(); // Elimina el primer elemento
-      }
-      this.conversation.push(message);
+      // if (this.conversation && this.conversation.length >= 10) {
+      //   this.conversation.shift(); // Elimina el primer elemento
+      // }
+      //if(this.conversation) this.conversation.push(message);
+      this.chatService.guardarMensaje(this.userName, message);
+      
       this.messageToSend = '';
       this.isTyping = false;
       this.messageInput.nativeElement.focus();
     }
   }
 
-  
+
 
 
 
