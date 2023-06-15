@@ -13,7 +13,7 @@
 
 <div class="row mt-4">
   <div class="col-md-8">
-    <input [(ngModel)]="message" placeholder="Escribe un mensaje..." class="form-control">
+    <input [(ngModel)]="message" placeholder="Escribe un mensaje..." class="form-control" (keyup.enter)="sendMessage()">
   </div>
   <div class="col-md-4">
     <button (click)="sendMessage()" class="btn btn-primary">Enviar</button>
