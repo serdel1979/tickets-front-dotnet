@@ -19,26 +19,8 @@ export class SolicitudesComponent implements OnInit {
   ngOnInit() {
     this.isAdmin = this.authService.isAdmin();
     this.userName = this.authService.getUserLogued();
-    //if (this.isAdmin && this.chatService.puedeEnviar()) {
-    this.chatService.initUsersChat(this.userName);
-    this.chatService.mensajes$.subscribe((message: NewMessage) => {
-      console.log(`${message.userName} ${message.message}`);
-      if (message.message !== '***' && this.chatService.puedeEnviar()) {
-        console.log(`${message.userName} ${message.message} desp de if`);
-        this.chatService.guardarMensaje(message.userName, message);
-      }
-    });
-    //}
   }
 
-  // private newMessage(message: NewMessage) {
-  //   // if (message.message !== '***') {
-  //   //   const puede = this.chatService.puedeEnviar();
-  //   //   if (puede) {
-  //   this.chatService.guardarMensaje(message.userName, message);
-  //   //   }
-  //   // }
-  // }
 
 
 }

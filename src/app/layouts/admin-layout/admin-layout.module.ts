@@ -15,7 +15,6 @@ import { ChatComponent } from 'src/app/pages/chat/chat.component';
 import { ChatAdminComponent } from 'src/app/pages/chat/chat-admin/chat-admin.component';
 import { ChatUserComponent } from 'src/app/pages/chat/chat-user/chat-user.component';
 
-
 @NgModule({
     declarations: [
         SolicitudesComponent,

@@ -1,127 +1,60 @@
 import { Injectable } from '@angular/core';
-import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import * as signalR from '@microsoft/signalr';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { NewMessage } from '../interfaces/messages.interface';
-import { AuthService } from 'src/app/auth/auth.service';
-import { Observable, Subject } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
-
-
+const URLHub = environment.urlHub;
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  public mapUsersChat: Map<string, NewMessage[]> = new Map();
+  private hubConnection!: signalR.HubConnection;
 
+  constructor(private authService: AuthService) { }
 
-  private adminsLogued: Set<string> = new Set();
-
-  public userList: string[] = [];
-
-  public connection: HubConnection;
-
-  private puedeGuardar: boolean = true;
-
-  private mensajesSubject = new Subject<any>();
-
-  private admin = new Subject<boolean>();
-
-  mensajes$: Observable<NewMessage> = this.mensajesSubject.asObservable();
-  adminConnect$: Observable<boolean> = this.admin.asObservable();
-
-
-  constructor(private http: HttpClient, private authService: AuthService) {
-    this.connection = new HubConnectionBuilder()
-      .withUrl(environment.urlHub)
+  public startConnection(){
+    this.hubConnection = new signalR.HubConnectionBuilder()
+      .withUrl(URLHub)
       .build();
-    this.connection.start().then(async () => {
-      //const usrName = this.authService.getUserLogued();
-    });
-    this.connection.on('NewMessage', (mensaje: NewMessage) => {
-      if (mensaje.groupName === 'admin') {
-        this.admin.next(true);
-      }
-      this.mensajesSubject.next(mensaje);
-    });
 
+    this.hubConnection
+      .start()
+      .then(() => console.log('Connection HUB started'))
+      .catch(err => console.log('Error while starting connection: ' + err));
   }
 
-  async initUsersChat(userName: string){
-    this.http.get<any[]>(`${environment.baseUrl}/usuarios/chat/${userName}`).subscribe(async usr => {
-      for (const usuario of usr) {
-          await this.join(usuario.userName, userName);
-          this.mapUsersChat.set(usuario.userName, []);
-      }
-    })
-  }
-
-  getConnection() {
-    return this.connection;
-  }
-
-  getMisChats(){
-    const chats = this.mapUsersChat.get(this.authService.getUserLogued());
-    if(chats) return this.mapUsersChat.get(this.authService.getUserLogued())
-    else
-    return []; 
-  }
-
-  getMapUsersChat() {
-    return this.mapUsersChat;
-  }
-
-  guardarMensaje(usuario: string, mensaje: NewMessage) {
-    console.log(`${mensaje.userName} ${mensaje.message}`);
-    const chatUserMsj = this.mapUsersChat.get(usuario);
-    chatUserMsj?.push(mensaje);
-    if (chatUserMsj) {
-      if (chatUserMsj.length >= 10) {
-        chatUserMsj.shift();
-      }
-      this.mapUsersChat.set(usuario, chatUserMsj);
-    }
-  }
-
-  public join(groupName: string, userName: string): Promise<void> {
-    return this.connection.invoke('JoinGroup', groupName, userName)
+  public addToGroup(groupName: string, userName: string){
+    this.hubConnection.invoke('JoinGroup', groupName, userName)
       .then(_ => {
+        console.log(`${userName} unido a ${groupName}`);
         true;
+      }).catch(err=> console.error(err));
+  }
+
+
+
+
+  public removeFromGroup(groupName: string){
+    this.hubConnection.invoke('RemoveFromGroup', groupName)
+      .catch(err => console.error(err));
+  }
+
+  public sendToGroup(groupName: string, message: string){
+    this.hubConnection.invoke('SendMessage', {
+      userName: this.authService.getUserLogued(), // Reemplaza con el nombre de usuario real
+      message: message,
+      groupName: groupName
+    }).catch(err => console.error(err));
+  }
+
+  public onNewMessage(): Observable<any> {
+    return new Observable<any>(observer => {
+      this.hubConnection.on('NewMessage', (message: any) => {
+        observer.next(message);
       });
+    });
   }
-
-  public joinAdmin(user: string): Promise<void> {
-    return this.connection.invoke('JoinGroup', 'admin', user)
-      .then(_ => {
-        this.admin.next(true);
-        true;
-      });
-  }
-
-  setPuedeGuardar() {
-    this.puedeGuardar = true;
-  }
-
-  puedeEnviar() {
-    return this.puedeGuardar;
-  }
-
-  setNoPuedeGuardar() {
-    this.puedeGuardar = false;
-  }
-
-  addAdminLogued(user: string) {
-    this.adminsLogued.add(user);
-  }
-
-  isAdminLogued() {
-    return this.adminsLogued.size !== 0;
-  }
-
-
-
-
-
 }
