@@ -24,7 +24,6 @@ export class ChatUserComponent implements OnInit{
     this.chatList = this.chatDataService.getChatList();
 
     this.chatService.onNewMessage().subscribe((newMessage: any) => {
-      console.log(newMessage);
       this.chatList = this.chatDataService.getChatList();
     });
   }
