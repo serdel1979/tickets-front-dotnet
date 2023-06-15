@@ -1,23 +1,27 @@
-<h1>Chat</h1>
-
 <div class="row">
-  <div class="col-md-8">
-    <div class="list-group">
-      <a href="#" class="list-group-item list-group-item-action" *ngFor="let message of chatList">
-        {{ message.userName }}: {{ message.message }}
-      </a>
-    </div>
-  </div>
-</div>
+  <div class="card col-md-5 rounded-0">
+      <div class="card-header">
+          <h4 class="card-title">Administrador</h4>
+      </div>
+      <div class="col-md-4">
+        <button (click)="connect()" class="btn btn-primary">Entrar</button>
+      </div>
+      <div class="card-body">
+          <ul class="list-group-flush" id="messageList">
+              <li *ngFor="let message of chatList" class="list-group-item">
+                  <div><strong>{{message.userName}}:</strong> {{message.message}}</div>
+              </li>
+          </ul>
+      </div>
+      <div class="input-group">
+          <input #messageInput type="text" class="form-control bg-light border-0" placeholder="Escribe un mensaje"
+              [(ngModel)]="message" (keyup.enter)="sendMessage()">
 
-<div class="row mt-4">
-  <div class="col-md-8">
-    <input [(ngModel)]="message" placeholder="Escribe un mensaje..." class="form-control" (keyup.enter)="sendMessage()">
-  </div>
-  <div class="col-md-4">
-    <button (click)="sendMessage()" class="btn btn-primary">Enviar</button>
-  </div>
-  <div class="col-md-4">
-    <button (click)="connect()" class="btn btn-primary">Entrar</button>
+          <div class="input-group-append mr-5">
+              <button class="btn btn-primary mr-5" type="button" (click)="sendMessage()">
+                  Enviar
+              </button>
+          </div>
+      </div>
   </div>
 </div>

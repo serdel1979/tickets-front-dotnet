@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatDataService } from 'src/app/services/chat-data.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { AuthService } from '../../../auth/auth.service';
 
@@ -13,32 +14,36 @@ export class ChatUserComponent implements OnInit{
   chatList: any[] = [];
 
 
-  constructor(private chatService: ChatService, private  authService: AuthService){}
+  constructor(private chatService: ChatService, private  authService: AuthService,  private chatDataService: ChatDataService){}
 
   ngOnInit(): void {
-      // Iniciar la conexión al hub cuando se inicializa el componente
-
-    this.groupName = this.authService.getUserLogued();
-
+    this.groupName = 'musica';
     this.chatService.startConnection();
+    
+    // Obtener los mensajes existentes desde el ChatDataService
+    this.chatList = this.chatDataService.getChatList();
 
-    // Unirse al grupo del chat
-    this.chatService.addToGroup(this.groupName,'musica');
-
-    // Escuchar los eventos de nuevos mensajes y actualizar la lista de chat
     this.chatService.onNewMessage().subscribe((newMessage: any) => {
-      this.chatList.push(newMessage);
+      console.log(newMessage);
+      this.chatList = this.chatDataService.getChatList();
     });
   }
+
 
   sendMessage(): void {
     if (this.message.trim() !== '') {
       this.chatService.sendToGroup(this.groupName, this.message);
-      this.message = ''; // Limpiar el campo de mensaje después de enviarlo
+      this.message = '';
     }
   }
 
   connect(){
-    this.chatService.addToGroup(this.groupName,this.authService.getUserLogued());
+    this.chatService.addToGroup(this.groupName, this.authService.getUserLogued());
+    this.chatList = this.chatDataService.getChatList();
   }
+
+  
+
+
+
 }

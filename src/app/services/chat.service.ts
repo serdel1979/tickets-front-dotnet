@@ -3,6 +3,7 @@ import * as signalR from '@microsoft/signalr';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
+import { ChatDataService } from './chat-data.service';
 
 const URLHub = environment.urlHub;
 
@@ -11,9 +12,14 @@ const URLHub = environment.urlHub;
 })
 export class ChatService {
 
+
+  chatList: any[] = [];
+
   private hubConnection!: signalR.HubConnection;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private chatDataService: ChatDataService) {
+    this.startConnection();
+  }
 
   public startConnection(){
     this.hubConnection = new signalR.HubConnectionBuilder()
@@ -50,11 +56,25 @@ export class ChatService {
     }).catch(err => console.error(err));
   }
 
+  // public onNewMessage(): Observable<any> {
+  //   return new Observable<any>(observer => {
+  //     this.hubConnection.on('NewMessage', (message: any) => {
+  //       this.chatList.push(message);
+  //       observer.next(message);
+  //     });
+  //   });
+  // }
+
   public onNewMessage(): Observable<any> {
     return new Observable<any>(observer => {
       this.hubConnection.on('NewMessage', (message: any) => {
+        this.chatDataService.updateChatList([...this.chatDataService.getChatList(), message]);
         observer.next(message);
       });
     });
+  }
+
+  public getMessages(){
+    return this.chatList;
   }
 }
