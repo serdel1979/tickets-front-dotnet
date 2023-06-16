@@ -18,7 +18,15 @@ export class ChatUserComponent implements OnInit{
 
   ngOnInit(): void {
     this.groupName = 'musica';
-    this.chatService.startConnection();
+    //this.chatService.startConnection();
+    
+    if(!this.chatService.conected()){
+      this.chatService.startConnection()
+      .then(()=>{
+        this.chatService.addToGroup('musica', this.authService.getUserLogued());
+      })
+      .catch((err)=>console.error(err));
+    }
     
     // Obtener los mensajes existentes desde el ChatDataService
     this.chatList = this.chatDataService.getChatList();
@@ -36,11 +44,7 @@ export class ChatUserComponent implements OnInit{
     }
   }
 
-  connect(){
-    this.chatService.addToGroup(this.groupName, this.authService.getUserLogued());
-    this.chatList = this.chatDataService.getChatList();
-  }
-
+  
   
 
 

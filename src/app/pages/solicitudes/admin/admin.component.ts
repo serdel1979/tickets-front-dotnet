@@ -70,7 +70,6 @@ export class AdminComponent implements OnInit {
   }
 
   loadDynamicComponent() {
-    console.log('carga dinamica?');
     this.router.navigate([`/chat`]);
   }
 

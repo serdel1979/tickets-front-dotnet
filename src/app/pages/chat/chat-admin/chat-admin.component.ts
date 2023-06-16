@@ -29,9 +29,18 @@ export class ChatAdminComponent implements OnInit{
   //     this.chatList = this.chatService.getMessages(); 
   //   });
       this.groupName = 'musica';
-      this.chatService.startConnection();
+     // this.chatService.startConnection();
       
       // Obtener los mensajes existentes desde el ChatDataService
+
+      if(!this.chatService.conected()){
+        this.chatService.startConnection()
+        .then(()=>{
+          this.chatService.addToGroup('musica', this.authService.getUserLogued());
+        })
+        .catch((err)=>console.error(err));
+      }
+      
       this.chatList = this.chatDataService.getChatList();
 
       this.chatService.onNewMessage().subscribe((newMessage: any) => {
@@ -52,10 +61,6 @@ export class ChatAdminComponent implements OnInit{
     }
   }
 
-  connect(){
-    this.chatService.addToGroup(this.groupName, 'soporte');
-    this.chatList = this.chatDataService.getChatList();
-  }
-
+  
 
 }

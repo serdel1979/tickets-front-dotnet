@@ -18,18 +18,37 @@ export class ChatService {
   private hubConnection!: signalR.HubConnection;
 
   constructor(private authService: AuthService, private chatDataService: ChatDataService) {
-    this.startConnection();
+    //this.startConnection();
   }
 
-  public startConnection(){
-    this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(URLHub)
-      .build();
+  // public startConnection() {
+  //   this.hubConnection = new signalR.HubConnectionBuilder()
+  //     .withUrl(URLHub)
+  //     .build();
 
-    this.hubConnection
-      .start()
-      .then(() => console.log('Connection HUB started'))
-      .catch(err => console.log('Error while starting connection: ' + err));
+  //   this.hubConnection
+  //     .start()
+  //     .then(() => console.log('Connection HUB started'))
+  //     .catch(err => console.log('Error while starting connection: ' + err));
+  // }
+
+  public startConnection(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl(URLHub)
+        .build();
+  
+      this.hubConnection
+        .start()
+        .then(() => {
+          console.log('Connection chat started');
+          resolve();
+        })
+        .catch(err => {
+          console.log('Error while starting connection: ' + err);
+          reject(err);
+        });
+    });
   }
 
   public addToGroup(groupName: string, userName: string){
@@ -76,5 +95,9 @@ export class ChatService {
 
   public getMessages(){
     return this.chatList;
+  }
+
+  conected(){
+    return this.hubConnection != undefined;
   }
 }

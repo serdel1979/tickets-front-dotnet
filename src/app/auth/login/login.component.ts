@@ -35,7 +35,7 @@ export class LoginComponent {
       const {user, password} = this.miFormulario.value;
  
       this.authService.login(user,password)
-      .subscribe((resp)=>{
+      .subscribe(async (resp)=>{
           this.mostrarSpinner = false;
           let token = JSON.stringify(resp.token);
           token = token.slice(1);
@@ -51,8 +51,14 @@ export class LoginComponent {
           //   }
           // }
 
-          this.chatService.startConnection();
+          this.chatService.startConnection()
+            .then(()=>{
+              this.chatService.addToGroup('musica', this.authService.getUserLogued());
+            })
+            .catch((err)=>console.error(err));
           
+          
+
           this.toastr.success(
             '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Acceso correcto!!!</span>',
             "",
