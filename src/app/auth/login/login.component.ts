@@ -44,13 +44,7 @@ export class LoginComponent {
           localStorage.setItem('usrlog',JSON.stringify(resp));
 
           this.authService.loginOk();
-          // if(this.authService.isAdmin()){
-          //   const usr = this.authService.getUserLogued();
-          //   if (usr) {
-          //     this.chatService.joinAdmin(usr);
-          //   }
-          // }
-
+        
           this.chatService.startConnection()
             .then(()=>{
               this.chatService.addToGroup('musica', this.authService.getUserLogued());

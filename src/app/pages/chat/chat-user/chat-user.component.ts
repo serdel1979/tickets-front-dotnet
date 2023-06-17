@@ -20,7 +20,7 @@ export class ChatUserComponent implements OnInit{
     this.groupName = 'musica';
     //this.chatService.startConnection();
     
-    if(!this.chatService.conected()){
+    if(!this.chatService.connected()){
       this.chatService.startConnection()
       .then(()=>{
         this.chatService.addToGroup('musica', this.authService.getUserLogued());

@@ -17,20 +17,8 @@ export class ChatService {
 
   private hubConnection!: signalR.HubConnection;
 
-  constructor(private authService: AuthService, private chatDataService: ChatDataService) {
-    //this.startConnection();
-  }
+  constructor(private authService: AuthService, private chatDataService: ChatDataService) {}
 
-  // public startConnection() {
-  //   this.hubConnection = new signalR.HubConnectionBuilder()
-  //     .withUrl(URLHub)
-  //     .build();
-
-  //   this.hubConnection
-  //     .start()
-  //     .then(() => console.log('Connection HUB started'))
-  //     .catch(err => console.log('Error while starting connection: ' + err));
-  // }
 
   public startConnection(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
@@ -75,14 +63,7 @@ export class ChatService {
     }).catch(err => console.error(err));
   }
 
-  // public onNewMessage(): Observable<any> {
-  //   return new Observable<any>(observer => {
-  //     this.hubConnection.on('NewMessage', (message: any) => {
-  //       this.chatList.push(message);
-  //       observer.next(message);
-  //     });
-  //   });
-  // }
+ 
 
   public onNewMessage(): Observable<any> {
     return new Observable<any>(observer => {
@@ -97,7 +78,7 @@ export class ChatService {
     return this.chatList;
   }
 
-  conected(){
+  connected(){
     return this.hubConnection != undefined;
   }
 }

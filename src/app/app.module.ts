@@ -17,7 +17,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { AuthInterceptor } from './middleware/auth.interceptor';
 import { DetalleSolicitudComponent } from './pages/solicitudes/detalle-solicitud/detalle-solicitud.component';
 import { EditaSolicitudComponent } from './pages/solicitudes/edita-solicitud/edita-solicitud.component';
-
+//import { list } from '@angular/fire/database';
+import { AngularFireModule} from '@angular/fire/compat'
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,8 @@ import { EditaSolicitudComponent } from './pages/solicitudes/edita-solicitud/edi
     EditaSolicitudComponent
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
