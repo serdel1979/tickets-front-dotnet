@@ -1,20 +1,19 @@
 <div class="row">
-    <div class="card col-md-5 rounded-0">
+    <div class="card col-md-3 rounded-0">
         <div class="card-header">
             <h4 class="card-title">Usuarios</h4>
         </div>
-        {{ usersChats | json}}
         <div class="card-body">
-            <ul *ngIf="usersLoaded" class="list-group-flush" id="usersList">
-                <li *ngFor="let usr of usersChats" class="list-group-item">
-                    <strong>{{ usr.UserName }}</strong>
+            <ul class="list-group-flush" style="max-height: 300px; overflow-y: auto;">
+                <li *ngFor="let usr of usersChats" [class.selected]="usr === selectedUser" (click)="selectUserChat(usr)">
+                    {{ usr | uppercase }}
                 </li>
             </ul>
         </div>
     </div>
     <div class="card col-md-5 rounded-0">
         <div class="card-header">
-            <h4 class="card-title">{{ currentUser | uppercase }}</h4>
+            <h4 class="card-title">{{ selectedUser | uppercase }}</h4>
         </div>
         <div class="card-body">
             <ul class="list-group-flush" id="messageList">

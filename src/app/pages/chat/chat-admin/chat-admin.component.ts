@@ -19,24 +19,33 @@ export class ChatAdminComponent implements OnInit{
   currentUser: string = '';
   selectedItemIndex: number = -1;
 
-  public usersChats: UsuarioChat[] = [];
-  public usersLoaded: boolean = false;
+  selectedUser: string | null = null;
+
+  public usersChats: string[] = [];
 
 
 
   constructor( private chatService: ChatFirebaseService, private authService: AuthService){}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.currentUser = this.authService.getUserLogued();
     this.authService.getAllUsers().subscribe((users)=>{
-      this.usersChats = users;
-      this.usersLoaded = true;
+        this.usersChats = users.map((user: UsuarioChat) => user.userName);
     })
-    this.chatService.getConversationMessages('musica').subscribe((messages) => {
-      this.messages = messages;
-    }); 
+    if (this.selectedUser){
+      await this.getMessages(this.selectedUser);
+    }
   }
 
+
+  getMessages(user: string){
+    if(user === this.selectedUser){
+      console.log(`${user} ${this.selectedUser}`);
+      this.chatService.getConversationMessages(user).subscribe((messages) => {
+        this.messages = messages;
+      }); 
+    }
+  }
 
   sendMessage(): void {
     if (this.newMessage && this.newMessage.trim() !== '') {
@@ -45,13 +54,17 @@ export class ChatAdminComponent implements OnInit{
         content: this.newMessage,
         timestamp: Date.now(),
       };
-      this.chatService.addMessageToConversation('musica', message);
+      this.chatService.addMessageToConversation(this.conversationId, message);
       this.newMessage = '';
     }
   }
 
-  selectItem(index: number) {
-    this.selectedItemIndex = index;
+
+
+  selectUserChat(usr: string){
+    this.selectedUser = usr;
+    this.conversationId = usr;
+    this.getMessages(usr);
   }
   
 

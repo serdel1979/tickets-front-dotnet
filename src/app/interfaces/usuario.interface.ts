@@ -15,6 +15,6 @@ export interface Usuario {
 
 export interface UsuarioChat {
     Id : string;
-    UserName : string;
+    userName : string;
     Email : string;
 }
