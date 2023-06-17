@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChatDataService } from 'src/app/services/chat-data.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { AuthService } from '../../../auth/auth.service';
+import { ChatFirebaseService } from '../../../services/chat-firebase.service';
 
 @Component({
   selector: 'app-chat-user',
@@ -9,38 +10,32 @@ import { AuthService } from '../../../auth/auth.service';
   styleUrls: ['./chat-user.component.css']
 })
 export class ChatUserComponent implements OnInit{
-  groupName: string = 'nombre-del-grupo';
-  message: string = '';
-  chatList: any[] = [];
+  // groupName: string = 'nombre-del-grupo';
+  // message: string = '';
+  // chatList: any[] = [];
+  messages: any[] = [];
+  newMessage: string = '';
+  conversationId: string = 'CONVERSATION_ID'; // Reemplaza con el identificador de la conversación actual
 
 
-  constructor(private chatService: ChatService, private  authService: AuthService,  private chatDataService: ChatDataService){}
+  constructor(private chatService: ChatFirebaseService){}
 
   ngOnInit(): void {
-    this.groupName = 'musica';
-    //this.chatService.startConnection();
-    
-    if(!this.chatService.connected()){
-      this.chatService.startConnection()
-      .then(()=>{
-        this.chatService.addToGroup('musica', this.authService.getUserLogued());
-      })
-      .catch((err)=>console.error(err));
-    }
-    
-    // Obtener los mensajes existentes desde el ChatDataService
-    this.chatList = this.chatDataService.getChatList();
-
-    this.chatService.onNewMessage().subscribe((newMessage: any) => {
-      this.chatList = this.chatDataService.getChatList();
-    });
+    this.chatService.getConversationMessages(this.conversationId).subscribe((messages) => {
+      this.messages = messages;
+    }); 
   }
 
 
   sendMessage(): void {
-    if (this.message.trim() !== '') {
-      this.chatService.sendToGroup(this.groupName, this.message);
-      this.message = '';
+    if (this.newMessage && this.newMessage.trim() !== '') {
+      const message = {
+        sender: 'SENDER_ID', // Reemplaza con el ID del remitente actual
+        content: this.newMessage,
+        timestamp: Date.now(),
+      };
+      this.chatService.addMessageToConversation(this.conversationId, message);
+      this.newMessage = '';
     }
   }
 
