@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatDataService } from 'src/app/services/chat-data.service';
-import { ChatService } from 'src/app/services/chat.service';
-import { AuthService } from '../../../auth/auth.service';
 import { ChatFirebaseService } from '../../../services/chat-firebase.service';
+import { AuthService } from '../../../auth/auth.service';
+import { UsuarioChat } from 'src/app/interfaces/usuario.interface';
 @Component({
   selector: 'app-chat-admin',
   templateUrl: './chat-admin.component.html',
@@ -16,14 +15,24 @@ export class ChatAdminComponent implements OnInit{
 
   messages: any[] = [];
   newMessage: string = '';
-  conversationId: string = 'CONVERSATION_ID'; // Reemplaza con el identificador de la conversación actual
+  conversationId: string = ''; // Reemplaza con el identificador de la conversación actual
+  currentUser: string = '';
+  selectedItemIndex: number = -1;
+
+  public usersChats: UsuarioChat[] = [];
+  public usersLoaded: boolean = false;
 
 
 
-  constructor( private chatService: ChatFirebaseService){}
+  constructor( private chatService: ChatFirebaseService, private authService: AuthService){}
 
   ngOnInit(): void {
-    this.chatService.getConversationMessages(this.conversationId).subscribe((messages) => {
+    this.currentUser = this.authService.getUserLogued();
+    this.authService.getAllUsers().subscribe((users)=>{
+      this.usersChats = users;
+      this.usersLoaded = true;
+    })
+    this.chatService.getConversationMessages('musica').subscribe((messages) => {
       this.messages = messages;
     }); 
   }
@@ -32,15 +41,18 @@ export class ChatAdminComponent implements OnInit{
   sendMessage(): void {
     if (this.newMessage && this.newMessage.trim() !== '') {
       const message = {
-        sender: 'SENDER_ID', // Reemplaza con el ID del remitente actual
+        sender: this.authService.getUserLogued(), 
         content: this.newMessage,
         timestamp: Date.now(),
       };
-      this.chatService.addMessageToConversation(this.conversationId, message);
+      this.chatService.addMessageToConversation('musica', message);
       this.newMessage = '';
     }
   }
 
+  selectItem(index: number) {
+    this.selectedItemIndex = index;
+  }
   
 
 }

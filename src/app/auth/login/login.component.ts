@@ -45,14 +45,7 @@ export class LoginComponent {
 
           this.authService.loginOk();
         
-          this.chatService.startConnection()
-            .then(()=>{
-              this.chatService.addToGroup('musica', this.authService.getUserLogued());
-            })
-            .catch((err)=>console.error(err));
           
-          
-
           this.toastr.success(
             '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Acceso correcto!!!</span>',
             "",

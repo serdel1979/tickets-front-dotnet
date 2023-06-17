@@ -6,7 +6,7 @@
         <div class="card-body">
             <ul class="list-group-flush" id="messageList">
                 <li *ngFor="let message of messages" class="list-group-item">
-                    {{ message.content }} <small> {{ message.timestamp | date: 'short' }}</small>
+                   <strong>{{ message.sender }}</strong> {{ message.content }} <small> {{ message.timestamp | date: 'short' }}</small>
                 </li>
             </ul>
         </div>

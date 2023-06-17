@@ -20,6 +20,10 @@ import { EditaSolicitudComponent } from './pages/solicitudes/edita-solicitud/edi
 //import { list } from '@angular/fire/database';
 import { AngularFireModule} from '@angular/fire/compat'
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+
 import { environment } from 'src/environments/environment';
 
 @NgModule({
@@ -34,7 +38,10 @@ import { environment } from 'src/environments/environment';
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
     AngularFireDatabaseModule,
+    AngularFireAuthModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,

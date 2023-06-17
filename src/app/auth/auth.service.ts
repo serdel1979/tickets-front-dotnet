@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { AuthResponse, Usuario } from '../interfaces/usuario.interface';
+import { AuthResponse, Usuario, UsuarioChat } from '../interfaces/usuario.interface';
 import { Subject, catchError, map, of, tap } from 'rxjs';
 import jwt_decode from 'jwt-decode';
 
@@ -116,7 +116,7 @@ export class AuthService {
   }
 
   getAllUsers(){
-    return this.http.get<any[]>(`${environment.baseUrl}/usuarios/chat`);
+    return this.http.get<UsuarioChat[]>(`${environment.baseUrl}/usuarios/chat/${this.getUserLogued()}`);
   }
 
  
