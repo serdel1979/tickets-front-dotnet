@@ -18,6 +18,10 @@ export class ChatFirebaseService {
     return this.db.list(`/conversations/${conversationId}/messages`).valueChanges();
   }
 
+  deletConversationMessages(conversationId: string) {
+     this.db.list(`/conversations/${conversationId}/messages`).remove();
+  }
+
   addMessageToConversation(conversationId: string, message: any): void {
     this.db.list(`/conversations/${conversationId}/messages`).push(message);
   }

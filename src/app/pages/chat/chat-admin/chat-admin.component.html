@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <ul class="list-group-flush" style="max-height: 300px; overflow-y: auto;">
-                <li *ngFor="let usr of usersChats" [class.selected]="usr === selectedUser" (click)="selectUserChat(usr)">
+                <li *ngFor="let usr of usersChats" class="list-group-item" [class.selected]="usr === selectedUser" (click)="selectUserChat(usr)">
                     {{ usr | uppercase }}
                 </li>
             </ul>
@@ -14,14 +14,14 @@
     <div class="card col-md-5 rounded-0">
         <div class="card-header">
             <h4 class="card-title">{{ selectedUser | uppercase }}</h4>
+            <button class="btn btn-primary mr-5" type="button" (click)="deletChat()">Borrar chat</button>
         </div>
         <div class="card-body">
             <ul class="list-group-flush" id="messageList">
-                <li *ngFor="let message of messages" class="list-group-item">
-                    <strong>{{ message.sender }}</strong> {{ message.content }} <small> {{ message.timestamp | date:
-                        'short' }}</small>
+                <li *ngFor="let message of messages[selectedUser]" class="list-group-item">
+                  <strong>{{ message.sender }}</strong> {{ message.content }} <small>{{ message.timestamp | date: 'short' }}</small>
                 </li>
-            </ul>
+              </ul>
         </div>
         <div class="input-group">
             <input #messageInput type="text" class="form-control bg-light border-0" placeholder="Escribe un mensaje"
