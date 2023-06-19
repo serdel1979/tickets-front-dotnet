@@ -21,12 +21,17 @@ export class ChatAdminComponent implements OnInit {
 
   selectedUser!: string;
 
+  sound: any;
+  
+
   public usersChats: string[] = [];
 
   elemento: any;
 
 
-  constructor(private chatService: ChatFirebaseService, private authService: AuthService) { }
+  constructor(private chatService: ChatFirebaseService, private authService: AuthService) {
+    this.sound = new Audio('../../../../assets/sound/mensaje.mp3');
+  }
 
   async ngOnInit(): Promise<void> {
     this.elemento = document.getElementById('messageList');
@@ -51,7 +56,7 @@ export class ChatAdminComponent implements OnInit {
   getMessages(user: string) {
     this.chatService.getConversationMessages(user).subscribe((messages) => {
       this.messages[user] = messages;
-
+      this.sound.play();
       setTimeout(()=>{
         this.elemento.scrollTop = this.elemento.scrollHeight;
         console.log(this.elemento);

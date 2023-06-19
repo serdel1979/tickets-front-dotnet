@@ -38,12 +38,16 @@ export class AdminComponent implements OnInit {
   public isLogued: boolean = false;
   public page!: number;
   
+  sound: any; 
+
   public solicitudes!: Solicitud[];
 
   constructor(private solicitudesService: SolicitudesService,
     private authService: AuthService,
     private router: Router,
     private chatService: ChatService) {
+    
+    this.sound = new Audio('../../../../assets/sound/solicitud.mp3');
     this.connection = new HubConnectionBuilder()
       .withUrl(URLHub) // URL del concentrador en tu servidor
       .build();
@@ -74,6 +78,7 @@ export class AdminComponent implements OnInit {
   }
 
   async refresh() {
+    this.sound.play();
     this.isLogued = this.authService.isLogued();
     this.userName = this.authService.getUserLogued();
     if (this.isLogued) {

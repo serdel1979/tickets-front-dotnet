@@ -16,19 +16,23 @@ export class ChatUserComponent implements OnInit{
   // chatList: any[] = [];
   elemento: any;
 
+  sound: any;
   messages: any[] = [];
   newMessage: string = '';
   conversationId: string = 'CONVERSATION_ID'; // Reemplaza con el identificador de la conversación actual
 
 
 
-  constructor(private chatService: ChatFirebaseService, private authService: AuthService){}
+  constructor(private chatService: ChatFirebaseService, private authService: AuthService){
+    this.sound = new Audio('../../../../assets/sound/mensaje.mp3');
+  }
 
   ngOnInit(): void {
     this.elemento = document.getElementById('messageList');
     this.conversationId = this.authService.getUserLogued();
     this.chatService.getConversationMessages(this.conversationId).subscribe((messages) => {
       this.messages = messages;
+      this.sound.play();
       setTimeout(()=>{
         this.elemento.scrollTop = this.elemento.scrollHeight;
         console.log(this.elemento);
