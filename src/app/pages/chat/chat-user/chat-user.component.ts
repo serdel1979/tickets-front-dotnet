@@ -14,6 +14,8 @@ export class ChatUserComponent implements OnInit{
   // groupName: string = 'nombre-del-grupo';
   // message: string = '';
   // chatList: any[] = [];
+  elemento: any;
+
   messages: any[] = [];
   newMessage: string = '';
   conversationId: string = 'CONVERSATION_ID'; // Reemplaza con el identificador de la conversación actual
@@ -23,9 +25,14 @@ export class ChatUserComponent implements OnInit{
   constructor(private chatService: ChatFirebaseService, private authService: AuthService){}
 
   ngOnInit(): void {
+    this.elemento = document.getElementById('messageList');
     this.conversationId = this.authService.getUserLogued();
     this.chatService.getConversationMessages(this.conversationId).subscribe((messages) => {
       this.messages = messages;
+      setTimeout(()=>{
+        this.elemento.scrollTop = this.elemento.scrollHeight;
+        console.log(this.elemento);
+      },20)
     }); 
   }
 

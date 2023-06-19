@@ -1,3 +1,21 @@
 .selected {
     font-weight: bold;
   }
+
+  .delete-icon {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s, font-size 0.3s;
+  }
+  
+  .delete-icon:hover {
+    transform: scale(1.1);
+    font-size: 18px;
+  }
+  
+  .delete-icon i {
+    font-size: 16px;
+    margin-right: 5px;
+  }

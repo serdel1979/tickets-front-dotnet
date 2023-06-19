@@ -23,11 +23,13 @@ export class ChatAdminComponent implements OnInit {
 
   public usersChats: string[] = [];
 
+  elemento: any;
 
 
   constructor(private chatService: ChatFirebaseService, private authService: AuthService) { }
 
   async ngOnInit(): Promise<void> {
+    this.elemento = document.getElementById('messageList');
     this.currentUser = this.authService.getUserLogued();
     this.authService.getAllUsers().subscribe((users) => {
       this.usersChats = users.map((user: UsuarioChat) => user.userName);
@@ -47,9 +49,14 @@ export class ChatAdminComponent implements OnInit {
   // }
 
   getMessages(user: string) {
-    console.log(`trae mensajes de ${this.conversationId}`);
     this.chatService.getConversationMessages(user).subscribe((messages) => {
       this.messages[user] = messages;
+
+      setTimeout(()=>{
+        this.elemento.scrollTop = this.elemento.scrollHeight;
+        console.log(this.elemento);
+      },20)
+
     });
   }
 
