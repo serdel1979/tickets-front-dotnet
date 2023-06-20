@@ -98,7 +98,6 @@ export class ChatAdminComponent implements OnInit {
       this.chatService.addMessageToConversation(this.conversationId, message);
       this.newMessage = '';
     }
-    console.log('lll')
   }
 
 
