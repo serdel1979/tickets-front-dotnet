@@ -24,6 +24,8 @@ export class ChatAdminComponent implements OnInit {
   sound: any;
   
   unreadMessages: { [key: string]: boolean } = {};
+  unreadMessageCount: { [key: string]: number } = {};
+  newMessageIndicators: { [key: string]: boolean } = {};
 
   public usersChats: string[] = [];
 
@@ -39,7 +41,13 @@ export class ChatAdminComponent implements OnInit {
     this.currentUser = this.authService.getUserLogued();
     this.authService.getAllUsers().subscribe((users) => {
       this.usersChats = users.map((user: UsuarioChat) => user.userName);
-      this.updateUnreadMessages();
+      
+      // Actualizar los indicadores de mensajes nuevos
+      this.usersChats.forEach((user) => {
+        this.chatService.hasNewMessages(user).subscribe((hasNewMessages) => {
+          this.newMessageIndicators[user] = hasNewMessages;
+        });
+      });
     });
     if (this.selectedUser) {
       await this.getMessages(this.selectedUser);
@@ -61,21 +69,17 @@ export class ChatAdminComponent implements OnInit {
   getMessages(user: string) {
     this.chatService.getConversationMessages(user).subscribe((messages) => {
       this.messages[user] = messages;
-      this.sound.play();
-      this.unreadMessages[user] = true; // Marcar el usuario con mensajes no leídos
-  
-      // Desmarcar el usuario seleccionado actualmente
-      if (this.selectedUser !== user) {
-        this.unreadMessages[this.selectedUser] = false;
+      if (user !== this.selectedUser) {
+        this.newMessageIndicators[user] = true;
       }
-  
-      this.selectedUser = user; // Actualizar el usuario seleccionado
-      this.conversationId = user;
+      this.sound.play();
       setTimeout(() => {
         this.elemento.scrollTop = this.elemento.scrollHeight;
       }, 20);
     });
   }
+
+  
 
 
   deletChat() {
@@ -99,6 +103,10 @@ export class ChatAdminComponent implements OnInit {
   selectUserChat(usr: string) {
     this.selectedUser = usr;
     this.conversationId = usr;
+  
+    // Restablecer el indicador del usuario seleccionado
+    this.newMessageIndicators[usr] = false;
+  
     this.getMessages(this.conversationId);
   }
 

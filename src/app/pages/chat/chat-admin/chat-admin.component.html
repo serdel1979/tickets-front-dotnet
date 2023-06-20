@@ -5,13 +5,11 @@
         </div>
         <div class="card-body">
             <ul class="list-group-flush" style="max-height: 250px; overflow-y: auto;">
-                <ul class="list-group-flush" style="max-height: 250px; overflow-y: auto;">
-                    <li *ngFor="let usr of usersChats" class="list-group-item" [class.selected]="usr === selectedUser"
-                        (click)="selectUserChat(usr)">
-                        <span class="indicator" *ngIf="unreadMessages[usr] && usr !== selectedUser"></span>
-                        {{ usr | uppercase }}
-                    </li>
-                </ul>
+                <li *ngFor="let usr of usersChats" class="list-group-item" [class.selected]="usr === selectedUser"
+                    (click)="selectUserChat(usr)">
+                    <span class="indicator" *ngIf="newMessageIndicators[usr] && usr !== selectedUser"></span>
+                    {{ usr | uppercase }}
+                </li>
             </ul>
         </div>
     </div>
