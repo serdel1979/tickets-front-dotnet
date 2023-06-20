@@ -46,12 +46,12 @@ export class ChatAdminComponent implements OnInit {
     this.currentUser = this.authService.getUserLogued();
     this.authService.getAllUsers().subscribe((users) => {
       this.usersChats = users.map((user: UsuarioChat) => user.userName);
+      this.usersChats.sort(); // Ordenar el arreglo en orden alfabético ascendente
       this.usersChats.forEach((user) => {
         this.chatService.hasNewMessages(user).subscribe((hasNewMessages) => {
           this.newMessageIndicators[user] = hasNewMessages;
         });
       });
-
     });
     if (this.selectedUser) {
       await this.getMessages(this.selectedUser);
@@ -73,9 +73,6 @@ export class ChatAdminComponent implements OnInit {
       setTimeout(() => {
         this.elemento.scrollTop = this.elemento.scrollHeight;
       }, 20);
-
-      // Guardar newMessageIndicators en el almacenamiento local
-      //this.localStorageService.setItem('Indicators', this.newMessageIndicators);
     });
   }
 

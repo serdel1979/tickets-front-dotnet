@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-import { Observable, map } from 'rxjs';
+import { Observable, filter, map } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class ChatFirebaseService {
 
   newMessageIndicators: { [key: string]: boolean } = {};
 
-  constructor(private db: AngularFireDatabase) { 
+  constructor(private db: AngularFireDatabase, private authService: AuthService) { 
         this.conversationsRef = this.db.list('/conversations');
   }
 
@@ -20,6 +21,7 @@ export class ChatFirebaseService {
       .list(`/conversations/${conversationId}/messages`)
       .valueChanges()
       .pipe(
+        filter((messages) => messages.some((message:any) => message.sender !== this.authService.getUserLogued)),
         map((messages) => messages.length > 0)
       );
   }
