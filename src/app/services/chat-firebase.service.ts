@@ -9,6 +9,8 @@ export class ChatFirebaseService {
 
   private conversationsRef: AngularFireList<any>;
 
+  unreadMessages: { [key: string]: boolean } = {};
+
   constructor(private db: AngularFireDatabase) { 
         this.conversationsRef = this.db.list('/conversations');
   }

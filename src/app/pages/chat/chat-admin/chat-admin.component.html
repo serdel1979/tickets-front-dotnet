@@ -5,10 +5,13 @@
         </div>
         <div class="card-body">
             <ul class="list-group-flush" style="max-height: 250px; overflow-y: auto;">
-                <li *ngFor="let usr of usersChats" class="list-group-item" [class.selected]="usr === selectedUser"
-                    (click)="selectUserChat(usr)">
-                    {{ usr | uppercase }}
-                </li>
+                <ul class="list-group-flush" style="max-height: 250px; overflow-y: auto;">
+                    <li *ngFor="let usr of usersChats" class="list-group-item" [class.selected]="usr === selectedUser"
+                        (click)="selectUserChat(usr)">
+                        <span class="indicator" *ngIf="unreadMessages[usr] && usr !== selectedUser"></span>
+                        {{ usr | uppercase }}
+                    </li>
+                </ul>
             </ul>
         </div>
     </div>
@@ -16,7 +19,7 @@
         <div class="card-header">
             <h4 class="card-title">{{ selectedUser | uppercase }}</h4>
             <div *ngIf="selectedUser" title="Borrar este chat">
-                <svg xmlns="http://www.w3.org/2000/svg" (click)="deletChat()" title="Borrar este chat" width="20"
+                <svg xmlns="http://www.w3.org/2000/svg" (click)="deletChat()" title="Borrar éste chat" width="20"
                     height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                     <path
                         d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
