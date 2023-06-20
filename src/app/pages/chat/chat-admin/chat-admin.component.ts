@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChatFirebaseService } from '../../../services/chat-firebase.service';
 import { AuthService } from '../../../auth/auth.service';
 import { UsuarioChat } from 'src/app/interfaces/usuario.interface';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 @Component({
   selector: 'app-chat-admin',
   templateUrl: './chat-admin.component.html',
@@ -22,9 +23,8 @@ export class ChatAdminComponent implements OnInit {
   selectedUser!: string;
 
   sound: any;
-  
+
   unreadMessages: { [key: string]: boolean } = {};
-  unreadMessageCount: { [key: string]: number } = {};
   newMessageIndicators: { [key: string]: boolean } = {};
 
   public usersChats: string[] = [];
@@ -32,8 +32,13 @@ export class ChatAdminComponent implements OnInit {
   elemento: any;
 
 
-  constructor(private chatService: ChatFirebaseService, private authService: AuthService) {
+  constructor(private chatService: ChatFirebaseService,
+    private authService: AuthService,
+    private localStorageService: LocalStorageService) {
+
     this.sound = new Audio('../../../../assets/sound/mensaje.mp3');
+
+    this.newMessageIndicators = this.localStorageService.getItem('Indicators') || {};
   }
 
   async ngOnInit(): Promise<void> {
@@ -41,30 +46,22 @@ export class ChatAdminComponent implements OnInit {
     this.currentUser = this.authService.getUserLogued();
     this.authService.getAllUsers().subscribe((users) => {
       this.usersChats = users.map((user: UsuarioChat) => user.userName);
-      
-      // Actualizar los indicadores de mensajes nuevos
       this.usersChats.forEach((user) => {
         this.chatService.hasNewMessages(user).subscribe((hasNewMessages) => {
           this.newMessageIndicators[user] = hasNewMessages;
         });
       });
+
     });
     if (this.selectedUser) {
       await this.getMessages(this.selectedUser);
     }
+
   }
 
 
-  updateUnreadMessages() {
-    this.usersChats.forEach((user) => {
-      this.chatService.getConversationMessages(user).subscribe((messages) => {
-        if (user !== this.selectedUser) {
-          this.unreadMessages[user] = messages.length > 0;
-        }
-      });
-    });
-  }
-  
+
+
 
   getMessages(user: string) {
     this.chatService.getConversationMessages(user).subscribe((messages) => {
@@ -76,10 +73,15 @@ export class ChatAdminComponent implements OnInit {
       setTimeout(() => {
         this.elemento.scrollTop = this.elemento.scrollHeight;
       }, 20);
+
+      // Guardar newMessageIndicators en el almacenamiento local
+      //this.localStorageService.setItem('Indicators', this.newMessageIndicators);
     });
   }
 
-  
+  ngOnDestroy() {
+    this.localStorageService.setItem('Indicators', this.newMessageIndicators);
+  }
 
 
   deletChat() {
@@ -96,6 +98,7 @@ export class ChatAdminComponent implements OnInit {
       this.chatService.addMessageToConversation(this.conversationId, message);
       this.newMessage = '';
     }
+    console.log('lll')
   }
 
 
@@ -103,10 +106,13 @@ export class ChatAdminComponent implements OnInit {
   selectUserChat(usr: string) {
     this.selectedUser = usr;
     this.conversationId = usr;
-  
+
     // Restablecer el indicador del usuario seleccionado
     this.newMessageIndicators[usr] = false;
-  
+
+    // Guardar newMessageIndicators actualizado en el almacenamiento local
+    //this.localStorageService.setItem('Indicators', this.newMessageIndicators);
+
     this.getMessages(this.conversationId);
   }
 
