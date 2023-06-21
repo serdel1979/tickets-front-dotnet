@@ -116,7 +116,7 @@ export class AuthService {
   }
 
   getAllUsers(){
-    return this.http.get<UsuarioChat[]>(`${environment.baseUrl}/usuarios/chat/${this.getUserLogued()}`);
+    return this.http.get<UsuarioChat[]>(`${environment.baseUrl}/usuarios/chatredis/${this.getUserLogued()}`);
   }
 
  
