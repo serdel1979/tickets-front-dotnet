@@ -53,7 +53,7 @@ export class AdminComponent implements OnInit {
       .build();
 
       this.connection.on("NewUser", message => this.newUser(message));
-      this.connection.on("NewMessage", () => this.refresh());
+      this.connection.on("NewMessage", () => this.refresh(true));
       this.connection.on("LeftUser", message => this.leftUser(message));
   }
 
@@ -70,15 +70,15 @@ export class AdminComponent implements OnInit {
     }).catch(err => {
       console.error(err.toString());
     });
-    this.refresh();
+    this.refresh(false);
   }
 
   loadDynamicComponent() {
     this.router.navigate([`/chat`]);
   }
 
-  async refresh() {
-    this.sound.play();
+  async refresh(flag: boolean) {
+    if(flag)this.sound.play();
     this.isLogued = this.authService.isLogued();
     this.userName = this.authService.getUserLogued();
     if (this.isLogued) {

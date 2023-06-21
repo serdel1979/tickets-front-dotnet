@@ -20,6 +20,8 @@ export class ChatAdminComponent implements OnInit {
   currentUser: string = '';
   selectedItemIndex: number = -1;
 
+  public userLogued!: string;
+
   selectedUser!: string;
 
   sound: any;
@@ -38,10 +40,13 @@ export class ChatAdminComponent implements OnInit {
 
     this.sound = new Audio('../../../../assets/sound/mensaje.mp3');
 
+    this.userLogued = this.authService.getUserLogued();
+
     this.newMessageIndicators = this.localStorageService.getItem('Indicators') || {};
   }
 
   async ngOnInit(): Promise<void> {
+    this.userLogued = this.authService.getUserLogued();
     this.elemento = document.getElementById('messageList');
     this.currentUser = this.authService.getUserLogued();
     this.authService.getAllUsers().subscribe((users) => {

@@ -49,6 +49,8 @@ export class UsersComponent implements OnInit {
 
   imagenURL: string = '';
 
+  sound: any; 
+
   mostrarChat: boolean = false;
 
   message: string = '';
@@ -89,19 +91,19 @@ export class UsersComponent implements OnInit {
     private modalService: NgbModal,
     public validaText: ValidaFormsService,
     private solicitudesServices: SolicitudesService) {
+      this.sound = new Audio('../../../../assets/sound/solicitud.mp3');
       this.connection = new HubConnectionBuilder()
       .withUrl(URLHub) // URL del concentrador en tu servidor
       .build();
 
       this.connection.on("NewUser", message => this.newUser(message));
-      this.connection.on("NewMessage",()=>this.refresh());
+      this.connection.on("NewMessage",()=>this.refresh(true));
       this.connection.on("LeftUser", message => this.leftUser(message));
     }
 
   public misSolicitudes: Solicitud[] = [];
 
   async ngOnInit() {
-    await this.refresh();
     this.connection.start()
     .then(()=> {
       console.log('Connection Started');
@@ -114,9 +116,11 @@ export class UsersComponent implements OnInit {
     }).catch((error:any) => {
       return console.error(error);
     });
+    await this.refresh(false);
   }
 
-  async refresh(){
+  async refresh(flag:boolean){
+    if(flag)this.sound.play();
     this.isLogued = this.authService.isLogued();
     if (this.isLogued) {
       this.id = this.authService.getIdLogued();

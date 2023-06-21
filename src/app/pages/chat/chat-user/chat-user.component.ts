@@ -21,13 +21,15 @@ export class ChatUserComponent implements OnInit{
   newMessage: string = '';
   conversationId: string = 'CONVERSATION_ID'; // Reemplaza con el identificador de la conversación actual
 
-
+  public userLogued!: string;
 
   constructor(private chatService: ChatFirebaseService, private authService: AuthService){
     this.sound = new Audio('../../../../assets/sound/mensaje.mp3');
+    this.userLogued = this.authService.getUserLogued();
   }
 
   ngOnInit(): void {
+    this.userLogued = this.authService.getUserLogued();
     this.elemento = document.getElementById('messageList');
     this.conversationId = this.authService.getUserLogued();
     this.chatService.getConversationMessages(this.conversationId).subscribe((messages) => {
