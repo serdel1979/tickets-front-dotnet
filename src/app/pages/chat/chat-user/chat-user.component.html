@@ -7,8 +7,8 @@
             <ul class="list-group-flush" id="messageList" style="max-height: 250px; overflow-y: auto;">
                 <li *ngFor="let message of messages" class="list-group-item">
                     <div [ngClass]="{'text-right': message.sender === userLogued}">
-                        <strong>{{ message.sender }}</strong> {{ message.content }} <small> {{ message.timestamp | date:
-                            'short' }}</small>
+                        <strong>{{ message.sender }}</strong> {{ message.content }} <small class="small-timestamp">{{
+                            message.timestamp | date:'short' }}</small>
                     </div>
                 </li>
             </ul>

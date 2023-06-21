@@ -1,3 +1,7 @@
 .text-right {
     text-align: right;
   }
+
+  .small-timestamp {
+    font-size: 9px; /* Ajusta el tamaño de fuente según tus preferencias */
+}
