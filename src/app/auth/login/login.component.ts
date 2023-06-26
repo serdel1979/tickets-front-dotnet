@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ChatService } from 'src/app/services/chat.service';
+import { ChatredisService } from 'src/app/services/chatredis.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import { ChatService } from 'src/app/services/chat.service';
 })
 export class LoginComponent {
 
-  
+
   public mostrarSpinner: boolean = false;
 
   miFormulario: FormGroup = this.fb.group({
@@ -26,44 +27,52 @@ export class LoginComponent {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private chatService: ChatService
-    ){}
+    private chatService: ChatredisService
+  ) { }
 
 
-    login(){
-      this.mostrarSpinner = true;
-      const {user, password} = this.miFormulario.value;
- 
-      this.authService.login(user,password)
-      .subscribe(async (resp)=>{
-          this.mostrarSpinner = false;
-          let token = JSON.stringify(resp.token);
-          token = token.slice(1);
-          token = token.slice(0, -1);
-          localStorage.setItem('token',token);
-          localStorage.setItem('usrlog',JSON.stringify(resp));
+  login() {
+    this.mostrarSpinner = true;
+    const { user, password } = this.miFormulario.value;
 
-          this.authService.loginOk();
-        
-          
-          this.toastr.success(
-            '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Acceso correcto!!!</span>',
-            "",
-            {
-              timeOut: 4000,
-              closeButton: true,
-              enableHtml: true,
-              toastClass: "alert alert-success alert-with-icon",
-              positionClass: "toast-" + "top" + "-" + "center"
-            }
-          );
-          this.router.navigateByUrl('/solicitudes');
+    this.authService.login(user, password)
+      .subscribe(async (resp) => {
+        this.mostrarSpinner = false;
+        let token = JSON.stringify(resp.token);
+        token = token.slice(1);
+        token = token.slice(0, -1);
+        localStorage.setItem('token', token);
+        localStorage.setItem('usrlog', JSON.stringify(resp));
+
+        // if (this.authService.isAdmin()) {
+
+        // } else {
+        //   const groupName = this.authService.getUserLogued();
+         
+        //   this.chatService.joinGroup(groupName).then(()=>{
+        //     console.log('Unico a ',groupName)
+        //   })
+        // }
+
+
+        this.toastr.success(
+          '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Acceso correcto!!!</span>',
+          "",
+          {
+            timeOut: 4000,
+            closeButton: true,
+            enableHtml: true,
+            toastClass: "alert alert-success alert-with-icon",
+            positionClass: "toast-" + "top" + "-" + "center"
+          }
+        );
+        this.router.navigateByUrl('/solicitudes');
       },
-      (err)=>{
-        console.log(err);
+        (err) => {
+          console.log(err);
           this.mostrarSpinner = false;
           this.toastr.error(
-            '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">'+err.error+'</span>',
+            '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">' + err.error + '</span>',
             "",
             {
               timeOut: 4000,
@@ -73,11 +82,11 @@ export class LoginComponent {
               positionClass: "toast-" + "top" + "-" + "center"
             }
           );
-      }
+        }
       )
-    }
+  }
 
- 
+
 
 
 }

@@ -2,6 +2,7 @@ export const environment = {
     production: false,
     baseUrl: 'https://localhost:7147/api',
     urlHub: 'https://localhost:7147/Hubs/MHub',
+    urlHubChat: 'https://localhost:7147/Hubs/Chat',
     firebase: {
       apiKey: 'AIzaSyDmIdEn_IRpfK4WfeWi005SIy-2W0AFmPg',
       authDomain: 'tickets-c2458.firebaseapp.com',

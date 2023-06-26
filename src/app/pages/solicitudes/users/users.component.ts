@@ -10,6 +10,7 @@ import { Solicitud } from 'src/app/interfaces/solicitud.interface';
 import { ValidaFormsService } from 'src/app/validators/valida-forms.service';
 import { environment } from 'src/environments/environment';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { ChatredisService } from '../../../services/chatredis.service';
 
 
 const URLHub = environment.urlHub;
@@ -89,6 +90,7 @@ export class UsersComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private modalService: NgbModal,
+    private chatService: ChatredisService,
     public validaText: ValidaFormsService,
     private solicitudesServices: SolicitudesService) {
       this.sound = new Audio('../../../../assets/sound/solicitud.mp3');
@@ -117,6 +119,8 @@ export class UsersComponent implements OnInit {
       return console.error(error);
     });
     await this.refresh(false);
+    this.chatService.joinGroup(this.authService.getUserLogued()).then(()=>console.log('Unido al grupo'))
+          .catch((err)=>console.error(err));
   }
 
   async refresh(flag:boolean){
