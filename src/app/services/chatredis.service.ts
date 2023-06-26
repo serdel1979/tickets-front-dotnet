@@ -16,15 +16,9 @@ export class ChatredisService {
   groupName!: string;
 
   constructor() {
-    this.connection = new signalR.HubConnectionBuilder()
-      .withUrl(urlWS)
-      .build();
-    console.log(this.connection);
-    this.connection.start()
-      .then(() => {
-        this.connectionId = this.connection.connectionId;
-      })
-      .catch(error => console.error(error));
+    this.startConnection()
+        .then(()=>console.log('conectado'))
+        .catch((err)=>console.error(err));
 
     this.onLoadMessages((messages: string[]) => {
       console.log(messages);
@@ -36,6 +30,24 @@ export class ChatredisService {
     });
   }
 
+  public startConnection(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.connection = new signalR.HubConnectionBuilder()
+        .withUrl(urlWS)
+        .build();
+  
+      this.connection
+        .start()
+        .then(() => {
+          console.log('Connection chat started');
+          resolve();
+        })
+        .catch(err => {
+          console.log('Error while starting connection: ' + err);
+          reject(err);
+        });
+    });
+  }
 
 
   public joinGroup(groupName: string): Promise<string[]> {
@@ -73,3 +85,7 @@ export class ChatredisService {
 
 
 }
+function reject(err: any) {
+  throw new Error('Function not implemented.');
+}
+

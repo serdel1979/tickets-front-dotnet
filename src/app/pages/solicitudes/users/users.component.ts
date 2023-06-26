@@ -119,8 +119,6 @@ export class UsersComponent implements OnInit {
       return console.error(error);
     });
     await this.refresh(false);
-    this.chatService.joinGroup(this.authService.getUserLogued()).then(()=>console.log('Unido al grupo'))
-          .catch((err)=>console.error(err));
   }
 
   async refresh(flag:boolean){
