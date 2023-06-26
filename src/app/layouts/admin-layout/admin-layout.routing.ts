@@ -11,6 +11,8 @@ import { DetalleSolicitudComponent } from 'src/app/pages/solicitudes/detalle-sol
 import { EditaSolicitudComponent } from 'src/app/pages/solicitudes/edita-solicitud/edita-solicitud.component';
 import { SolicitudesComponent } from 'src/app/pages/solicitudes/solicitudes.component';
 import { UsuariosComponent } from 'src/app/pages/usuarios/usuarios.component';
+import { ChatrAdminComponent } from '../../pages/chat/chatr-admin/chatr-admin.component';
+import { ChatrUserComponent } from '../../pages/chat/chatr-user/chatr-user.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -22,5 +24,7 @@ export const AdminLayoutRoutes: Routes = [
      { path: 'historial',      component: HistorialComponent, canActivate:[isLoguedGuard] },
      { path: 'usuarios',           component: UsuariosComponent, canActivate:[isLoguedGuard,isAdminGuard] },
      { path: 'equipos',          component: EquiposComponent, canActivate:[isLoguedGuard,isAdminGuard] },
-     { path: 'chat', component:ChatComponent, canActivate:[isLoguedGuard]}
+     { path: 'chat', component:ChatComponent, canActivate:[isLoguedGuard]},
+     { path: 'chatredis', component:ChatrAdminComponent, canActivate:[isLoguedGuard,isAdminGuard]},
+     { path: 'chatredisuser', component:ChatrUserComponent, canActivate:[isLoguedGuard]}
 ];

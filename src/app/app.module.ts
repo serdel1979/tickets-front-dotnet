@@ -25,6 +25,8 @@ import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 import { environment } from 'src/environments/environment';
+import { ChatrAdminComponent } from './pages/chat/chatr-admin/chatr-admin.component';
+import { ChatrUserComponent } from './pages/chat/chatr-user/chatr-user.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { environment } from 'src/environments/environment';
     AdminLayoutComponent,
     HistorialComponent,
     DetalleSolicitudComponent,
-    EditaSolicitudComponent
+    EditaSolicitudComponent,
+    ChatrAdminComponent,
+    ChatrUserComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

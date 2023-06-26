@@ -16,9 +16,10 @@ export const ROUTES: RouteInfo[] = [
   { path: '/historial', title: 'Historial', icon: 'nc-paper', class: '', admin: false },
   { path: '/usuarios', title: 'Usuarios', icon: 'nc-single-02', class: '', admin: true},
   { path: '/equipos', title: 'Equipos', icon: 'nc-laptop', class: '', admin: false},
-  { path: '/chat', title: 'Chat', icon: 'nc-chat-33', class: '', admin: false }
+  { path: '/chat', title: 'Chat', icon: 'nc-chat-33', class: '', admin: false },
+  { path: '/chatredis', title: 'Chat REDIS', icon: 'nc-chat-33', class: '', admin: true },
+  { path: '/chatredisuser', title: 'Chat REDIS', icon: 'nc-chat-33', class: '', admin: false }
 ];
-
 
 @Component({
   selector: 'app-sidebar',
