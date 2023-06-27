@@ -26,7 +26,8 @@ export class LoginComponent {
     private toastr: ToastrService,
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private chatrService: ChatredisService
   ) { }
 
 
@@ -44,15 +45,21 @@ export class LoginComponent {
         localStorage.setItem('usrlog', JSON.stringify(resp));
 
         this.authService.loginOk();
-        // if (this.authService.isAdmin()) {
-
-        // } else {
-        //   const groupName = this.authService.getUserLogued();
+        if (this.authService.isAdmin()) {
+            this.authService.getAllUsers().subscribe((users)=>{
+              for(let usr of users){
+                this.chatrService.joinGroup(usr.userName).then(()=>{
+                  console.log('Unido a ',usr.userName)
+                })
+              }
+            })
+        } else {
+          const groupName = this.authService.getUserLogued();
          
-        //   this.chatService.joinGroup(groupName).then(()=>{
-        //     console.log('Unico a ',groupName)
-        //   })
-        // }
+          this.chatrService.joinGroup(groupName).then(()=>{
+            console.log('Unido a ',groupName)
+          })
+        }
 
 
         this.toastr.success(
