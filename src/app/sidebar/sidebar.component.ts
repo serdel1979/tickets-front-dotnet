@@ -46,6 +46,7 @@ export class SidebarComponent implements OnInit {
   public filteredMenuItems: RouteInfo[] = [];
 
   ngOnInit() {
+
     this.isLoggedIn = this.authService.isLogued();
     this.usrName = this.authService.getUserLogued();
     this.isAdmin = this.authService.isAdmin();
@@ -59,7 +60,6 @@ export class SidebarComponent implements OnInit {
     });
     
     this.menuItems = ROUTES.filter(menuItem => menuItem);
-    console.log(this.menuItems);
   }
 
 

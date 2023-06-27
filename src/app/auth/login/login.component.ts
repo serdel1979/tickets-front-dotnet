@@ -43,7 +43,7 @@ export class LoginComponent {
         localStorage.setItem('token', token);
         localStorage.setItem('usrlog', JSON.stringify(resp));
 
-        
+        this.authService.loginOk();
         // if (this.authService.isAdmin()) {
 
         // } else {
