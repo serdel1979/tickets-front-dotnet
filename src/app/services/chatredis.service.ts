@@ -16,18 +16,18 @@ export class ChatredisService {
   groupName!: string;
 
   constructor() {
-    this.startConnection()
-        .then(()=>console.log('conectado'))
-        .catch((err)=>console.error(err));
+    // this.startConnection()
+    //     .then(()=>console.log('conectado'))
+    //     .catch((err)=>console.error(err));
 
-    this.onLoadMessages((messages: string[]) => {
-      console.log(messages);
-    });
+    // this.onLoadMessages((messages: string[]) => {
+    //   console.log(messages);
+    // });
 
-    //carga los mensajes cuando llegan
-    this.onReceiveMessage((messages: string[]) => {
-      console.log(messages);
-    });
+    // //carga los mensajes cuando llegan
+    // this.onReceiveMessage((messages: string[]) => {
+    //   console.log(messages);
+    // });
   }
 
   public startConnection(): Promise<void> {

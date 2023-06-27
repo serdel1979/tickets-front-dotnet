@@ -26,8 +26,7 @@ export class LoginComponent {
     private toastr: ToastrService,
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService,
-    private chatService: ChatredisService
+    private authService: AuthService
   ) { }
 
 

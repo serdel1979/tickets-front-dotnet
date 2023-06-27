@@ -14,6 +14,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ChatComponent } from 'src/app/pages/chat/chat.component';
 import { ChatAdminComponent } from 'src/app/pages/chat/chat-admin/chat-admin.component';
 import { ChatUserComponent } from 'src/app/pages/chat/chat-user/chat-user.component';
+import { ChatrAdminComponent } from 'src/app/pages/chat/chatr-admin/chatr-admin.component';
+import { ChatrUserComponent } from 'src/app/pages/chat/chatr-user/chatr-user.component';
 
 @NgModule({
     declarations: [
@@ -24,7 +26,9 @@ import { ChatUserComponent } from 'src/app/pages/chat/chat-user/chat-user.compon
         UsersComponent,
         ChatComponent,
         ChatAdminComponent,
-        ChatUserComponent
+        ChatUserComponent,
+        ChatrAdminComponent,
+        ChatrUserComponent
     ],
     imports: [
         NgxPaginationModule,
