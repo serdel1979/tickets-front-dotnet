@@ -3,5 +3,5 @@ export const environment = {
     //baseUrl: 'http://localhost:5000/api'
     baseUrl: 'https://login-dashboard-node-production.up.railway.app/api',
     urlHub: 'https://localhost:7147/Hubs/MHub',
-    urlHubChat: 'https://localhost:7147/Hubs/Chat',
+    urlHubChat: 'https://chatredusdotnet-production.up.railway.app/Hub/ChatHub',
   };
