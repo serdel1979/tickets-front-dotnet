@@ -52,22 +52,10 @@ export class ChatrAdminComponent implements OnInit{
       this.chatService.onLoadMessages((messages: string[]) => {
         this.messages = messages;
         setTimeout(() => {
-          console.log(`${this.elemento.scrollTop} ${this.elemento.scrollHeight}`);
           this.elemento.scrollTop = this.elemento.scrollHeight;
-        }, 30);
+        }, 300);
       });
     })
-    
-    // this.chatService.onLoadMessages(user).subscribe((messages) => {
-    //   this.messages[user] = messages;
-    //   if (user !== this.selectedUser) {
-    //     this.newMessageIndicators[user] = true;
-    //   }
-    //   this.sound.play();
-    //   setTimeout(() => {
-    //     this.elemento.scrollTop = this.elemento.scrollHeight;
-    //   }, 20);
-    // });
   }
 
 
