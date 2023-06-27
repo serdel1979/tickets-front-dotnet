@@ -35,7 +35,9 @@ export class SidebarComponent implements OnInit {
   private subscription!: Subscription;
 
 
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService){
+    console.log("constructor sidebar");
+  }
 
 
 
@@ -57,6 +59,7 @@ export class SidebarComponent implements OnInit {
     });
     
     this.menuItems = ROUTES.filter(menuItem => menuItem);
+    console.log(this.menuItems);
   }
 
 
