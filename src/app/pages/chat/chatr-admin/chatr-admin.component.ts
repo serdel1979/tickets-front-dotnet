@@ -25,6 +25,8 @@ export class ChatrAdminComponent implements OnInit{
 
   groupName!: string;
 
+  groupRecepcion!: string;
+
   elemento: any;
 
   constructor( private chatService: ChatredisService, private authService: AuthService){}
@@ -39,8 +41,9 @@ export class ChatrAdminComponent implements OnInit{
     });
 
     //carga los mensajes cuando llegan
-    this.chatService.onReceiveMessage((messages: string[]) => {
+    this.chatService.onReceiveMessage((groupReceive: string, messages: string[]) => {
       this.messages = messages;
+      this.groupRecepcion = groupReceive;
     });
   }
 
@@ -51,9 +54,10 @@ export class ChatrAdminComponent implements OnInit{
     this.chatService.joinGroup(user).then(()=>{
       this.chatService.onLoadMessages((messages: string[]) => {
         this.messages = messages;
+        console.log(`${user} ${this.messages}`);
         setTimeout(() => {
           this.elemento.scrollTop = this.elemento.scrollHeight;
-        }, 300);
+        }, 30);
       });
     })
   }

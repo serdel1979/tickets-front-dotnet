@@ -25,7 +25,8 @@ export class ChatredisService {
     });
 
     //carga los mensajes cuando llegan
-    this.onReceiveMessage((messages: string[]) => {
+    this.onReceiveMessage((groupName: string, messages: string[]) => {
+      console.log('Mensajes recibidos del grupo:', groupName);
       console.log(messages);
     });
   }
@@ -63,7 +64,7 @@ export class ChatredisService {
     return this.connection.invoke('DeleteGroupMessagesChat', groupName);
   }
 
-  public onReceiveMessage(callback: (messages: string[]) => void): void {
+  public onReceiveMessage(callback: (groupName: string,messages: string[]) => void): void {
     this.connection.on('ReceiveMessage', callback);
   }
 

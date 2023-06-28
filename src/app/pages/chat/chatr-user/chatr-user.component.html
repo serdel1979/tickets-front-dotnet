@@ -1,1 +1,26 @@
-<p>chatr-user works!</p>
+<div class="row">
+    <div class="card col-md-5 rounded-0">
+        <div class="card-header">
+            <h4 class="card-title">Usuario</h4>
+        </div>
+        <div class="card-body">
+            <ul class="list-group-flush" id="messageList" style="max-height: 250px; overflow-y: auto;">
+                <li *ngFor="let message of messages" class="list-group-item">
+                    <div>
+                        <strong>{{ message }}</strong> 
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="input-group">
+            <input #messageInput type="text" class="form-control bg-light border-0" placeholder="Escribe un mensaje"
+                [(ngModel)]="newMessage" (keyup.enter)="sendMessage()">
+
+            <div class="input-group-append mr-5">
+                <button class="btn btn-primary mr-5" type="button" (click)="sendMessage()">
+                    Enviar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

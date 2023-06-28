@@ -16,6 +16,8 @@ export class ChatrUserComponent implements OnInit {
 
   groupName!: string;
 
+  groupRecepcion!: string;
+
   constructor( private chatService: ChatredisService){}
 
   ngOnInit(): void {
@@ -24,9 +26,19 @@ export class ChatrUserComponent implements OnInit {
     });
 
     //carga los mensajes cuando llegan
-    this.chatService.onReceiveMessage((messages: string[]) => {
+    this.chatService.onReceiveMessage((groupReceive: string, messages: string[]) => {
+      this.groupRecepcion = groupReceive;
       this.messages = messages;
     });
+  }
+
+
+  sendMessage(){
+    this.chatService.sendMessage(this.newMessage)
+    .then(() => {
+      this.newMessage = ''
+    })
+    .catch(error => console.error(error));
   }
 
 }
