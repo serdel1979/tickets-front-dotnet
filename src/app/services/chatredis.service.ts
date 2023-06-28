@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../auth/auth.service';
 
 
 const urlWS = environment.urlHubChat;
@@ -14,21 +15,28 @@ export class ChatredisService {
   private connectionId!: string | null;
 
   groupName!: string;
+  userLogued!: string;
 
-  constructor() {
-    this.startConnection()
-        .then(()=>console.log('conectado'))
-        .catch((err)=>console.error(err));
+  constructor(private authService: AuthService) {
 
-    this.onLoadMessages((messages: string[]) => {
-      console.log(messages);
-    });
+   // this.authService.isLoggedInChange.subscribe(() => {
 
-    //carga los mensajes cuando llegan
-    this.onReceiveMessage((groupName: string, messages: string[]) => {
-      console.log('Mensajes recibidos del grupo:', groupName);
-      console.log(messages);
-    });
+      this.startConnection()
+        .then(() => console.log('conectado'))
+        .catch((err) => console.error(err));
+
+      this.onLoadMessages((messages: string[]) => {
+        console.log(messages);
+      });
+
+      //carga los mensajes cuando llegan
+      this.onReceiveMessage((groupName: string, messages: string[]) => {
+        console.log('Mensajes recibidos del grupo:', groupName);
+        console.log(messages);
+      });
+
+   // })
+
   }
 
   public startConnection(): Promise<void> {
@@ -36,7 +44,7 @@ export class ChatredisService {
       this.connection = new signalR.HubConnectionBuilder()
         .withUrl(urlWS)
         .build();
-  
+
       this.connection
         .start()
         .then(() => {
@@ -64,7 +72,7 @@ export class ChatredisService {
     return this.connection.invoke('DeleteGroupMessagesChat', groupName);
   }
 
-  public onReceiveMessage(callback: (groupName: string,messages: string[]) => void): void {
+  public onReceiveMessage(callback: (groupName: string, messages: string[]) => void): void {
     this.connection.on('ReceiveMessage', callback);
   }
 

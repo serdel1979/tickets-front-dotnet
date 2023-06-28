@@ -8,7 +8,7 @@ import { UsuarioChat } from 'src/app/interfaces/usuario.interface';
   templateUrl: './chatr-admin.component.html',
   styleUrls: ['./chatr-admin.component.css']
 })
-export class ChatrAdminComponent implements OnInit{
+export class ChatrAdminComponent implements OnInit {
   messages: string[] = [];
   newMessage: string = '';
 
@@ -29,20 +29,23 @@ export class ChatrAdminComponent implements OnInit{
 
   elemento: any;
 
-  constructor( private chatService: ChatredisService, private authService: AuthService){}
+  constructor(private chatService: ChatredisService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.elemento = document.getElementById('messageList');
-    this.authService.getAllUsers().subscribe((users)=>{
+    this.authService.getAllUsers().subscribe((users) => {
       this.usersChats = users.map((user: UsuarioChat) => user.userName);
     })
-   this.chatService.onLoadMessages((messages: string[]) => {
+    this.chatService.onLoadMessages((messages: string[]) => {
       this.messages = messages;
     });
 
     //carga los mensajes cuando llegan
     this.chatService.onReceiveMessage((groupReceive: string, messages: string[]) => {
-      this.messages = messages;
+      console.log('llega nuevo mensaje a ', groupReceive);
+      if (this.selectedUser === groupReceive) {
+        this.messages = messages;
+      }
       this.groupRecepcion = groupReceive;
     });
   }
@@ -51,7 +54,7 @@ export class ChatrAdminComponent implements OnInit{
 
   getMessages(user: string) {
     console.log(user);
-    this.chatService.joinGroup(user).then(()=>{
+    this.chatService.joinGroup(user).then(() => {
       this.chatService.onLoadMessages((messages: string[]) => {
         this.messages = messages;
         console.log(`${user} ${this.messages}`);
@@ -82,12 +85,12 @@ export class ChatrAdminComponent implements OnInit{
       .catch((err) => console.error(err));
   }
 
-  sendMessage(){
+  sendMessage() {
     this.chatService.sendMessage(this.newMessage)
-    .then(() => {
-      this.newMessage = ''
-    })
-    .catch(error => console.error(error));
+      .then(() => {
+        this.newMessage = ''
+      })
+      .catch(error => console.error(error));
   }
 
 

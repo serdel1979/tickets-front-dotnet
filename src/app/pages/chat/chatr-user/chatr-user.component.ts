@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatredisService } from '../../../services/chatredis.service';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-chatr-user',
@@ -18,10 +19,10 @@ export class ChatrUserComponent implements OnInit {
 
   groupRecepcion!: string;
 
-  constructor( private chatService: ChatredisService){}
+  constructor(private chatService: ChatredisService) { }
 
   ngOnInit(): void {
-   this.chatService.onLoadMessages((messages: string[]) => {
+    this.chatService.onLoadMessages((messages: string[]) => {
       this.messages = messages;
     });
 
@@ -33,12 +34,12 @@ export class ChatrUserComponent implements OnInit {
   }
 
 
-  sendMessage(){
+  sendMessage() {
     this.chatService.sendMessage(this.newMessage)
-    .then(() => {
-      this.newMessage = ''
-    })
-    .catch(error => console.error(error));
+      .then(() => {
+        this.newMessage = ''
+      })
+      .catch(error => console.error(error));
   }
 
 }
