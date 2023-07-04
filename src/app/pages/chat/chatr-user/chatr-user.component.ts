@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ChatredisService } from '../../../services/chatredis.service';
 import { AuthService } from '../../../auth/auth.service';
 
@@ -7,7 +7,7 @@ import { AuthService } from '../../../auth/auth.service';
   templateUrl: './chatr-user.component.html',
   styleUrls: ['./chatr-user.component.css']
 })
-export class ChatrUserComponent implements OnInit {
+export class ChatrUserComponent implements OnInit, AfterViewInit {
 
 
   messages: string[] = [];
@@ -15,27 +15,49 @@ export class ChatrUserComponent implements OnInit {
 
   selectedGroup: string | null = null;
 
+
+  sound: any;
+
   groupName!: string;
 
   groupRecepcion!: string;
 
-  constructor(private chatService: ChatredisService) { }
-
-  ngOnInit(): void {
+  constructor(private chatService: ChatredisService, private authService: AuthService) {
+    this.sound = new Audio('../../../../assets/sound/mensaje.mp3');
     this.chatService.onLoadMessages((messages: string[]) => {
-      this.messages = messages;
-    });
-
-    //carga los mensajes cuando llegan
-    this.chatService.onReceiveMessage((groupReceive: string, messages: string[]) => {
-      this.groupRecepcion = groupReceive;
       this.messages = messages;
     });
   }
 
 
+
+  ngAfterViewInit(): void {
+    this.chatService.onLoadMessages((messages: string[]) => {
+      this.messages = messages;
+    });
+  }
+
+  ngOnInit(): void {
+    this.chatService.onLoadMessages((messages: string[]) => {
+      this.messages = messages;
+    });
+    //carga los mensajes cuando llegan
+    this.chatService.onReceiveMessage((groupReceive: string, messages: string[]) => {
+      this.groupRecepcion = groupReceive;
+      this.messages = messages;
+      if(groupReceive != this.selectedGroup){
+        this.sound.play();
+      }
+    });
+  }
+
+
   sendMessage() {
-    this.chatService.sendMessage(this.newMessage)
+    const now = new Date();
+    const currentDateTime = now.toLocaleString();
+    const userSendChat = this.authService.getUserLogued();
+    const msj = `${userSendChat}: ${this.newMessage}            ${currentDateTime}`;
+    this.chatService.sendMessage(msj)
       .then(() => {
         this.newMessage = ''
       })

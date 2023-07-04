@@ -42,7 +42,6 @@ export class ChatrAdminComponent implements OnInit {
 
     //carga los mensajes cuando llegan
     this.chatService.onReceiveMessage((groupReceive: string, messages: string[]) => {
-      console.log('llega nuevo mensaje a ', groupReceive);
       if (this.selectedUser === groupReceive) {
         this.messages = messages;
       }
@@ -86,7 +85,11 @@ export class ChatrAdminComponent implements OnInit {
   }
 
   sendMessage() {
-    this.chatService.sendMessage(this.newMessage)
+    const now = new Date();
+    const currentDateTime = now.toLocaleString();
+    const userSendChat = this.authService.getUserLogued();
+    const msj = `${userSendChat}: ${this.newMessage}            ${currentDateTime}`;
+    this.chatService.sendMessage(msj)
       .then(() => {
         this.newMessage = ''
       })
