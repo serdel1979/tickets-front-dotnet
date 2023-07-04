@@ -22,18 +22,13 @@ export class ChatredisService {
    // this.authService.isLoggedInChange.subscribe(() => {
 
       this.startConnection()
-        .then(() => console.log('conectado'))
+        .then()
         .catch((err) => console.error(err));
 
-      this.onLoadMessages((messages: string[]) => {
-        console.log(messages);
-      });
+      this.onLoadMessages((messages: string[]) => {});
 
       //carga los mensajes cuando llegan
-      this.onReceiveMessage((groupName: string, messages: string[]) => {
-        console.log('Mensajes recibidos del grupo:', groupName);
-        console.log(messages);
-      });
+      this.onReceiveMessage((groupName: string, messages: string[]) => {});
 
    // })
 
@@ -48,7 +43,6 @@ export class ChatredisService {
       this.connection
         .start()
         .then(() => {
-          console.log('Connection chat started');
           resolve();
         })
         .catch(err => {

@@ -29,11 +29,11 @@
         <div class="card-body">
             <ul class="list-group-flush" id="messageList" style="max-height: 250px; overflow-y: auto;">
                 <li *ngFor="let message of messages" class="list-group-item">
-                        {{ message }}
+                    <div [innerHTML]="message | firstWordBold"></div>
                 </li>
             </ul>
         </div>
-        <div class="input-group">
+        <div *ngIf="selectedUser" class="input-group">
             <input #messageInput type="text" class="form-control bg-light border-0" placeholder="Escribe un mensaje"
                 [(ngModel)]="newMessage" (keyup.enter)="sendMessage()">
 

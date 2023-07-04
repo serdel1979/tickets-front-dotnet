@@ -30,6 +30,14 @@ export class ChatrUserComponent implements OnInit, AfterViewInit {
   }
 
 
+  // this.chatService.joinGroup(user).then(() => {
+  //   this.chatService.onLoadMessages((messages: string[]) => {
+  //     this.messages = messages;
+  //     setTimeout(() => {
+  //       this.elemento.scrollTop = this.elemento.scrollHeight;
+  //     }, 30);
+  //   });
+  // })
 
   ngAfterViewInit(): void {
     this.chatService.onLoadMessages((messages: string[]) => {
@@ -38,9 +46,12 @@ export class ChatrUserComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.chatService.onLoadMessages((messages: string[]) => {
-      this.messages = messages;
-    });
+    const usrlog = this.authService.getUserLogued();
+    this.chatService.joinGroup(usrlog).then(() => {
+      this.chatService.onLoadMessages((messages: string[]) => {
+        this.messages = messages;
+      });
+    })
     //carga los mensajes cuando llegan
     this.chatService.onReceiveMessage((groupReceive: string, messages: string[]) => {
       this.groupRecepcion = groupReceive;

@@ -36,6 +36,7 @@ export class ChatrAdminComponent implements OnInit {
     this.authService.getAllUsers().subscribe((users) => {
       this.usersChats = users.map((user: UsuarioChat) => user.userName);
     })
+    
     this.chatService.onLoadMessages((messages: string[]) => {
       this.messages = messages;
     });
@@ -52,11 +53,9 @@ export class ChatrAdminComponent implements OnInit {
 
 
   getMessages(user: string) {
-    console.log(user);
     this.chatService.joinGroup(user).then(() => {
       this.chatService.onLoadMessages((messages: string[]) => {
         this.messages = messages;
-        console.log(`${user} ${this.messages}`);
         setTimeout(() => {
           this.elemento.scrollTop = this.elemento.scrollHeight;
         }, 30);
@@ -92,6 +91,7 @@ export class ChatrAdminComponent implements OnInit {
     this.chatService.sendMessage(msj)
       .then(() => {
         this.newMessage = ''
+        this.getMessages(this.conversationId);
       })
       .catch(error => console.error(error));
   }
