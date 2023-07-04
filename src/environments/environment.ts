@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
-    baseUrl: 'https://localhost:7147/api',
-    urlHub: 'https://localhost:7147/Hubs/MHub',
+    baseUrl: 'https://tickets-dotnet-production.up.railway.app/api',
+    urlHub: 'https://tickets-dotnet-production.up.railway.app/Hubs/MHub',
     urlHubChat: 'https://chatredusdotnet-production.up.railway.app/Hub/ChatHub',
     firebase: {
       apiKey: 'AIzaSyDmIdEn_IRpfK4WfeWi005SIy-2W0AFmPg',
