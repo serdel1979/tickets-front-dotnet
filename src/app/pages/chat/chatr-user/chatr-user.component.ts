@@ -15,6 +15,7 @@ export class ChatrUserComponent implements OnInit, AfterViewInit {
 
   selectedGroup: string | null = null;
 
+  elemento: any;
 
   sound: any;
 
@@ -46,6 +47,7 @@ export class ChatrUserComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.elemento = document.getElementById("messageList")
     const usrlog = this.authService.getUserLogued();
     this.chatService.joinGroup(usrlog).then(() => {
       this.chatService.onLoadMessages((messages: string[]) => {
@@ -62,6 +64,16 @@ export class ChatrUserComponent implements OnInit, AfterViewInit {
     });
   }
 
+  getMessages(user: string) {
+    this.chatService.joinGroup(user).then(() => {
+      this.chatService.onLoadMessages((messages: string[]) => {
+        this.messages = messages;
+        setTimeout(() => {
+          this.elemento.scrollTop = this.elemento.scrollHeight;
+        }, 30);
+      });
+    })
+  }
 
   sendMessage() {
     const now = new Date();
@@ -70,7 +82,8 @@ export class ChatrUserComponent implements OnInit, AfterViewInit {
     const msj = `${userSendChat}: ${this.newMessage}            ${currentDateTime}`;
     this.chatService.sendMessage(msj)
       .then(() => {
-        this.newMessage = ''
+        this.newMessage = '';
+        this.getMessages(userSendChat);
       })
       .catch(error => console.error(error));
   }
