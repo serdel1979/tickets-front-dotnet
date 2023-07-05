@@ -36,7 +36,7 @@ export class ChatrAdminComponent implements OnInit {
     this.authService.getAllUsers().subscribe((users) => {
       this.usersChats = users.map((user: UsuarioChat) => user.userName);
     })
-    
+
     this.chatService.onLoadMessages((messages: string[]) => {
       this.messages = messages;
     });
@@ -71,8 +71,14 @@ export class ChatrAdminComponent implements OnInit {
     // Restablecer el indicador del usuario seleccionado
     this.newMessageIndicators[usr] = false;
 
-    // Guardar newMessageIndicators actualizado en el almacenamiento local
-    //this.localStorageService.setItem('Indicators', this.newMessageIndicators);
+    // Obtener el indicador de mensajes activos del servicio
+    const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(usr);
+
+    // Suscribirse a los cambios en el indicador de mensajes activos
+    activeMessagesIndicator.subscribe((isActive: boolean) => {
+      console.log('subscripcion okkkk');
+      this.newMessageIndicators[usr] = isActive;
+    });
 
     this.getMessages(this.conversationId);
   }

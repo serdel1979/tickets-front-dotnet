@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
+import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 
@@ -17,6 +18,10 @@ export class ChatredisService {
   groupName!: string;
   userLogued!: string;
 
+
+  private activeMessagesIndicators: { [key: string]: Subject<boolean> } = {};
+
+
   constructor(private authService: AuthService) {
 
    // this.authService.isLoggedInChange.subscribe(() => {
@@ -28,10 +33,22 @@ export class ChatredisService {
       this.onLoadMessages((messages: string[]) => {});
 
       //carga los mensajes cuando llegan
-      this.onReceiveMessage((groupName: string, messages: string[]) => {});
+      this.onReceiveMessage((groupName: string, messages: string[]) => {
+        if (this.activeMessagesIndicators[groupName]) {
+          this.activeMessagesIndicators[groupName].next(true);
+        }
+      });
 
    // })
 
+  }
+
+
+  public getActiveMessagesIndicator(user: string): Subject<boolean> {
+    if (!this.activeMessagesIndicators[user]) {
+      this.activeMessagesIndicators[user] = new Subject<boolean>();
+    }
+    return this.activeMessagesIndicators[user];
   }
 
   public startConnection(): Promise<void> {
