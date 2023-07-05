@@ -14,7 +14,6 @@ export class ChatrAdminComponent implements OnInit {
 
   public usersChats: string[] = [];
 
-  unreadMessages: { [key: string]: boolean } = {};
   newMessageIndicators: { [key: string]: boolean } = {};
 
   selectedUser!: string;
@@ -76,7 +75,6 @@ export class ChatrAdminComponent implements OnInit {
 
     // Suscribirse a los cambios en el indicador de mensajes activos
     activeMessagesIndicator.subscribe((isActive: boolean) => {
-      console.log('subscripcion okkkk');
       this.newMessageIndicators[usr] = isActive;
     });
 
