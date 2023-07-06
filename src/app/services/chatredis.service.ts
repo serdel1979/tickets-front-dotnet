@@ -29,7 +29,9 @@ export class ChatredisService {
    // this.authService.isLoggedInChange.subscribe(() => {
 
       this.startConnection()
-        .then()
+        .then(() => {
+          this.initializeNewMessageIndicators();
+        })
         .catch((err) => console.error(err));
 
       this.onLoadMessages((messages: string[]) => {});
@@ -44,6 +46,16 @@ export class ChatredisService {
 
    // })
 
+  }
+
+  private initializeNewMessageIndicators(): void {
+    this.connection.invoke('GetNewMessageIndicators')
+      .then((indicators: { [key: string]: boolean }) => {
+        this.newMessageIndicators = indicators;
+      })
+      .catch((error: any) => {
+        console.error('Error while initializing new message indicators:', error);
+      });
   }
 
   public getIndicators(){
@@ -76,6 +88,9 @@ export class ChatredisService {
     });
   }
 
+  public anyGroupHasNewMessages(): Promise<boolean> {
+    return this.connection.invoke('AnyGroupHasNewMessages');
+  }
 
   public joinGroup(groupName: string): Promise<string[]> {
     this.groupName = groupName;
