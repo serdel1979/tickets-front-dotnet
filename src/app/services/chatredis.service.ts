@@ -51,6 +51,7 @@ export class ChatredisService {
   private initializeNewMessageIndicators(): void {
     this.connection.invoke('GetNewMessageIndicators')
       .then((indicators: { [key: string]: boolean }) => {
+        console.log(indicators);
         this.newMessageIndicators = indicators;
       })
       .catch((error: any) => {
