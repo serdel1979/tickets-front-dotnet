@@ -21,6 +21,8 @@ export class ChatredisService {
 
   private activeMessagesIndicators: { [key: string]: Subject<boolean> } = {};
 
+  newMessageIndicators: { [key: string]: boolean } = {};
+
 
   constructor(private authService: AuthService) {
 
@@ -35,12 +37,17 @@ export class ChatredisService {
       //carga los mensajes cuando llegan
       this.onReceiveMessage((groupName: string, messages: string[]) => {
         if (this.activeMessagesIndicators[groupName]) {
+          this.newMessageIndicators[groupName] = true;
           this.activeMessagesIndicators[groupName].next(true);
         }
       });
 
    // })
 
+  }
+
+  public getIndicators(){
+    return this.newMessageIndicators;
   }
 
 
@@ -80,6 +87,8 @@ export class ChatredisService {
   }
 
   public deleteGroupMessages(groupName: string): Promise<string[]> {
+    this.newMessageIndicators[groupName] = false;
+    this.activeMessagesIndicators[groupName].next(false);
     return this.connection.invoke('DeleteGroupMessagesChat', groupName);
   }
 

@@ -31,10 +31,19 @@ export class ChatrAdminComponent implements OnInit {
   constructor(private chatService: ChatredisService, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.newMessageIndicators = this.chatService.getIndicators();
     this.elemento = document.getElementById('messageList');
     this.authService.getAllUsers().subscribe((users) => {
       this.usersChats = users.map((user: UsuarioChat) => user.userName);
+      this.usersChats.forEach(usr=>{
+        const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(usr);
+        activeMessagesIndicator.subscribe((isActive: boolean) => {
+            this.newMessageIndicators[usr] = isActive;
+        });
+      })
     })
+
+
 
     this.chatService.onLoadMessages((messages: string[]) => {
       this.messages = messages;
@@ -66,17 +75,6 @@ export class ChatrAdminComponent implements OnInit {
   selectUserChat(usr: string) {
     this.selectedUser = usr;
     this.conversationId = usr;
-
-    // Restablecer el indicador del usuario seleccionado
-    this.newMessageIndicators[usr] = false;
-
-    // Obtener el indicador de mensajes activos del servicio
-    const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(usr);
-
-    // Suscribirse a los cambios en el indicador de mensajes activos
-    activeMessagesIndicator.subscribe((isActive: boolean) => {
-      this.newMessageIndicators[usr] = isActive;
-    });
 
     this.getMessages(this.conversationId);
   }
