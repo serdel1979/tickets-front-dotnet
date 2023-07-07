@@ -2,8 +2,8 @@ export const environment = {
     production: false,
     baseUrl: 'https://tickets-dotnet-production.up.railway.app/api',
     urlHub: 'https://tickets-dotnet-production.up.railway.app/Hubs/MHub',
-    urlHubChat: 'https://chatredusdotnet-production.up.railway.app/Hub/ChatHub', //https://localhost:7078
-    //urlHubChat: 'http://localhost:5220/Hub/ChatHub',
+    //urlHubChat: 'https://chatredusdotnet-production.up.railway.app/Hub/ChatHub', //https://localhost:7078
+    urlHubChat: 'https://localhost:7078/Hub/ChatHub',
     firebase: {
       apiKey: 'AIzaSyDmIdEn_IRpfK4WfeWi005SIy-2W0AFmPg',
       authDomain: 'tickets-c2458.firebaseapp.com',

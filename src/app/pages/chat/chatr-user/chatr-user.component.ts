@@ -21,7 +21,6 @@ export class ChatrUserComponent implements OnInit, AfterViewInit {
 
   groupName!: string;
 
-  groupRecepcion!: string;
 
   constructor(private chatService: ChatredisService, private authService: AuthService) {
     this.sound = new Audio('../../../../assets/sound/mensaje.mp3');
@@ -56,9 +55,8 @@ export class ChatrUserComponent implements OnInit, AfterViewInit {
     })
     //carga los mensajes cuando llegan
     this.chatService.onReceiveMessage((groupReceive: string, messages: string[]) => {
-      this.groupRecepcion = groupReceive;
-      this.messages = messages;
-      if(groupReceive != this.selectedGroup){
+      if(groupReceive == usrlog){
+        this.messages = messages;
         this.sound.play();
       }
     });
