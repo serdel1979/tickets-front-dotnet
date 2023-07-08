@@ -38,6 +38,7 @@ export class ChatrAdminComponent implements OnInit {
       this.usersChats.forEach(usr=>{
         const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(usr);
         activeMessagesIndicator.subscribe((isActive: boolean) => {
+            console.log('recibe--> ',isActive);
             this.newMessageIndicators[usr] = isActive;
         });
       })

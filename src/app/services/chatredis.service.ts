@@ -3,6 +3,7 @@ import * as signalR from '@microsoft/signalr';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
+import { promises } from 'dns';
 
 
 const urlWS = environment.urlHubChat;
@@ -20,6 +21,9 @@ export class ChatredisService {
 
 
   private activeMessagesIndicators: { [key: string]: Subject<boolean> } = {};
+
+  private anyGroupHasNewMessagesSubject: Subject<boolean> = new Subject<boolean>();
+
 
   newMessageIndicators: { [key: string]: boolean } = {};
 
@@ -63,6 +67,10 @@ export class ChatredisService {
     return this.newMessageIndicators;
   }
 
+  public getAnyGroupHasNewMessages(): Subject<boolean> {
+    return this.anyGroupHasNewMessagesSubject;
+  }
+
 
   public getActiveMessagesIndicator(user: string): Subject<boolean> {
     if (!this.activeMessagesIndicators[user]) {
@@ -81,6 +89,9 @@ export class ChatredisService {
         .start()
         .then(() => {
           resolve();
+          this.connection.on("AnyGroupHasNewMessages", (hasNewMessages: boolean) => {
+            this.anyGroupHasNewMessagesSubject.next(hasNewMessages);
+         });
         })
         .catch(err => {
           console.log('Error while starting connection: ' + err);
@@ -89,8 +100,16 @@ export class ChatredisService {
     });
   }
 
-  public anyGroupHasNewMessages(): Promise<boolean> {
-    return this.connection.invoke('AnyGroupHasNewMessages');
+  public anyGroupHasNewMessages(): Subject<boolean> {
+    this.connection.invoke('AnyGroupHasNewMessages')
+      .then((hasNewMessages: boolean) => {
+        this.anyGroupHasNewMessagesSubject.next(hasNewMessages);
+      })
+      .catch(error => {
+        console.error('Error invoking AnyGroupHasNewMessages:', error);
+      });
+
+    return this.anyGroupHasNewMessagesSubject;
   }
 
   public joinGroup(groupName: string): Promise<string[]> {
@@ -106,6 +125,11 @@ export class ChatredisService {
     this.newMessageIndicators[groupName] = false;
     this.activeMessagesIndicators[groupName].next(false);
     return this.connection.invoke('DeleteGroupMessagesChat', groupName);
+  }
+
+  public initAnyGroupHasNewMessages():Promise<boolean>
+  {
+    return this.connection.invoke('GetAnyGroupHasNewMessages');
   }
 
   public onReceiveMessage(callback: (groupName: string, messages: string[]) => void): void {

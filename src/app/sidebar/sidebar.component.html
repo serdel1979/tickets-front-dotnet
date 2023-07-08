@@ -17,8 +17,19 @@
           <p>{{menuItem.title}}</p>
         </a>
       </li>
-
+      <li routerLinkActive="active">
+        <a [routerLink]="['/chat']">
+          <div class="indicator-icon">
+            <i class="nc-icon nc-chat-33"></i>
+            <p>Chat</p>
+            <span *ngIf="anyGroupHasNewMessages" class="indicator"></span>
+          </div>
+        </a>
+      </li>
     </ul>
+    
+
+
   </div>
 </div>
 <div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
+import { ChatredisService } from '../services/chatredis.service';
 
 
 export interface RouteInfo {
@@ -12,16 +13,29 @@ export interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-  { path: '/solicitudes', title: 'Solicitudes', icon: 'nc-bullet-list-67', class: '', admin: false},
+  { path: '/solicitudes', title: 'Solicitudes', icon: 'nc-bullet-list-67', class: '', admin: false },
   { path: '/historial', title: 'Historial', icon: 'nc-paper', class: '', admin: false },
-  { path: '/usuarios', title: 'Usuarios', icon: 'nc-single-02', class: '', admin: true},
-  { path: '/equipos', title: 'Equipos', icon: 'nc-laptop', class: '', admin: false},
-  { path: '/chat', title: 'Chat', icon: 'nc-chat-33', class: '', admin: false }
+  { path: '/usuarios', title: 'Usuarios', icon: 'nc-single-02', class: '', admin: true },
+  { path: '/equipos', title: 'Equipos', icon: 'nc-laptop', class: '', admin: false }
 ];
 
 @Component({
   selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html'
+  templateUrl: './sidebar.component.html',
+  styles: [`
+          .indicator-icon {
+          display: flex;
+          align-items: center;
+        }
+
+        .indicator {
+          margin-left: 5px;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: green;
+        }
+  `]
 })
 export class SidebarComponent implements OnInit {
 
@@ -30,14 +44,15 @@ export class SidebarComponent implements OnInit {
   isLoggedIn: boolean = false;
 
   isAdmin: boolean = false;
-  
+
 
   private subscription!: Subscription;
 
 
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService, private chatService: ChatredisService) { }
 
 
+  anyGroupHasNewMessages: boolean = false;
 
   public menuItems: any[] | undefined;
 
@@ -50,13 +65,20 @@ export class SidebarComponent implements OnInit {
     this.isAdmin = this.authService.isAdmin();
     this.subscription = this.authService.isLoggedInChange.subscribe((loggedIn: boolean) => {
       this.isLoggedIn = loggedIn;
-      if(loggedIn){
+      if (loggedIn) {
         this.usrName = this.authService.getUserLogued();
         this.isAdmin = this.authService.isAdmin();
+        this.chatService.initAnyGroupHasNewMessages()
+          .then((inicial) => {
+            this.anyGroupHasNewMessages = inicial;
+          })
       }
-      
+
     });
-    
+    this.chatService.getAnyGroupHasNewMessages().subscribe(hasNewMessages => {
+      this.anyGroupHasNewMessages = hasNewMessages;
+    });
+
     this.menuItems = ROUTES.filter(menuItem => menuItem);
   }
 
