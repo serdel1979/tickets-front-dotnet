@@ -122,7 +122,7 @@ export class UsersComponent implements OnInit {
   }
 
   async refresh(flag:boolean){
-    if(flag)this.sound.play();
+   // if(flag)this.sound.play();
     this.isLogued = this.authService.isLogued();
     if (this.isLogued) {
       this.id = this.authService.getIdLogued();

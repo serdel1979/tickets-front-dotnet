@@ -78,7 +78,7 @@ export class AdminComponent implements OnInit {
   }
 
   async refresh(flag: boolean) {
-    if(flag)this.sound.play();
+    //if(flag)this.sound.play();
     this.isLogued = this.authService.isLogued();
     this.userName = this.authService.getUserLogued();
     if (this.isLogued) {
