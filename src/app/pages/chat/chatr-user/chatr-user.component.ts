@@ -43,7 +43,12 @@ export class ChatrUserComponent implements OnInit {
     const usrlog = this.authService.getUserLogued();
     this.chatService.joinGroup(usrlog).then();
     
-    this.getMessages(usrlog);
+    this.chatService.onLoadMessages((groupReceive: string, messages: string[]) => {
+      if(groupReceive == usrlog){
+        this.messages = messages;
+        this.sound.play();
+      }
+    });
     
     this.chatService.onReceiveMessage((groupReceive: string, messages: string[]) => {
       if(groupReceive == usrlog){
