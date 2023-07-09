@@ -45,6 +45,7 @@ export class LoginComponent {
         localStorage.setItem('usrlog', JSON.stringify(resp));
 
         this.authService.loginOk();
+        
         if (this.authService.isAdmin()) {
             this.authService.getAllUsers().subscribe((users)=>{
               for(let usr of users){
@@ -72,7 +73,6 @@ export class LoginComponent {
         this.router.navigateByUrl('/solicitudes');
       },
         (err) => {
-          console.log(err);
           this.mostrarSpinner = false;
           this.toastr.error(
             '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">' + err.error + '</span>',

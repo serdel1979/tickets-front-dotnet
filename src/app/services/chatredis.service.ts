@@ -29,25 +29,30 @@ export class ChatredisService {
 
 
   constructor(private authService: AuthService) {
-      this.startConnection()
-        .then(() => {
+    this.startConnection()
+      .then(() => {
+        if (this.connection && this.connection.state === signalR.HubConnectionState.Connected) {
           this.initializeNewMessageIndicators();
-        })
-        .catch((err) => console.error(err));
+          console.log(this.connection.connectionId, ' ', this.connection.state);
+        } else {
+          console.log('Connection is not in the "Connected" state.');
+        }
+      })
+      .catch((err) => console.error(err));
 
-      this.onLoadMessages((groupName: string, messages: string[]) => {
-        if (this.activeMessagesIndicators[groupName]) {
-          this.newMessageIndicators[groupName] = messages.length>0;
-          this.activeMessagesIndicators[groupName].next(messages.length>0);
-        }
-      });
-      //carga los mensajes cuando llegan
-      this.onReceiveMessage((groupName: string, messages: string[]) => {
-        if (this.activeMessagesIndicators[groupName]) {
-          this.newMessageIndicators[groupName] = true;
-          this.activeMessagesIndicators[groupName].next(true);
-        }
-      });
+    this.onLoadMessages((groupName: string, messages: string[]) => {
+      if (this.activeMessagesIndicators[groupName]) {
+        this.newMessageIndicators[groupName] = messages.length > 0;
+        this.activeMessagesIndicators[groupName].next(messages.length > 0);
+      }
+    });
+    //carga los mensajes cuando llegan
+    this.onReceiveMessage((groupName: string, messages: string[]) => {
+      if (this.activeMessagesIndicators[groupName]) {
+        this.newMessageIndicators[groupName] = true;
+        this.activeMessagesIndicators[groupName].next(true);
+      }
+    });
   }
 
   private initializeNewMessageIndicators(): void {
@@ -60,7 +65,7 @@ export class ChatredisService {
       });
   }
 
-  public getIndicators(){
+  public getIndicators() {
     return this.newMessageIndicators;
   }
 
@@ -76,19 +81,30 @@ export class ChatredisService {
     return this.activeMessagesIndicators[user];
   }
 
+ 
+
   public startConnection(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this.connection = new signalR.HubConnectionBuilder()
         .withUrl(urlWS)
         .build();
-
-      this.connection
-        .start()
+  
+      this.connection.onclose((error: any) => {
+        console.log('Connection closed:', error);
+        // Aquí puedes manejar la lógica de reconexión si lo deseas
+      });
+  
+      this.connection.onreconnected(() => {
+        this.initializeNewMessageIndicators();
+      });
+  
+      this.connection.on("AnyGroupHasNewMessages", (hasNewMessages: boolean) => {
+        this.anyGroupHasNewMessagesSubject.next(hasNewMessages);
+      });
+  
+      this.connection.start()
         .then(() => {
           resolve();
-          this.connection.on("AnyGroupHasNewMessages", (hasNewMessages: boolean) => {
-            this.anyGroupHasNewMessagesSubject.next(hasNewMessages);
-         });
         })
         .catch(err => {
           console.log('Error while starting connection: ' + err);
@@ -96,6 +112,8 @@ export class ChatredisService {
         });
     });
   }
+  
+
 
   public anyGroupHasNewMessages(): Subject<boolean> {
     this.connection.invoke('AnyGroupHasNewMessages')
@@ -124,8 +142,7 @@ export class ChatredisService {
     return this.connection.invoke('DeleteGroupMessagesChat', groupName);
   }
 
-  public initAnyGroupHasNewMessages():Promise<boolean>
-  {
+  public initAnyGroupHasNewMessages(): Promise<boolean> {
     return this.connection.invoke('GetAnyGroupHasNewMessages');
   }
 

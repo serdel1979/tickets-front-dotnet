@@ -24,26 +24,33 @@ export class ChatrUserComponent implements OnInit {
 
   constructor(private chatService: ChatredisService, private authService: AuthService) {
     this.sound = new Audio('../../../../assets/sound/mensaje.mp3');
+    this.inicializa();
   }
 
 
-  // this.chatService.joinGroup(user).then(() => {
-  //   this.chatService.onLoadMessages((messages: string[]) => {
-  //     this.messages = messages;
-  //     setTimeout(() => {
-  //       this.elemento.scrollTop = this.elemento.scrollHeight;
-  //     }, 30);
-  //   });
-  // })
+
 
  
 
   ngOnInit(): void {
-    this.elemento = document.getElementById("messageList")
+    this.elemento = document.getElementById("messageList");
+   // this.inicializa();
+  }
+
+
+  inicializa(){
+
     const usrlog = this.authService.getUserLogued();
-    this.chatService.joinGroup(usrlog).then();
+    
+    this.chatService.startConnection()
+    .then(()=>{
+      this.chatService.joinGroup(usrlog).then();
+    })
+    .catch(err=>console.error(err));
+    
     
     this.chatService.onLoadMessages((groupReceive: string, messages: string[]) => {
+      console.log(`logued: ${usrlog} receive: ${groupReceive}`);
       if(groupReceive == usrlog){
         this.messages = messages;
         this.sound.play();
@@ -57,6 +64,7 @@ export class ChatrUserComponent implements OnInit {
       }
     });
   }
+
 
   getMessages(user: string) {
     this.chatService.joinGroup(user).then(() => {

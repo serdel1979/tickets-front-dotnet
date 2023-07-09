@@ -65,28 +65,57 @@ export class SidebarComponent implements OnInit {
     this.isLoggedIn = this.authService.isLogued();
     this.usrName = this.authService.getUserLogued();
     this.isAdmin = this.authService.isAdmin();
-    this.subscription = this.authService.isLoggedInChange.subscribe((loggedIn: boolean) => {
-      this.isLoggedIn = loggedIn;
-      if (loggedIn) {
-        this.usrName = this.authService.getUserLogued();
-        this.isAdmin = this.authService.isAdmin();
-        if(this.isAdmin){
-          this.chatService.initAnyGroupHasNewMessages()
+    console.log('logueado? ', this.isLoggedIn);
+    if (this.isLoggedIn) {
+
+      this.usrName = this.authService.getUserLogued();
+      this.isAdmin = this.authService.isAdmin();
+      if (this.isAdmin) {
+        this.authService.getAllUsers().subscribe((users) => {
+          for (let usr of users) {
+            this.chatService.joinGroup(usr.userName).then()
+          }
+        });
+        this.chatService.initAnyGroupHasNewMessages()
           .then((inicial) => {
             this.anyGroupHasNewMessages = inicial;
           })
-        }else{
+      } else {
+
+        const usr = this.authService.getUserLogued();
+        this.chatService.startConnection()
+        .then(()=>{
+          const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(usr);
+          activeMessagesIndicator.subscribe((isActive: boolean) => {
+            this.newMessageIndicators[usr] = isActive;
+          });
+        })
+       
+      }
+    } else {
+      this.authService.isLoggedInChange.subscribe((loggedIn: boolean) => {
+        this.isLoggedIn = loggedIn;
+        if (loggedIn) {
+          this.usrName = this.authService.getUserLogued();
+          this.isAdmin = this.authService.isAdmin();
+          if (this.isAdmin) {
+            this.chatService.initAnyGroupHasNewMessages()
+              .then((inicial) => {
+                this.anyGroupHasNewMessages = inicial;
+              })
+          } else {
             const usr = this.authService.getUserLogued();
             const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(usr);
             activeMessagesIndicator.subscribe((isActive: boolean) => {
-                console.log(isActive);
-                this.newMessageIndicators[usr] = isActive;
+              this.newMessageIndicators[usr] = isActive;
             });
-        }
-        
-      }
+          }
 
-    });
+        }
+
+      });
+    }
+
     this.chatService.getAnyGroupHasNewMessages().subscribe(hasNewMessages => {
       this.anyGroupHasNewMessages = hasNewMessages;
     });
