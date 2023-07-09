@@ -7,7 +7,7 @@ import { AuthService } from '../../../auth/auth.service';
   templateUrl: './chatr-user.component.html',
   styleUrls: ['./chatr-user.component.css']
 })
-export class ChatrUserComponent implements OnInit, AfterViewInit {
+export class ChatrUserComponent implements OnInit {
 
 
   messages: string[] = [];
@@ -24,7 +24,8 @@ export class ChatrUserComponent implements OnInit, AfterViewInit {
 
   constructor(private chatService: ChatredisService, private authService: AuthService) {
     this.sound = new Audio('../../../../assets/sound/mensaje.mp3');
-    this.chatService.onLoadMessages((messages: string[]) => {
+    const usrlog = this.authService.getUserLogued();
+    this.chatService.onLoadMessages((usrlog,messages: string[]) => {
       this.messages = messages;
     });
   }
@@ -39,21 +40,15 @@ export class ChatrUserComponent implements OnInit, AfterViewInit {
   //   });
   // })
 
-  ngAfterViewInit(): void {
-    this.chatService.onLoadMessages((messages: string[]) => {
-      this.messages = messages;
-    });
-  }
+ 
 
   ngOnInit(): void {
     this.elemento = document.getElementById("messageList")
     const usrlog = this.authService.getUserLogued();
-    this.chatService.joinGroup(usrlog).then(() => {
-      this.chatService.onLoadMessages((messages: string[]) => {
-        this.messages = messages;
-      });
+    this.chatService.joinGroup(usrlog).then();
+    this.chatService.onLoadMessages((user,messages: string[]) => {
+      this.messages = messages;
     })
-    //carga los mensajes cuando llegan
     this.chatService.onReceiveMessage((groupReceive: string, messages: string[]) => {
       if(groupReceive == usrlog){
         this.messages = messages;
@@ -63,8 +58,11 @@ export class ChatrUserComponent implements OnInit, AfterViewInit {
   }
 
   getMessages(user: string) {
+    console.log(user);
     this.chatService.joinGroup(user).then(() => {
-      this.chatService.onLoadMessages((messages: string[]) => {
+      console.log('joingrup')
+      this.chatService.onLoadMessages((user,messages: string[]) => {
+        console.log(messages)
         this.messages = messages;
         setTimeout(() => {
           this.elemento.scrollTop = this.elemento.scrollHeight;

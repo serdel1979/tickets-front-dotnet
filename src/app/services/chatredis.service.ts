@@ -38,8 +38,7 @@ export class ChatredisService {
         })
         .catch((err) => console.error(err));
 
-      this.onLoadMessages((messages: string[]) => {});
-
+      this.onLoadMessages(()=>{});
       //carga los mensajes cuando llegan
       this.onReceiveMessage((groupName: string, messages: string[]) => {
         if (this.activeMessagesIndicators[groupName]) {
@@ -55,7 +54,6 @@ export class ChatredisService {
   private initializeNewMessageIndicators(): void {
     this.connection.invoke('GetNewMessageIndicators')
       .then((indicators: { [key: string]: boolean }) => {
-        console.log(indicators);
         this.newMessageIndicators = indicators;
       })
       .catch((error: any) => {
@@ -136,8 +134,13 @@ export class ChatredisService {
     this.connection.on('ReceiveMessage', callback);
   }
 
-  public onLoadMessages(callback: (messages: string[]) => void): void {
+  public onLoadMessages(callback: (groupName: string, messages: string[]) => void): void {
+    console.log('en onload para user ->',this.groupName)
     this.connection.on('LoadMessages', callback);
+  }
+
+  public loadMessages(groupName: string): Promise<string[]> {
+    return this.connection.invoke('LoadMessages', groupName);
   }
 
 
