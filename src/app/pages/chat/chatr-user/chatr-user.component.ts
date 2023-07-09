@@ -24,10 +24,6 @@ export class ChatrUserComponent implements OnInit {
 
   constructor(private chatService: ChatredisService, private authService: AuthService) {
     this.sound = new Audio('../../../../assets/sound/mensaje.mp3');
-    const usrlog = this.authService.getUserLogued();
-    this.chatService.onLoadMessages((usrlog,messages: string[]) => {
-      this.messages = messages;
-    });
   }
 
 
@@ -46,8 +42,8 @@ export class ChatrUserComponent implements OnInit {
     this.elemento = document.getElementById("messageList")
     const usrlog = this.authService.getUserLogued();
     this.chatService.joinGroup(usrlog).then();
-    this.chatService.onLoadMessages((user,messages: string[]) => {
-      this.messages = messages;
+    this.chatService.onLoadMessages((usrlog,messages: string[]) => {
+      this.getMessages(usrlog);
     })
     this.chatService.onReceiveMessage((groupReceive: string, messages: string[]) => {
       if(groupReceive == usrlog){
@@ -58,11 +54,8 @@ export class ChatrUserComponent implements OnInit {
   }
 
   getMessages(user: string) {
-    console.log(user);
     this.chatService.joinGroup(user).then(() => {
-      console.log('joingrup')
       this.chatService.onLoadMessages((user,messages: string[]) => {
-        console.log(messages)
         this.messages = messages;
         setTimeout(() => {
           this.elemento.scrollTop = this.elemento.scrollHeight;

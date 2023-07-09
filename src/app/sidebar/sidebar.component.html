@@ -22,7 +22,8 @@
           <div class="indicator-icon">
             <i class="nc-icon nc-chat-33"></i>
             <p>Chat</p>
-            <span *ngIf="anyGroupHasNewMessages" class="indicator"></span>
+            <span *ngIf="anyGroupHasNewMessages && isAdmin" class="indicator"></span>
+            <span *ngIf="newMessageIndicators[usrName] && !isAdmin" class="indicator"></span>
           </div>
         </a>
       </li>

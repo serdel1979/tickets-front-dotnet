@@ -48,17 +48,13 @@ export class LoginComponent {
         if (this.authService.isAdmin()) {
             this.authService.getAllUsers().subscribe((users)=>{
               for(let usr of users){
-                this.chatrService.joinGroup(usr.userName).then(()=>{
-                  console.log('Unido a ',usr.userName)
-                })
+                this.chatrService.joinGroup(usr.userName).then()
               }
             })
         } else {
           const groupName = this.authService.getUserLogued();
          
-          this.chatrService.joinGroup(groupName).then(()=>{
-            console.log('Unido a ',groupName)
-          })
+          this.chatrService.joinGroup(groupName).then()
         }
 
 

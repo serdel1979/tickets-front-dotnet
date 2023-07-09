@@ -29,16 +29,18 @@ export class ChatredisService {
 
 
   constructor(private authService: AuthService) {
-
-   // this.authService.isLoggedInChange.subscribe(() => {
-
       this.startConnection()
         .then(() => {
           this.initializeNewMessageIndicators();
         })
         .catch((err) => console.error(err));
 
-      this.onLoadMessages(()=>{});
+      this.onLoadMessages((groupName: string, messages: string[]) => {
+        if (this.activeMessagesIndicators[groupName]) {
+          this.newMessageIndicators[groupName] = messages.length>0;
+          this.activeMessagesIndicators[groupName].next(messages.length>0);
+        }
+      });
       //carga los mensajes cuando llegan
       this.onReceiveMessage((groupName: string, messages: string[]) => {
         if (this.activeMessagesIndicators[groupName]) {
@@ -46,9 +48,6 @@ export class ChatredisService {
           this.activeMessagesIndicators[groupName].next(true);
         }
       });
-
-   // })
-
   }
 
   private initializeNewMessageIndicators(): void {
@@ -135,7 +134,6 @@ export class ChatredisService {
   }
 
   public onLoadMessages(callback: (groupName: string, messages: string[]) => void): void {
-    console.log('en onload para user ->',this.groupName)
     this.connection.on('LoadMessages', callback);
   }
 

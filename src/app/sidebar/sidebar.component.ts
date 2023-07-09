@@ -54,6 +54,8 @@ export class SidebarComponent implements OnInit {
 
   anyGroupHasNewMessages: boolean = false;
 
+  newMessageIndicators: { [key: string]: boolean } = {};
+
   public menuItems: any[] | undefined;
 
   public filteredMenuItems: RouteInfo[] = [];
@@ -68,10 +70,19 @@ export class SidebarComponent implements OnInit {
       if (loggedIn) {
         this.usrName = this.authService.getUserLogued();
         this.isAdmin = this.authService.isAdmin();
-        this.chatService.initAnyGroupHasNewMessages()
+        if(this.isAdmin){
+          this.chatService.initAnyGroupHasNewMessages()
           .then((inicial) => {
             this.anyGroupHasNewMessages = inicial;
           })
+        }else{
+            const usr = this.authService.getUserLogued();
+            const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(usr);
+            activeMessagesIndicator.subscribe((isActive: boolean) => {
+                this.newMessageIndicators[usr] = isActive;
+            });
+        }
+        
       }
 
     });
