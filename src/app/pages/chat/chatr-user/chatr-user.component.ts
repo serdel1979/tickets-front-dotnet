@@ -42,9 +42,9 @@ export class ChatrUserComponent implements OnInit {
     this.elemento = document.getElementById("messageList")
     const usrlog = this.authService.getUserLogued();
     this.chatService.joinGroup(usrlog).then();
-    this.chatService.onLoadMessages((usrlog,messages: string[]) => {
-      this.getMessages(usrlog);
-    })
+    
+    this.getMessages(usrlog);
+    
     this.chatService.onReceiveMessage((groupReceive: string, messages: string[]) => {
       if(groupReceive == usrlog){
         this.messages = messages;

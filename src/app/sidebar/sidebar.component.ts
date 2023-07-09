@@ -79,6 +79,7 @@ export class SidebarComponent implements OnInit {
             const usr = this.authService.getUserLogued();
             const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(usr);
             activeMessagesIndicator.subscribe((isActive: boolean) => {
+                console.log(isActive);
                 this.newMessageIndicators[usr] = isActive;
             });
         }
