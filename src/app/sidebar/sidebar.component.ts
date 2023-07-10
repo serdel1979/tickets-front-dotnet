@@ -65,7 +65,6 @@ export class SidebarComponent implements OnInit {
     this.isLoggedIn = this.authService.isLogued();
     this.usrName = this.authService.getUserLogued();
     this.isAdmin = this.authService.isAdmin();
-    console.log('logueado? ', this.isLoggedIn);
     if (this.isLoggedIn) {
 
       this.usrName = this.authService.getUserLogued();
@@ -104,10 +103,10 @@ export class SidebarComponent implements OnInit {
                 this.anyGroupHasNewMessages = inicial;
               })
           } else {
-            const usr = this.authService.getUserLogued();
-            const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(usr);
+            const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(this.usrName);
             activeMessagesIndicator.subscribe((isActive: boolean) => {
-              this.newMessageIndicators[usr] = isActive;
+              console.log('llega ',isActive);
+              this.newMessageIndicators[this.usrName] = isActive;
             });
           }
 

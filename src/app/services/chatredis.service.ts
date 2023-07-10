@@ -40,17 +40,19 @@ export class ChatredisService {
       })
       .catch((err) => console.error(err));
 
-    this.onLoadMessages((groupName: string, messages: string[]) => {
-      if (this.activeMessagesIndicators[groupName]) {
-        this.newMessageIndicators[groupName] = messages.length > 0;
-        this.activeMessagesIndicators[groupName].next(messages.length > 0);
-      }
-    });
+    // this.onLoadMessages((groupName: string, messages: string[]) => {
+    //   if (this.activeMessagesIndicators[groupName]) {
+    //     this.newMessageIndicators[groupName] = messages.length > 0;
+    //     this.activeMessagesIndicators[groupName].next(messages.length > 0);
+    //     console.log('emite al load ',groupName,' ',messages.length > 0)
+    //   }
+    // });
     //carga los mensajes cuando llegan
     this.onReceiveMessage((groupName: string, messages: string[]) => {
       if (this.activeMessagesIndicators[groupName]) {
-        this.newMessageIndicators[groupName] = true;
-        this.activeMessagesIndicators[groupName].next(true);
+        this.newMessageIndicators[groupName] = messages.length > 0;
+        this.activeMessagesIndicators[groupName].next(messages.length > 0);
+        console.log('emite al recibir ',groupName,' ',messages.length > 0)
       }
     });
   }
@@ -139,6 +141,7 @@ export class ChatredisService {
   public deleteGroupMessages(groupName: string): Promise<string[]> {
     this.newMessageIndicators[groupName] = false;
     this.activeMessagesIndicators[groupName].next(false);
+    console.log('emitiendo false');
     return this.connection.invoke('DeleteGroupMessagesChat', groupName);
   }
 
