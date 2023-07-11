@@ -40,7 +40,7 @@ export class AdminComponent implements OnInit {
   
   sound: any; 
 
-  public solicitudes!: Solicitud[];
+  public solicitudes : Solicitud[] = [];
 
   constructor(private solicitudesService: SolicitudesService,
     private authService: AuthService,

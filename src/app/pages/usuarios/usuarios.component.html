@@ -1,1 +1,57 @@
-<p>usuarios works!</p>
+<div class="row">
+    <div class="col-md-12">
+        <div *ngIf="users.length == 0" class="card">
+            <div class="card-header">
+                <h4 class="card-title"> Usuarios </h4>
+            </div>
+            <div class="card-body">
+                <h3>Nada por ahora...</h3>
+            </div>
+        </div>
+        <div *ngIf="users.length > 0" class="card">
+            <div class="card-header">
+                <h4 class="card-title"> Usuarios </h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <th>
+                                Depto
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                Habilitado
+                            </th>
+                            <th>
+                                Acción
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let usr of users | paginate: { itemsPerPage:3, currentPage: page}">
+                                <td>
+                                   {{ usr.userName}}
+                                </td>
+                                <td>
+                                    {{usr.email}}
+                                </td>
+                                <td>
+                                    {{usr.habilitado}}
+                                </td>
+                                <td style="width: 30mm;">
+                                    <i (click)="verUsuario()" class="nc-icon nc-minimal-right icon-zoom"></i>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <pagination-controls (pageChange)="onPageChange($event)" previousLabel=&laquo; nextLabel=&raquo;>
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
