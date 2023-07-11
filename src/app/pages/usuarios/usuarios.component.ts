@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../services/users.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-usuarios',
@@ -12,14 +13,19 @@ export class UsuariosComponent implements OnInit{
   users: any[] = [];
   public page!: number;
 
+  public spinnerMostrar: boolean = false;
 
-  constructor(private usersService: UsersService){}
+  constructor(private usersService: UsersService, private toastr: ToastrService){}
 
   ngOnInit(): void {
+    this.spinnerMostrar = true;
     this.usersService.getUsers()
     .subscribe((users:any[])=>{
       this.users = users;
-      console.log(users);
+      this.spinnerMostrar = false;
+    },
+    ()=>{
+      this.spinnerMostrar = false;
     })
   }
 
@@ -36,6 +42,32 @@ export class UsuariosComponent implements OnInit{
   habilitarToggle(usr: any) {
 
     console.log(`${usr.id} `);
+    this.usersService.habilitaToggle(usr.id,usr).subscribe(()=>{
+      this.toastr.success(
+        '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Usuario editado!!!</span>',
+        "",
+        {
+          timeOut: 4000,
+          closeButton: true,
+          enableHtml: true,
+          toastClass: "alert alert-success alert-with-icon",
+          positionClass: "toast-" + "top" + "-" + "center"
+        }
+      );
+    },
+    (err) => {
+      this.toastr.error(
+        '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">' + err.name + '</span>',
+        "",
+        {
+          timeOut: 4000,
+          closeButton: true,
+          enableHtml: true,
+          toastClass: "alert alert-danger alert-with-icon",
+          positionClass: "toast-" + "top" + "-" + "center"
+        }
+      );
+    })
     
   }
 

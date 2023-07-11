@@ -25,6 +25,7 @@ interface NewMessage {
 export class AdminComponent implements OnInit {
 
 
+  public spinnerMostrar:boolean = false;
   public userName = '';
   public groupName = '';
   public messageToSend = '';
@@ -81,9 +82,14 @@ export class AdminComponent implements OnInit {
     //if(flag)this.sound.play();
     this.isLogued = this.authService.isLogued();
     this.userName = this.authService.getUserLogued();
+    this.spinnerMostrar = true;
     if (this.isLogued) {
       this.solicitudesService.getSolicitudes().subscribe(async resp => {
         this.solicitudes = resp;
+        this.spinnerMostrar = false;
+      },
+      (err)=>{
+        this.spinnerMostrar = false;
       })
     }
   }

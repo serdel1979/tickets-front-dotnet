@@ -1,14 +1,26 @@
 <div class="row">
     <div class="col-md-12">
-        <div *ngIf="users.length == 0" class="card">
+        <div *ngIf="users.length == 0 && !spinnerMostrar" class="card">
             <div class="card-header">
                 <h4 class="card-title"> Usuarios </h4>
             </div>
             <div class="card-body">
-                <h3>Nada por ahora...</h3>
+                <h5>Nada por ahora...</h5>
+            </div>
+
+        </div>
+        <div *ngIf="spinnerMostrar" class="card">
+            <div class="card-header">
+                <h4 class="card-title"> Usuarios </h4>
+            </div>
+            <div class="card-body">
+                <div class="spinner-border " role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
         </div>
-        <div *ngIf="users.length > 0" class="card">
+
+        <div *ngIf="users.length > 0 && !spinnerMostrar" class="card">
             <div class="card-header">
                 <h4 class="card-title"> Usuarios </h4>
             </div>
@@ -32,13 +44,15 @@
                         <tbody>
                             <tr *ngFor="let usr of users | paginate: { itemsPerPage:3, currentPage: page}">
                                 <td>
-                                   {{ usr.userName}}
+                                    {{ usr.userName}}
                                 </td>
                                 <td>
                                     {{usr.email}}
                                 </td>
                                 <td>
-                                    <input [(ngModel)]="usr.habilitado" (ngModelChange)="habilitarToggle(usr)" class="form-check-input" type="checkbox" role="switch" [checked]="usr.habilitado">
+                                    <input [(ngModel)]="usr.habilitado" (ngModelChange)="habilitarToggle(usr)"
+                                        class="form-check-input" type="checkbox" role="switch"
+                                        [checked]="usr.habilitado">
                                 </td>
                                 <td style="width: 30mm;">
                                     <i (click)="verUsuario()" class="nc-icon nc-minimal-right icon-zoom"></i>

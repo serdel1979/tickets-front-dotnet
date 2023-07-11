@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 
 
 const BASEURL = environment.baseUrl;
@@ -17,6 +17,11 @@ export class UsersService {
 
   getUsers(){
     return this.http.get<any[]>(`${BASEURL}/usuarios`);
+  }
+
+  habilitaToggle(id: string, usr:any){
+    console.log(BASEURL);
+    return this.http.put(`${BASEURL}/usuarios/habilitatoggle/${id}`, usr);
   }
 
 }
