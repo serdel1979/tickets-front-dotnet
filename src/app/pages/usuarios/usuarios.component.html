@@ -38,7 +38,7 @@
                                     {{usr.email}}
                                 </td>
                                 <td>
-                                    {{usr.habilitado}}
+                                    <input [(ngModel)]="usr.habilitado" (ngModelChange)="habilitarToggle(usr)" class="form-check-input" type="checkbox" role="switch" [checked]="usr.habilitado">
                                 </td>
                                 <td style="width: 30mm;">
                                     <i (click)="verUsuario()" class="nc-icon nc-minimal-right icon-zoom"></i>

@@ -32,4 +32,13 @@ export class UsuariosComponent implements OnInit{
 
   }
 
+
+  habilitarToggle(usr: any) {
+
+    console.log(`${usr.id} `);
+    
+  }
+
+ 
+
 }
