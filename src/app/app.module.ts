@@ -25,7 +25,6 @@ import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 import { environment } from 'src/environments/environment';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +33,7 @@ import { environment } from 'src/environments/environment';
     AdminLayoutComponent,
     HistorialComponent,
     DetalleSolicitudComponent,
-    EditaSolicitudComponent
+    EditaSolicitudComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

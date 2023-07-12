@@ -10,6 +10,7 @@ import { HistorialComponent } from 'src/app/pages/historial/historial.component'
 import { DetalleSolicitudComponent } from 'src/app/pages/solicitudes/detalle-solicitud/detalle-solicitud.component';
 import { EditaSolicitudComponent } from 'src/app/pages/solicitudes/edita-solicitud/edita-solicitud.component';
 import { SolicitudesComponent } from 'src/app/pages/solicitudes/solicitudes.component';
+import { UsuarioDetallaComponent } from 'src/app/pages/usuarios/usuario-detalla/usuario-detalla.component';
 import { UsuariosComponent } from 'src/app/pages/usuarios/usuarios.component';
 import { ChatrAdminComponent } from '../../pages/chat/chatr-admin/chatr-admin.component';
 import { ChatrUserComponent } from '../../pages/chat/chatr-user/chatr-user.component';
@@ -23,6 +24,7 @@ export const AdminLayoutRoutes: Routes = [
      { path: 'solicitudes/ver/:id', component: EditaSolicitudComponent, canActivate : [isLoguedGuard,isAdminGuard]},
      { path: 'historial',      component: HistorialComponent, canActivate:[isLoguedGuard] },
      { path: 'usuarios',           component: UsuariosComponent, canActivate:[isLoguedGuard,isAdminGuard] },
+     { path: 'usuarios/detalle/:id',           component: UsuarioDetallaComponent, canActivate:[isLoguedGuard,isAdminGuard] },
      { path: 'equipos',          component: EquiposComponent, canActivate:[isLoguedGuard,isAdminGuard] },
      { path: 'chat', component:ChatComponent, canActivate:[isLoguedGuard]}
 ];

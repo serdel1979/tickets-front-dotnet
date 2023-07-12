@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-usuarios',
@@ -15,7 +16,7 @@ export class UsuariosComponent implements OnInit{
 
   public spinnerMostrar: boolean = false;
 
-  constructor(private usersService: UsersService, private toastr: ToastrService){}
+  constructor(private usersService: UsersService, private toastr: ToastrService, private router: Router){}
 
   ngOnInit(): void {
     this.spinnerMostrar = true;
@@ -34,10 +35,7 @@ export class UsuariosComponent implements OnInit{
     this.page = event;
   }
 
-  verUsuario(){
-
-  }
-
+  
 
   habilitarToggle(usr: any) {
 
@@ -72,5 +70,11 @@ export class UsuariosComponent implements OnInit{
   }
 
  
+  verUsuario(id: string){
+  
+    this.router.navigate([`usuarios/detalle/${id}`]);
+    
+  }
+  
 
 }
