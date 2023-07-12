@@ -24,4 +24,10 @@ export class UsersService {
     return this.http.put(`${BASEURL}/usuarios/habilitatoggle/${id}`, usr);
   }
 
+
+  getUser(id: string){
+    return this.http.get<any>(`${BASEURL}/usuarios/detalle/${id}`);
+  }
+
+
 }
