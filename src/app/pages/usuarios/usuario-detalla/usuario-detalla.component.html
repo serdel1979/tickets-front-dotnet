@@ -1,65 +1,79 @@
 <div *ngIf="buscando">
     <span class="sr-only">Loading...</span>
-  </div>
-  <div *ngIf="errorNotFound">
+</div>
+<div *ngIf="errorNotFound">
     <div class="alert alert-danger">
-      Ha ocurrido un error!!!
+        Ha ocurrido un error!!!
     </div>
     <div>
-      <button (click)="volver()" class="btn btn-primary">Volver</button>
+        <button (click)="volver()" class="btn btn-primary">Volver</button>
     </div>
-  </div>
-  <div *ngIf="usuario" class="row">
+</div>
+<div *ngIf="usuario" class="row">
     <div class="col-sm-6 col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h4>Usuario</h4>
-        </div>
-        <div *ngIf="usuario" class="card-body">
-          <div>
-            <strong>Departamento: </strong>
-            <span>{{ usuario.userName }}</span>
-          </div>
-          <div>
-            <strong>Email: </strong>
-            <span>{{ usuario.email }}</span>
-          </div>
-          <div>
-            <strong>Es administrador: </strong>
-            <input [(ngModel)]="usuario.esAdmin" class="form-check-input" type="checkbox" role="switch"
-              [disabled]="!usuario.habilitado">
-          </div>
-          <div>
-            <strong>Está habilitado: </strong>
-            <input [(ngModel)]="usuario.habilitado" class="form-check-input" type="checkbox" role="switch" disabled>
-          </div>
-  
-          <div>
-            <strong>Resetear contraseña: </strong>
-            <input type="checkbox" (click)="reset()" [(ngModel)]="mostrarResetearPass">
-          </div>
-  
-          <div *ngIf="mostrarResetearPass">
-            <div>
-              <strong>Nueva contraseña: </strong>
-              <div class="input-group">
-                <input [(ngModel)]="nuevaPasswd" [type]="verPass ? 'text' : 'password'">
-                <div class="input-group-addon">
-                  <i (click)="verPass=!verPass" class="fa fa-eye{{ verPass ? '-slash' : '' }}" aria-hidden="true"></i>
-                </div>
-              </div>
+        <div class="card">
+            <div class="card-header">
+                <h4>Usuario</h4>
             </div>
-          </div>
-          
-          
-  
-          <button (click)="volver()" class="btn btn-primary">Volver</button>
-          <button (click)="guardar()" class="btn btn-primary">
-            <span *ngIf="mostrarSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Guardar
-          </button>
+            <div *ngIf="usuario" class="card-body">
+                <div>
+                    <strong>Departamento: </strong>
+                    <span>{{ usuario.userName }}</span>
+                </div>
+                <div>
+                    <strong>Email: </strong>
+                    <span>{{ usuario.email }}</span>
+                </div>
+                <div>
+                    <strong>Es administrador: </strong>
+                    <input [(ngModel)]="usuario.esAdmin" class="form-check-input" type="checkbox" role="switch"
+                        [disabled]="!usuario.habilitado">
+                </div>
+                <div>
+                    <strong>Está habilitado: </strong>
+                    <input [(ngModel)]="usuario.habilitado" class="form-check-input" type="checkbox" role="switch"
+                        disabled>
+                </div>
+
+                <a href="#" (click)="openModal()">Resetear contraseña</a>
+
+                <button (click)="volver()" class="btn btn-primary">Volver</button>
+                <button (click)="guardar()" class="btn btn-primary">
+                    <span *ngIf="mostrarSpinner" class="spinner-border spinner-border-sm" role="status"
+                        aria-hidden="true"></span>
+                    Guardar
+                </button>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  
+</div>
+
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="resetPasswordModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resetPasswordModalLabel">Restablecer Contraseña</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input [(ngModel)]="nuevaPasswd" [type]="verPass ? 'text' : 'password'">
+                        <div class="input-group-addon">
+                            <i (click)="verPass=!verPass" class="fa fa-eye{{ verPass ? '-slash' : '' }}"
+                                aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="restablecerContrasena()">Restablecer
+                    Contraseña</button>
+            </div>
+        </div>
+    </div>
+</div>

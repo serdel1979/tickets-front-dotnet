@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Usuario, UsuarioDetalle } from '../../../interfaces/usuario.interface';
 import { UsersService } from '../../../services/users.service';
 import { CommonModule } from '@angular/common';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-usuario-detalla',
@@ -27,7 +28,8 @@ export class UsuarioDetallaComponent implements OnInit {
 
   constructor(private router: Router,
     private route: ActivatedRoute,
-    private usersService: UsersService) { }
+    private usersService: UsersService,
+    private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.idUsuario = this.route.snapshot.params['id'];
@@ -81,8 +83,12 @@ export class UsuarioDetallaComponent implements OnInit {
   }
 
 
-  reset(){
+  restablecerContrasena(){
     this.nuevaPasswd = '';
+  }
+
+  openModal() {
+    this.modalService.open('#resetPasswordModal', { ariaLabelledBy: 'resetPasswordModalLabel' });
   }
 
 
