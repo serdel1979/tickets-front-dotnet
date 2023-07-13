@@ -33,7 +33,7 @@ import { environment } from 'src/environments/environment';
     AdminLayoutComponent,
     HistorialComponent,
     DetalleSolicitudComponent,
-    EditaSolicitudComponent,
+    EditaSolicitudComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

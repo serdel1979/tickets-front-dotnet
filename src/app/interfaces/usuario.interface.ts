@@ -18,3 +18,11 @@ export interface UsuarioChat {
     userName : string;
     Email : string;
 }
+
+export interface UsuarioDetalle {
+    id: string;
+    userName: string;
+    email: string;
+    esAdmin: boolean;
+    habilitado: boolean;
+}

@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SolicitudesComponent } from 'src/app/pages/solicitudes/solicitudes.component';
 import { UsuariosComponent } from 'src/app/pages/usuarios/usuarios.component';
+
 import { EquiposComponent } from 'src/app/pages/equipos/equipos.component';
 import { AdminComponent } from '../../pages/solicitudes/admin/admin.component';
 import { UsersComponent } from 'src/app/pages/solicitudes/users/users.component';
@@ -17,10 +18,12 @@ import { ChatUserComponent } from 'src/app/pages/chat/chat-user/chat-user.compon
 import { ChatrAdminComponent } from 'src/app/pages/chat/chatr-admin/chatr-admin.component';
 import { ChatrUserComponent } from 'src/app/pages/chat/chatr-user/chatr-user.component';
 import { FirstWordBoldPipe } from 'src/app/pipes/world-brawn';
+import { UsuarioDetallaComponent } from 'src/app/pages/usuarios/usuario-detalla/usuario-detalla.component';
 
 @NgModule({
     declarations: [
         SolicitudesComponent,
+        UsuarioDetallaComponent,
         UsuariosComponent,
         EquiposComponent,
         AdminComponent,

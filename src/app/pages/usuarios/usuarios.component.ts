@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { UsuarioDetalle } from 'src/app/interfaces/usuario.interface';
 
 @Component({
   selector: 'app-usuarios',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 export class UsuariosComponent implements OnInit{
 
 
-  users: any[] = [];
+  users: UsuarioDetalle[] = [];
   public page!: number;
 
   public spinnerMostrar: boolean = false;
