@@ -17,6 +17,11 @@ export class UsuarioDetallaComponent implements OnInit {
 
   public errorNotFound!: string;
 
+  public nuevaPasswd!: string;
+
+  public mostrarResetearPass: boolean = false;
+  public verPass: boolean = false;
+
   public buscando: boolean = false;
   public mostrarSpinner: boolean = false;
 
@@ -55,7 +60,6 @@ export class UsuarioDetallaComponent implements OnInit {
     if (this.usuario.esAdmin) {
       this.usersService.hacerAdmin(this.usuario)
         .subscribe(() => {
-          console.log(`${this.usuario.userName} a admin`);
           this.mostrarSpinner = false;
         }
           ,
@@ -66,7 +70,6 @@ export class UsuarioDetallaComponent implements OnInit {
     } else {
       this.usersService.borrarAdmin(this.usuario)
         .subscribe(() => {
-          console.log('borra admin');
           this.mostrarSpinner = false;
         },
           (err) => {
@@ -78,6 +81,9 @@ export class UsuarioDetallaComponent implements OnInit {
   }
 
 
+  reset(){
+    this.nuevaPasswd = '';
+  }
 
 
 }
