@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { UsuarioDetalle } from '../interfaces/usuario.interface';
+import { UsuarioDetalle, Usuario } from '../interfaces/usuario.interface';
 
 
 const BASEURL = environment.baseUrl;
@@ -16,32 +16,41 @@ export class UsersService {
 
 
 
-  getUsers(){
+  getUsers() {
     return this.http.get<UsuarioDetalle[]>(`${BASEURL}/usuarios`);
   }
 
-  habilitaToggle(id: string, usr:any){
+  habilitaToggle(id: string, usr: any) {
     return this.http.put(`${BASEURL}/usuarios/habilitatoggle/${id}`, usr);
   }
 
 
-  getUser(id: string){
+  getUser(id: string) {
     return this.http.get<UsuarioDetalle>(`${BASEURL}/usuarios/detalle/${id}`);
   }
 
-  hacerAdmin(usuario: UsuarioDetalle){
-      const user = {
-        userName: usuario.userName 
-      }  
-      return this.http.post(`${BASEURL}/usuarios/haceradmin`,user);
+  hacerAdmin(usuario: UsuarioDetalle) {
+    const user = {
+      userName: usuario.userName
+    }
+    return this.http.post(`${BASEURL}/usuarios/haceradmin`, user);
   }
 
-  borrarAdmin(usuario: UsuarioDetalle){
+  borrarAdmin(usuario: UsuarioDetalle) {
     const user = {
-      userName: usuario.userName 
-    }  
-    return this.http.post(`${BASEURL}/usuarios/borraradmin`,user);
-}
+      userName: usuario.userName
+    }
+    return this.http.post(`${BASEURL}/usuarios/borraradmin`, user);
+  }
+
+  resetPassword(formulario: any){
+    console.log(formulario);
+    const data={
+      Usuario: formulario.user,
+      Password: formulario.password2
+    }
+    return this.http.put(`${BASEURL}/usuarios/resetPassword`,data);
+  }
 
 
 }

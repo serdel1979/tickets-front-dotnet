@@ -35,7 +35,7 @@
                         disabled>
                 </div>
 
-                <a href="#" (click)="openModal()">Resetear contraseña</a>
+                <button (click)="mostrarModalReset()">Resetear contraseña</button>
 
                 <button (click)="volver()" class="btn btn-primary">Volver</button>
                 <button (click)="guardar()" class="btn btn-primary">
@@ -48,32 +48,43 @@
     </div>
 </div>
 
-<div class="modal fade" id="resetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="resetPasswordModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="resetPasswordModalLabel">Restablecer Contraseña</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+<ng-template #modalResetPassword let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Cambio de contraseña</h5>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close"
+                (click)="modal.close()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="miFormulario" (ngSubmit)="modal.close('send')">
+                <div class="form-group">
+                        <p>{{ capitalizarPrimeraLetra(usuario.userName) }}</p>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="password1" formControlName="password1"
+                        autocomplete="off" placeholder="Ingrese una contraseña">
+                    <span *ngIf="passwordNoValido('password1')" class="form-text text-danger">
+                        {{ passErrorMsg }}
+                    </span>
+
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="password2" formControlName="password2"
+                        autocomplete="off" placeholder="Vuelva a escribir la contraseña">
+                    <span *ngIf="password2NoValido('password2')" class="form-text text-danger">
+                        {{ pass2ErrorMsg }}
+                    </span>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <span *ngIf="mostrarSpinner" class="spinner-border spinner-border-sm" role="status"
+                        aria-hidden="true"></span>
+                    Guardar
                 </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <input [(ngModel)]="nuevaPasswd" [type]="verPass ? 'text' : 'password'">
-                        <div class="input-group-addon">
-                            <i (click)="verPass=!verPass" class="fa fa-eye{{ verPass ? '-slash' : '' }}"
-                                aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" (click)="restablecerContrasena()">Restablecer
-                    Contraseña</button>
-            </div>
+            </form>
         </div>
     </div>
-</div>
+</ng-template>

@@ -90,7 +90,6 @@ export class UsersComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private modalService: NgbModal,
-    private chatService: ChatredisService,
     public validaText: ValidaFormsService,
     private solicitudesServices: SolicitudesService) {
       this.sound = new Audio('../../../../assets/sound/solicitud.mp3');
