@@ -35,7 +35,9 @@
                         disabled>
                 </div>
 
-                <button (click)="mostrarModalReset()">Resetear contraseña</button>
+                <div>
+                    <a href="javascript:void(0)" (click)="mostrarModalReset()">Resetear contraseña</a>
+                </div>
 
                 <button (click)="volver()" class="btn btn-primary">Volver</button>
                 <button (click)="guardar()" class="btn btn-primary">
@@ -60,7 +62,7 @@
         <div class="modal-body">
             <form [formGroup]="miFormulario" (ngSubmit)="modal.close('send')">
                 <div class="form-group">
-                        <p>{{ capitalizarPrimeraLetra(usuario.userName) }}</p>
+                    <p>{{ capitalizarPrimeraLetra(usuario.userName) }}</p>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" id="password1" formControlName="password1"

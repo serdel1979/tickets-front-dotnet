@@ -49,7 +49,7 @@ export class UsersService {
       Usuario: formulario.user,
       Password: formulario.password2
     }
-    return this.http.put(`${BASEURL}/usuarios/resetearPassword`,data);
+    return this.http.post(`${BASEURL}/usuarios/resetearPassword`,data);
   }
 
 
