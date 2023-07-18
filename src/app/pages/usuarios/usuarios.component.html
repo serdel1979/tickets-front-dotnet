@@ -38,7 +38,7 @@
                                 Habilitado
                             </th>
                             <th>
-                                Acción
+                                Ver
                             </th>
                         </thead>
                         <tbody>
@@ -52,7 +52,7 @@
                                 <td>
                                     <input [(ngModel)]="usr.habilitado" (ngModelChange)="habilitarToggle(usr)"
                                         class="form-check-input" type="checkbox" role="switch"
-                                        [checked]="usr.habilitado">
+                                        [checked]="usr.habilitado" title="Habilita o deshabilita usuario">
                                 </td>
                                 <td style="width: 30mm;">
                                     <i (click)="verUsuario(usr.id)" class="nc-icon nc-minimal-right icon-zoom"></i>

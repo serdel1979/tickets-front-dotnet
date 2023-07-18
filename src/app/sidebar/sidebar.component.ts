@@ -62,7 +62,11 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
 
-    this.isLoggedIn = this.authService.isLogued();
+    this.authService.subsLogued.subscribe((logued)=>{
+      this.isLoggedIn = logued;
+    })
+
+    
     this.usrName = this.authService.getUserLogued();
     this.isAdmin = this.authService.isAdmin();
     if (this.isLoggedIn) {

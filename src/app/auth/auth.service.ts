@@ -49,6 +49,10 @@ export class AuthService {
     return this.http.post<AuthResponse>(url,body);
   }
 
+  get subsLogued(){
+    return this.isLoggedInChange;
+  }
+
   loginOk(){
     this.isLoggedInChange.next(true);
   }

@@ -27,12 +27,12 @@
                 <div>
                     <strong>Es administrador: </strong>
                     <input [(ngModel)]="usuario.esAdmin" class="form-check-input" type="checkbox" role="switch"
-                        [disabled]="!usuario.habilitado">
+                        [disabled]="!usuario.habilitado" title="Marcar como administrador y presionar guardar">
                 </div>
                 <div>
                     <strong>Está habilitado: </strong>
                     <input [(ngModel)]="usuario.habilitado" class="form-check-input" type="checkbox" role="switch"
-                        disabled>
+                        disabled title="Indica si está habilitado">
                 </div>
 
                 <div>
