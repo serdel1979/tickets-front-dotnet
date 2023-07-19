@@ -84,5 +84,8 @@ export class UsuariosComponent implements OnInit{
     
   }
   
+  agregar(){
+    this.router.navigate(['usuarios/agrega']);
+  }
 
 }

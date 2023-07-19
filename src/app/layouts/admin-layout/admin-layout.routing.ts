@@ -15,6 +15,7 @@ import { UsuariosComponent } from 'src/app/pages/usuarios/usuarios.component';
 import { ChatrAdminComponent } from '../../pages/chat/chatr-admin/chatr-admin.component';
 import { ChatrUserComponent } from '../../pages/chat/chatr-user/chatr-user.component';
 import { reloadGuard } from 'src/app/guards/reload.guard';
+import { AgregaComponent } from 'src/app/pages/usuarios/agrega/agrega.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -25,6 +26,7 @@ export const AdminLayoutRoutes: Routes = [
      { path: 'solicitudes/ver/:id', component: EditaSolicitudComponent, canActivate : [isLoguedGuard,isAdminGuard,reloadGuard]},
      { path: 'historial',      component: HistorialComponent, canActivate:[isLoguedGuard] },
      { path: 'usuarios',           component: UsuariosComponent, canActivate:[isLoguedGuard,isAdminGuard,reloadGuard] },
+     { path: 'usuarios/agrega', component: AgregaComponent, canActivate:[isLoguedGuard,isAdminGuard]},
      { path: 'usuarios/detalle/:id',           component: UsuarioDetallaComponent, canActivate:[isLoguedGuard,isAdminGuard,reloadGuard] },
      { path: 'equipos',          component: EquiposComponent, canActivate:[isLoguedGuard,isAdminGuard,reloadGuard] },
      { path: 'chat', component:ChatComponent, canActivate:[isLoguedGuard,reloadGuard]}

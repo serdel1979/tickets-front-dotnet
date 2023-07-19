@@ -52,5 +52,15 @@ export class UsersService {
     return this.http.post(`${BASEURL}/usuarios/resetearPassword`,data);
   }
 
+  guardaUsuario( usuario: string, email: string, password: string){
+    const url = `${BASEURL}/usuarios/registrar`
+    const body = {
+      usuario,
+      email,
+      password
+    }
+    return this.http.post<any>(url,body);
+  }
+
 
 }

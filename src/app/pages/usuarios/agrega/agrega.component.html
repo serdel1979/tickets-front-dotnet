@@ -1,0 +1,46 @@
+<form autocomplete="off" [formGroup]="miFormulario" (ngSubmit)="guardar()">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">Agregar Usuario</div>
+            <div class="card-body">
+
+                <div class="form-group">
+                    <label for="user">Usuario/Departamento</label>
+                    <input class="form-control" formControlName="user" id="user">
+                    <span *ngIf="campoNoValido('user')" class="form-text text-danger">
+                        El usuario es requerido
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" formControlName="email" id="email">
+                    <span *ngIf="campoNoValido('email')" class="form-text text-danger">
+                        {{ emailErrorMsg }}
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input [type]="verPass ? 'text' : 'password'" formControlName="password" class="form-control" id="password">                
+                    <div class="input-group-addon">
+                        <i (click)="verPass=!verPass" class="fa fa-eye{{ verPass ? '-slash' : '' }}" aria-hidden="true"></i>
+                    </div>
+                    
+                    <span *ngIf="passwordNoValido('password')" class="form-text text-danger">
+                      {{ passErrorMsg }}
+                    </span>
+
+                </div>
+            </div>
+            <div class="card-footer">
+                <button [disabled]="miFormulario.invalid || mostrarSpinner" class="btn btn-primary" type="submit">
+                    <span *ngIf="mostrarSpinner" class="spinner-border spinner-border-sm" role="status"
+                        aria-hidden="true"></span>
+                    Guardar
+                </button>
+                <span class="spacer"></span>
+                <a class="btn btn-link" routerLink="/usuarios">Ir a usuarios</a>
+            </div>
+
+        </div>
+    </div>
+</form>
