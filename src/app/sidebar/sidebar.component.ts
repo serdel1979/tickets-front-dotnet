@@ -62,76 +62,116 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.authService.subsLogued.subscribe((logued)=>{
-      this.isLoggedIn = logued;
-      console.log(`${this.usrName} que es admin es ${this.isAdmin} está logueado? ${logued}`);
-      if(logued){
-        // if (this.authService.isAdmin()) {
-        //     this.authService.getAllUsers().subscribe((users)=>{
-        //       for(let usr of users){
-        //         this.chatrService.joinGroup(usr.userName).then()
-        //       }
-        //     })
-        // } else {
-        //   const groupName = this.authService.getUserLogued();
+      if (logued) {
+
+        this.usrName = this.authService.getUserLogued();
+        this.isAdmin = this.authService.isAdmin();
+        this.isLoggedIn =  this.authService.isLogued();
+        if (this.isAdmin) {
+          this.authService.getAllUsers().subscribe((users) => {
+            for (let usr of users) {
+              this.chatService.joinGroup(usr.userName).then()
+            }
+          });
+          this.chatService.initAnyGroupHasNewMessages()
+            .then((inicial) => {
+              this.anyGroupHasNewMessages = inicial;
+            })
+        } else {
+  
+          const usr = this.authService.getUserLogued();
+          this.chatService.startConnection()
+          .then(()=>{
+            const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(usr);
+            activeMessagesIndicator.subscribe((isActive: boolean) => {
+              this.newMessageIndicators[usr] = isActive;
+            });
+          })
          
-        //   this.chatrService.joinGroup(groupName).then()
-        // }
+        }
+      } else {
+        this.usrName = '';
+        this.isAdmin = false;
+        this.isLoggedIn =  false;
+        this.authService.isLoggedInChange.subscribe((loggedIn: boolean) => {
+          this.isLoggedIn = loggedIn;
+          if (loggedIn) {
+            this.usrName = this.authService.getUserLogued();
+            this.isAdmin = this.authService.isAdmin();
+            if (this.isAdmin) {
+              this.chatService.initAnyGroupHasNewMessages()
+                .then((inicial) => {
+                  this.anyGroupHasNewMessages = inicial;
+                })
+            } else {
+              const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(this.usrName);
+              activeMessagesIndicator.subscribe((isActive: boolean) => {
+                console.log('llega ',isActive);
+                this.newMessageIndicators[this.usrName] = isActive;
+              });
+            }
+  
+          }
+  
+        });
       }
     })
 
-    
-    this.usrName = this.authService.getUserLogued();
-    this.isAdmin = this.authService.isAdmin();
+
+    // if (this.isLoggedIn) {
+
+    //   this.usrName = this.authService.getUserLogued();
+    //   this.isAdmin = this.authService.isAdmin();
+    //   if (this.isAdmin) {
+    //     this.authService.getAllUsers().subscribe((users) => {
+    //       for (let usr of users) {
+    //         this.chatService.joinGroup(usr.userName).then()
+    //       }
+    //     });
+    //     this.chatService.initAnyGroupHasNewMessages()
+    //       .then((inicial) => {
+    //         this.anyGroupHasNewMessages = inicial;
+    //       })
+    //   } else {
+
+    //     const usr = this.authService.getUserLogued();
+    //     this.chatService.startConnection()
+    //     .then(()=>{
+    //       const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(usr);
+    //       activeMessagesIndicator.subscribe((isActive: boolean) => {
+    //         this.newMessageIndicators[usr] = isActive;
+    //       });
+    //     })
+       
+    //   }
+    // } else {
+    //   this.authService.isLoggedInChange.subscribe((loggedIn: boolean) => {
+    //     this.isLoggedIn = loggedIn;
+    //     if (loggedIn) {
+    //       this.usrName = this.authService.getUserLogued();
+    //       this.isAdmin = this.authService.isAdmin();
+    //       if (this.isAdmin) {
+    //         this.chatService.initAnyGroupHasNewMessages()
+    //           .then((inicial) => {
+    //             this.anyGroupHasNewMessages = inicial;
+    //           })
+    //       } else {
+    //         const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(this.usrName);
+    //         activeMessagesIndicator.subscribe((isActive: boolean) => {
+    //           console.log('llega ',isActive);
+    //           this.newMessageIndicators[this.usrName] = isActive;
+    //         });
+    //       }
+
+    //     }
+
+    //   });
+    // }
+
     this.isLoggedIn =  this.authService.isLogued();
-
-    if (this.isLoggedIn) {
-
+    if(this.isLoggedIn){
       this.usrName = this.authService.getUserLogued();
       this.isAdmin = this.authService.isAdmin();
-      if (this.isAdmin) {
-        this.authService.getAllUsers().subscribe((users) => {
-          for (let usr of users) {
-            this.chatService.joinGroup(usr.userName).then()
-          }
-        });
-        this.chatService.initAnyGroupHasNewMessages()
-          .then((inicial) => {
-            this.anyGroupHasNewMessages = inicial;
-          })
-      } else {
-
-        const usr = this.authService.getUserLogued();
-        this.chatService.startConnection()
-        .then(()=>{
-          const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(usr);
-          activeMessagesIndicator.subscribe((isActive: boolean) => {
-            this.newMessageIndicators[usr] = isActive;
-          });
-        })
-       
-      }
-    } else {
-      this.authService.isLoggedInChange.subscribe((loggedIn: boolean) => {
-        this.isLoggedIn = loggedIn;
-        if (loggedIn) {
-          this.usrName = this.authService.getUserLogued();
-          this.isAdmin = this.authService.isAdmin();
-          if (this.isAdmin) {
-            this.chatService.initAnyGroupHasNewMessages()
-              .then((inicial) => {
-                this.anyGroupHasNewMessages = inicial;
-              })
-          } else {
-            const activeMessagesIndicator = this.chatService.getActiveMessagesIndicator(this.usrName);
-            activeMessagesIndicator.subscribe((isActive: boolean) => {
-              console.log('llega ',isActive);
-              this.newMessageIndicators[this.usrName] = isActive;
-            });
-          }
-
-        }
-
-      });
     }
 
     this.chatService.getAnyGroupHasNewMessages().subscribe(hasNewMessages => {
