@@ -13,9 +13,6 @@ export class AuthService {
   private baseUrl: string = environment.baseUrl;
 
   private _usuario!: Usuario;
-
-  private userName: string = '';
-
   
 
   public isLoggedInChange: Subject<boolean> = new Subject<boolean>();
@@ -58,8 +55,8 @@ export class AuthService {
   }
 
   logout(){
-    this.isLoggedInChange.next(false);
     localStorage.clear();
+    this.isLoggedInChange.next(false);
   }
 
   isAdmin(){
@@ -74,6 +71,17 @@ export class AuthService {
   }
 
   getUserLogued(){
+    let objetoString: string | null = localStorage.getItem('usrlog');
+    if (objetoString) {
+        let usr: any = JSON.parse(objetoString);
+        if(usr.userName){
+          return usr.userName;
+        }
+    }
+    return null;
+  }
+
+  get getUserLogueado(){
     let objetoString: string | null = localStorage.getItem('usrlog');
     if (objetoString) {
         let usr: any = JSON.parse(objetoString);

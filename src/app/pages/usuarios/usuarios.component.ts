@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -16,6 +16,14 @@ export class UsuariosComponent implements OnInit{
   public page!: number;
 
   public spinnerMostrar: boolean = false;
+
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event:any) {
+    // Aquí se puede agregar el código para manejar el evento
+    console.log('La página se está recargando o cerrando');
+    this.router.navigate([`solicitudes`]);
+    
+  }
 
   constructor(private usersService: UsersService, private toastr: ToastrService, private router: Router){}
 
@@ -40,10 +48,9 @@ export class UsuariosComponent implements OnInit{
 
   habilitarToggle(usr: any) {
 
-    console.log(`${usr.id} `);
     this.usersService.habilitaToggle(usr.id,usr).subscribe(()=>{
       this.toastr.success(
-        '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Usuario editado!!!</span>',
+        '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Actualizado!!!</span>',
         "",
         {
           timeOut: 4000,

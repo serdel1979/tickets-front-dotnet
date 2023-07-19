@@ -46,17 +46,17 @@ export class LoginComponent {
 
         this.authService.loginOk();
         
-        if (this.authService.isAdmin()) {
-            this.authService.getAllUsers().subscribe((users)=>{
-              for(let usr of users){
-                this.chatrService.joinGroup(usr.userName).then()
-              }
-            })
-        } else {
-          const groupName = this.authService.getUserLogued();
+        // if (this.authService.isAdmin()) {
+        //     this.authService.getAllUsers().subscribe((users)=>{
+        //       for(let usr of users){
+        //         this.chatrService.joinGroup(usr.userName).then()
+        //       }
+        //     })
+        // } else {
+        //   const groupName = this.authService.getUserLogued();
          
-          this.chatrService.joinGroup(groupName).then()
-        }
+        //   this.chatrService.joinGroup(groupName).then()
+        // }
 
 
         this.toastr.success(
@@ -73,6 +73,7 @@ export class LoginComponent {
         this.router.navigateByUrl('/solicitudes');
       },
         (err) => {
+          console.log(err);
           this.mostrarSpinner = false;
           this.toastr.error(
             '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">' + err.name + '</span>',

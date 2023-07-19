@@ -14,17 +14,18 @@ import { UsuarioDetallaComponent } from 'src/app/pages/usuarios/usuario-detalla/
 import { UsuariosComponent } from 'src/app/pages/usuarios/usuarios.component';
 import { ChatrAdminComponent } from '../../pages/chat/chatr-admin/chatr-admin.component';
 import { ChatrUserComponent } from '../../pages/chat/chatr-user/chatr-user.component';
+import { reloadGuard } from 'src/app/guards/reload.guard';
 
 
 export const AdminLayoutRoutes: Routes = [
      { path: 'login',          component: LoginComponent, canActivate:[loguedGuard] },
      { path: 'registro',          component: RegisterComponent },
-     { path: 'solicitudes',      component: SolicitudesComponent, canActivate:[isLoguedGuard] },
-     { path: 'solicitudes/detalle/:id', component: DetalleSolicitudComponent, canActivate : [isLoguedGuard]},
-     { path: 'solicitudes/ver/:id', component: EditaSolicitudComponent, canActivate : [isLoguedGuard,isAdminGuard]},
+     { path: 'solicitudes',      component: SolicitudesComponent, canActivate:[isLoguedGuard,reloadGuard] },
+     { path: 'solicitudes/detalle/:id', component: DetalleSolicitudComponent, canActivate : [isLoguedGuard,reloadGuard]},
+     { path: 'solicitudes/ver/:id', component: EditaSolicitudComponent, canActivate : [isLoguedGuard,isAdminGuard,reloadGuard]},
      { path: 'historial',      component: HistorialComponent, canActivate:[isLoguedGuard] },
-     { path: 'usuarios',           component: UsuariosComponent, canActivate:[isLoguedGuard,isAdminGuard] },
-     { path: 'usuarios/detalle/:id',           component: UsuarioDetallaComponent, canActivate:[isLoguedGuard,isAdminGuard] },
-     { path: 'equipos',          component: EquiposComponent, canActivate:[isLoguedGuard,isAdminGuard] },
-     { path: 'chat', component:ChatComponent, canActivate:[isLoguedGuard]}
+     { path: 'usuarios',           component: UsuariosComponent, canActivate:[isLoguedGuard,isAdminGuard,reloadGuard] },
+     { path: 'usuarios/detalle/:id',           component: UsuarioDetallaComponent, canActivate:[isLoguedGuard,isAdminGuard,reloadGuard] },
+     { path: 'equipos',          component: EquiposComponent, canActivate:[isLoguedGuard,isAdminGuard,reloadGuard] },
+     { path: 'chat', component:ChatComponent, canActivate:[isLoguedGuard,reloadGuard]}
 ];

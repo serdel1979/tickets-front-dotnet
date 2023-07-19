@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { ValidaFormsService } from 'src/app/validators/valida-forms.service';
 
 @Component({
   selector: 'app-usuario-detalla',
@@ -20,8 +21,8 @@ export class UsuarioDetallaComponent implements OnInit {
 
   miFormulario: FormGroup = this.fb.group({
     user: ['', [Validators.required]],
-    password1: ['', [Validators.required, Validators.minLength(6)]],
-    password2: ['', [Validators.required, Validators.minLength(6)]]
+    password1: ['', [Validators.required, this.validaPassword.passInvalid]],
+    password2: ['', [Validators.required, this.validaPassword.passInvalid]]
   });
 
 
@@ -44,7 +45,8 @@ export class UsuarioDetallaComponent implements OnInit {
     private route: ActivatedRoute,
     private usersService: UsersService,
     private toastr: ToastrService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    private validaPassword: ValidaFormsService) { }
 
   ngOnInit(): void {
     this.idUsuario = this.route.snapshot.params['id'];
@@ -175,30 +177,18 @@ export class UsuarioDetallaComponent implements OnInit {
     const errors = this.miFormulario.get('password1')?.errors;
     if(errors?.['required']){
       return "El password es obligatorio";
-    }else if(errors?.['invalidLength']){
-      return "Longitud mínima debe ser de 6 caracteres";
-    }else if(errors?.['noUppercase']){
-      return "Debe tener una mayúscula";
-    }else if(errors?.['noNumber']){
-      return "Debe tener un número"
     }
-    return("Debe contener un símbolo");
+    return "Longitud mínima debe ser de 8 caracteres";
   }
 
   get pass2ErrorMsg():string {
     const errors = this.miFormulario.get('password2')?.errors;
-    if(errors?.['required']){
+    if(this.miFormulario.get('password2')?.value!=this.miFormulario.get('password1')?.value){
+      return "Las contraseñas deben coincidir"
+    }else if(errors?.['required']){
       return "El password es obligatorio";
-    }else if(errors?.['invalidLength']){
-      return "Longitud mínima debe ser de 6 caracteres";
-    }else if(errors?.['noUppercase']){
-      return "Debe tener una mayúscula";
-    }else if(errors?.['noNumber']){
-      return "Debe tener un número"
-    }else if(this.miFormulario.get('password2')?.value!=this.miFormulario.get('password1')?.value){
-         return "Las contraseñas deben coincidir"
     }
-    return("Debe contener un símbolo");
+    return "Longitud mínima debe ser de 8 caracteres"; 
   }
 
   passwordNoValido(passw: string){
@@ -206,8 +196,13 @@ export class UsuarioDetallaComponent implements OnInit {
   }
 
   password2NoValido(passw: string){
-    return this.miFormulario.get(passw)?.invalid && this.miFormulario.get(passw)?.touched
+    return this.miFormulario.get(passw)?.invalid && this.miFormulario.get(passw)?.touched || 
+    this.miFormulario.get('password2')?.value!=this.miFormulario.get('password1')?.value && this.miFormulario.get(passw)?.touched
   }
+
+
+
+
 
 
 }

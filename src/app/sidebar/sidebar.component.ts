@@ -61,14 +61,29 @@ export class SidebarComponent implements OnInit {
   public filteredMenuItems: RouteInfo[] = [];
 
   ngOnInit() {
-
     this.authService.subsLogued.subscribe((logued)=>{
       this.isLoggedIn = logued;
+      console.log(`${this.usrName} que es admin es ${this.isAdmin} está logueado? ${logued}`);
+      if(logued){
+        // if (this.authService.isAdmin()) {
+        //     this.authService.getAllUsers().subscribe((users)=>{
+        //       for(let usr of users){
+        //         this.chatrService.joinGroup(usr.userName).then()
+        //       }
+        //     })
+        // } else {
+        //   const groupName = this.authService.getUserLogued();
+         
+        //   this.chatrService.joinGroup(groupName).then()
+        // }
+      }
     })
 
     
     this.usrName = this.authService.getUserLogued();
     this.isAdmin = this.authService.isAdmin();
+    this.isLoggedIn =  this.authService.isLogued();
+
     if (this.isLoggedIn) {
 
       this.usrName = this.authService.getUserLogued();
@@ -127,8 +142,8 @@ export class SidebarComponent implements OnInit {
   }
 
 
-  // ngOnDestroy() {
-  //   this.subscription.unsubscribe();
-  // }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
 }
