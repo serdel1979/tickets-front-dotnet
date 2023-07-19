@@ -36,6 +36,7 @@ export class UsuarioDetallaComponent implements OnInit {
 
   public mostrarResetearPass: boolean = false;
   public verPass: boolean = false;
+  public verPass1: boolean = false;
 
   public buscando: boolean = false;
   public mostrarSpinner: boolean = false;

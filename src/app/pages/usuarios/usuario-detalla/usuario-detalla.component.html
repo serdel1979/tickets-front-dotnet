@@ -65,8 +65,12 @@
                     <p>{{ capitalizarPrimeraLetra(usuario.userName) }}</p>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" id="password1" formControlName="password1"
+                    <input [type]="verPass1 ? 'text' : 'password'" class="form-control" id="password1" formControlName="password1"
                         autocomplete="off" placeholder="Ingrese una contraseña">
+                        <div class="input-group-addon">
+                            <i (click)="verPass1=!verPass1" class="fa fa-eye{{ verPass1 ? '-slash' : '' }}" aria-hidden="true"></i>
+                        </div>
+
                     <span *ngIf="passwordNoValido('password1')" class="form-text text-danger">
                         {{ passErrorMsg }}
                     </span>
@@ -74,8 +78,12 @@
                 </div>
                 
                 <div class="form-group">
-                    <input type="text" class="form-control" id="password2" formControlName="password2"
+                    <input [type]="verPass ? 'text' : 'password'" class="form-control" id="password2" formControlName="password2"
                         autocomplete="off" placeholder="Vuelva a escribir la contraseña">
+                        <div class="input-group-addon">
+                            <i (click)="verPass=!verPass" class="fa fa-eye{{ verPass ? '-slash' : '' }}" aria-hidden="true"></i>
+                        </div>
+
                     <span *ngIf="password2NoValido('password2')" class="form-text text-danger">
                         {{ pass2ErrorMsg }}
                     </span>

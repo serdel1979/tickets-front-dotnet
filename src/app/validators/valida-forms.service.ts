@@ -11,7 +11,7 @@ export class ValidaFormsService {
   passInvalid(control: AbstractControl): ValidationErrors | null{
     const password = control.value?.trim();
     // Validar longitud
-    if (password.length < 8) {
+    if (password && password.length < 8) {
       return { invalidLength: true };
     }
 

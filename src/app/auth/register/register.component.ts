@@ -22,6 +22,7 @@ export class RegisterComponent {
   });
 
 
+  public verPass:boolean = false;
 
   constructor(
     private toastr: ToastrService,

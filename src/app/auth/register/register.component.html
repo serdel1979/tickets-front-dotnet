@@ -20,7 +20,11 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Contraseña</label>
-                    <input type="password" formControlName="password" class="form-control" id="password">
+                    <input [type]="verPass ? 'text' : 'password'" formControlName="password" class="form-control" id="password">                
+                    <div class="input-group-addon">
+                        <i (click)="verPass=!verPass" class="fa fa-eye{{ verPass ? '-slash' : '' }}" aria-hidden="true"></i>
+                    </div>
+                    
                     <span *ngIf="passwordNoValido('password')" class="form-text text-danger">
                       {{ passErrorMsg }}
                     </span>
