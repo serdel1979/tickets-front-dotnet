@@ -1,18 +1,18 @@
 <div class="card">
     <div class="card-body">
-      <div class="row">
-        <div class="col">
-          <div class="d-flex flex-row-reverse justify-content-between align-items-center">
-            
-            <p class="mb-0"><button class="btn btn-primary" (click)="agregar()">Agregar</button></p>
-          </div>
-         <!-- <div *ngIf="mostrarSpinner" class="alert alert-info">
+        <div class="row">
+            <div class="col">
+                <div class="d-flex flex-row-reverse justify-content-between align-items-center">
+                    <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="filtroUsuario" (ngModelChange)="aplicarFiltro()">
+                    <p class="mb-0"><button class="btn btn-primary" (click)="agregar()">Agregar</button></p>
+                </div>
+                <!-- <div *ngIf="mostrarSpinner" class="alert alert-info">
             Enviando!!!
           </div> -->
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 
 <div class="row">
     <div class="col-md-12">
@@ -58,7 +58,7 @@
                             </th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let usr of users | paginate: { itemsPerPage:3, currentPage: page}">
+                            <tr *ngFor="let usr of usuariosFiltrados | paginate: { itemsPerPage:3, currentPage: page}">
                                 <td>
                                     {{ usr.userName}}
                                 </td>

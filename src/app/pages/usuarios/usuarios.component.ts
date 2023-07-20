@@ -13,6 +13,11 @@ export class UsuariosComponent implements OnInit{
 
 
   users: UsuarioDetalle[] = [];
+  usuariosFiltrados: UsuarioDetalle[] = [];
+
+  filtroUsuario: string = ''; // Variable para almacenar el valor del filtro
+
+
   public page!: number;
 
   public spinnerMostrar: boolean = false;
@@ -32,6 +37,7 @@ export class UsuariosComponent implements OnInit{
     this.usersService.getUsers()
     .subscribe((users:any[])=>{
       this.users = users;
+      this.usuariosFiltrados = users;
       this.spinnerMostrar = false;
     },
     ()=>{
@@ -86,6 +92,18 @@ export class UsuariosComponent implements OnInit{
   
   agregar(){
     this.router.navigate(['usuarios/agrega']);
+  }
+
+  aplicarFiltro() {
+    if (this.filtroUsuario.trim() === '') {
+      // Si el filtro está vacío, mostrar todos los usuarios
+      this.usuariosFiltrados = this.users;
+    } else {
+      // Filtrar usuarios por el valor del input
+      this.usuariosFiltrados = this.users.filter((user: UsuarioDetalle) => {
+        return user.userName.toLowerCase().includes(this.filtroUsuario.toLowerCase());
+      });
+    }
   }
 
 }
