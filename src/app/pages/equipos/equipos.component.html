@@ -1,1 +1,6 @@
-<p>equipos works!</p>
+<div *ngIf="admin"> 
+    <app-equipos-admin></app-equipos-admin>
+</div>
+<div *ngIf="!admin">
+    <app-equipos-user></app-equipos-user>
+</div>

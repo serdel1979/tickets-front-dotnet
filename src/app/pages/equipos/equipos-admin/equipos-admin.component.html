@@ -1,0 +1,46 @@
+<div *ngIf="equiposFiltrados" class="card-body">
+    <div class="table-responsive">
+        <table class="table">
+            <thead class=" text-primary">
+                <th>
+                    Equipo
+                </th>
+                <th>
+                    Descripción
+                </th>
+                <th>
+                    Ubicación
+                </th>
+                <th>
+                    Inventario
+                </th>
+                <th>
+                    Ver
+                </th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let equipo of equiposFiltrados | paginate: { itemsPerPage:porPagina, currentPage: page}">
+                    <td>
+                        {{ equipo.nombre }}
+                    </td>
+                    <td>
+                        {{ equipo.comentario }}
+                    </td>
+                    <td>
+                        {{ equipo.usuario }}
+                    </td>
+                    <td>
+                        {{ equipo.inventario }}
+                    </td>
+                    <td style="width: 30mm;">
+                        
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <pagination-controls (pageChange)="onPageChange($event)" previousLabel=&laquo; nextLabel=&raquo;>
+    </pagination-controls>
+</div>

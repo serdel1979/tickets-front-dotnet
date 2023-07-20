@@ -19,6 +19,8 @@ import { ChatrAdminComponent } from 'src/app/pages/chat/chatr-admin/chatr-admin.
 import { ChatrUserComponent } from 'src/app/pages/chat/chatr-user/chatr-user.component';
 import { FirstWordBoldPipe } from 'src/app/pipes/world-brawn';
 import { UsuarioDetallaComponent } from 'src/app/pages/usuarios/usuario-detalla/usuario-detalla.component';
+import { EquiposUserComponent } from 'src/app/pages/equipos/equipos-user/equipos-user.component';
+import { EquiposAdminComponent } from 'src/app/pages/equipos/equipos-admin/equipos-admin.component';
 
 @NgModule({
     declarations: [
@@ -33,7 +35,9 @@ import { UsuarioDetallaComponent } from 'src/app/pages/usuarios/usuario-detalla/
         ChatUserComponent,
         ChatrAdminComponent,
         ChatrUserComponent,
-        FirstWordBoldPipe
+        FirstWordBoldPipe,        
+        EquiposUserComponent,
+        EquiposAdminComponent
     ],
     imports: [
         NgxPaginationModule,
