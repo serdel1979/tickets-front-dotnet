@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EquiposService } from '../../../services/equipos.service';
 import { HttpResponse } from '@angular/common/http';
+import { Equipos } from 'src/app/interfaces/equipos.paginado';
 
 @Component({
   selector: 'app-equipos-admin',
@@ -16,7 +17,7 @@ export class EquiposAdminComponent implements OnInit {
   public page: number = 1;
   public porPagina: number = 2;
   public cantidadPaginas!: string | null;
-  public TotalItems: number = 2;
+  public totalItems: number = 0;
 
   constructor(private equipoService: EquiposService){}
 
@@ -25,16 +26,10 @@ export class EquiposAdminComponent implements OnInit {
   }
 
   obtenerEquipos() {
-    this.equipoService.getEquipos(this.page, this.porPagina).subscribe((response:HttpResponse<any[]>) => {
-
-      this.equipos = response.body || []; 
-      this.equiposFiltrados = response.body || []; 
-
-      console.log('Tipo de objeto response:', typeof response);
-      //this.cantidadPaginas = response.headers.get('x-total-count'); 
-      this.cantidadPaginas = response.headers.get('X-Total-Count');
-
-      console.log('Total recibido: ',this.cantidadPaginas);
+    this.equipoService.getEquipos(this.page, this.porPagina).subscribe((response:Equipos) => {
+      this.equipos = response.equipos;
+      this.equiposFiltrados = response.equipos;
+      this.totalItems = response.total;
     });
   }
   

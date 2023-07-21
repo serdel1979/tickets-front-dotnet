@@ -19,7 +19,7 @@
                 </th>
             </thead>
             <tbody>
-                <tr *ngFor="let equipo of equiposFiltrados | paginate: { itemsPerPage:porPagina, currentPage: page, totalItems: 3}">
+                <tr *ngFor="let equipo of equiposFiltrados | paginate: { itemsPerPage:porPagina, currentPage: page, totalItems: totalItems}">
                     <td>
                         {{ equipo.nombre }}
                     </td>
