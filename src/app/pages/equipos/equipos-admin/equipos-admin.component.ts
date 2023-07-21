@@ -16,6 +16,7 @@ export class EquiposAdminComponent implements OnInit {
   public page: number = 1;
   public porPagina: number = 2;
   public cantidadPaginas!: string | null;
+  public TotalItems: number = 2;
 
   constructor(private equipoService: EquiposService){}
 
@@ -25,13 +26,15 @@ export class EquiposAdminComponent implements OnInit {
 
   obtenerEquipos() {
     this.equipoService.getEquipos(this.page, this.porPagina).subscribe((response:HttpResponse<any[]>) => {
-      const headersRecibidos = response.headers;
+
       this.equipos = response.body || []; 
       this.equiposFiltrados = response.body || []; 
 
-      this.cantidadPaginas = headersRecibidos.get('Totalpaginas'); // Obtener el total de páginas del encabezado
+      console.log('Tipo de objeto response:', typeof response);
+      //this.cantidadPaginas = response.headers.get('x-total-count'); 
+      this.cantidadPaginas = response.headers.get('X-Total-Count');
 
-      console.log(headersRecibidos);
+      console.log('Total recibido: ',this.cantidadPaginas);
     });
   }
   

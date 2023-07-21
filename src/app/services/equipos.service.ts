@@ -17,5 +17,4 @@ export class EquiposService {
     return this.http.get<any[]>(`${URLapi}/equipos?Pagina=${page}&PorPagina=${porpagina}`, { observe: 'response' });
   }
 
-
 }
