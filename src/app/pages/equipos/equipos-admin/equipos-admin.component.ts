@@ -26,10 +26,11 @@ export class EquiposAdminComponent implements OnInit {
   }
 
   obtenerEquipos() {
-    this.equipoService.getEquipos(this.page, this.porPagina).subscribe((response:Equipos) => {
-      this.equipos = response.equipos;
-      this.equiposFiltrados = response.equipos;
-      this.totalItems = response.total;
+    this.equipoService.getEquipos(this.page, this.porPagina).subscribe((response:HttpResponse<any>) => {
+      this.equipos = response.body.equipos;
+      this.equiposFiltrados = response.body.equipos;
+      this.totalItems = response.body.total;
+      const CANTIDAD = response.headers.get('x-total-count');
     });
   }
   

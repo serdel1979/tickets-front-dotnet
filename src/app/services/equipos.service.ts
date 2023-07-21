@@ -16,7 +16,7 @@ export class EquiposService {
 
 
   getEquipos(page: number, porpagina:number){
-    return this.http.get<Equipos>(`${URLapi}/equipos?Pagina=${page}&PorPagina=${porpagina}`);
+    return this.http.get<Equipos>(`${URLapi}/equipos?Pagina=${page}&PorPagina=${porpagina}`,{ observe: 'response'});
   }
 
 }
