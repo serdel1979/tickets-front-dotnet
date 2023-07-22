@@ -25,7 +25,11 @@ export class EquiposAdminComponent implements OnInit {
   constructor(private equipoService: EquiposService, private router: Router){}
 
   ngOnInit(): void {
-    this.obtenerEquipos()
+    if(this.filtroBuscaUsuario === ''){
+      this.obtenerEquipos();
+    }else{
+      this.buscar();
+    }
   }
 
   obtenerEquipos() {
@@ -46,11 +50,34 @@ export class EquiposAdminComponent implements OnInit {
 
   onPageChange(event: any) {
     this.page = event;
-    this.obtenerEquipos();
+    if(this.filtroBuscaUsuario === ''){
+      this.obtenerEquipos();
+    }else{
+      this.buscar();
+    }
   }
 
   buscar(){
+    this.spinnerMostrar = true;
+    this.equipoService.getEquiposFiltro(this.page, this.porPagina,this.filtroBuscaUsuario).subscribe((response:HttpResponse<any>) => {
+      this.equipos = response.body.equipos;
+      this.equiposFiltrados = response.body.equipos;
+      this.totalItems = response.body.total;
+      const CANTIDAD = response.headers.get('x-total-count');
+      this.spinnerMostrar = false;
+    },
+    (err)=>{
+      console.error(err);
+      this.spinnerMostrar = false;
+    });
+  }
 
+  filtrar(){
+    if(this.filtroBuscaUsuario === ''){
+      this.obtenerEquipos();
+    }else{
+      this.buscar();
+    }
   }
 
   agregar(){

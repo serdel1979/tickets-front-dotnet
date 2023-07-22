@@ -23,4 +23,9 @@ export class EquiposService {
     return this.http.post(`${URLapi}/equipos`,eq);
   }
 
+  getEquiposFiltro(page: number, porpagina:number, buscados: string){
+    return this.http.get<Equipos>(`${URLapi}/equipos/buscado?buscado=${buscados}&Pagina=${page}&PorPagina=${porpagina}`,{ observe: 'response'});
+  }
+  
+
 }
