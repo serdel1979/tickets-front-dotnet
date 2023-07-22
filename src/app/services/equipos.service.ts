@@ -19,4 +19,8 @@ export class EquiposService {
     return this.http.get<Equipos>(`${URLapi}/equipos?Pagina=${page}&PorPagina=${porpagina}`,{ observe: 'response'});
   }
 
+  guardaEquipo(eq:any){
+    return this.http.post(`${URLapi}/equipos`,eq);
+  }
+
 }

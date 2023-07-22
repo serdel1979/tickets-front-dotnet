@@ -1,46 +1,95 @@
-<div *ngIf="equiposFiltrados" class="card-body">
-    <div class="table-responsive">
-        <table class="table">
-            <thead class=" text-primary">
-                <th>
-                    Equipo
-                </th>
-                <th>
-                    Descripción
-                </th>
-                <th>
-                    Ubicación
-                </th>
-                <th>
-                    Inventario
-                </th>
-                <th>
-                    Ver
-                </th>
-            </thead>
-            <tbody>
-                <tr *ngFor="let equipo of equiposFiltrados | paginate: { itemsPerPage:porPagina, currentPage: page, totalItems: totalItems}">
-                    <td>
-                        {{ equipo.nombre }}
-                    </td>
-                    <td>
-                        {{ equipo.comentario }}
-                    </td>
-                    <td>
-                        {{ equipo.usuario }}
-                    </td>
-                    <td>
-                        {{ equipo.inventario }}
-                    </td>
-                    <td style="width: 30mm;">
-                        
-
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <div class="d-flex flex-row-reverse justify-content-between align-items-center">
+                    <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="filtroBuscaUsuario" (ngModelChange)="buscar()">
+                    <p class="mb-0"><button class="btn btn-primary" (click)="agregar()">Agregar</button></p>
+                </div>
+                <!-- <div *ngIf="mostrarSpinner" class="alert alert-info">
+            Enviando!!!
+          </div> -->
+            </div>
+        </div>
     </div>
+</div>
 
-    <pagination-controls (pageChange)="onPageChange($event)" previousLabel=&laquo; nextLabel=&raquo;>
-    </pagination-controls>
+<div class="row">
+    <div class="col-md-12">
+
+        <div *ngIf="equiposFiltrados && equiposFiltrados.length == 0 && !spinnerMostrar" class="card">
+            <div class="card-header">
+                <h4 class="card-title"> Equipos </h4>
+            </div>
+            <div class="card-body">
+                <h5>Nada por ahora...</h5>
+            </div>
+
+        </div>
+
+
+        <div *ngIf="spinnerMostrar" class="card">
+            <div class="card-header">
+                <h4 class="card-title"> Equipos </h4>
+            </div>
+            <div class="card-body">
+                <div class="spinner-border " role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="equiposFiltrados && equiposFiltrados.length > 0 && !spinnerMostrar" class="card">
+            <div class="card-header">
+                <h4 class="card-title"> Equipos </h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <th>
+                                Equipo
+                            </th>
+                            <th>
+                                Descripción
+                            </th>
+                            <th>
+                                Ubicación
+                            </th>
+                            <th>
+                                Inventario
+                            </th>
+                            <th>
+                                Ver
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let equipo of equiposFiltrados | paginate: { itemsPerPage:porPagina, currentPage: page, totalItems: totalItems}">
+                                <td>
+                                    {{ equipo.nombre }}
+                                </td>
+                                <td>
+                                    {{ equipo.comentario }}
+                                </td>
+                                <td>
+                                    {{ equipo.usuario }}
+                                </td>
+                                <td>
+                                    {{ equipo.inventario }}
+                                </td>
+                                <td style="width: 30mm;">
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <pagination-controls (pageChange)="onPageChange($event)" previousLabel=&laquo; nextLabel=&raquo;>
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
 </div>

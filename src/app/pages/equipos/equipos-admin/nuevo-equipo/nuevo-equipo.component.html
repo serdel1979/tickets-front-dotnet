@@ -1,0 +1,64 @@
+<form autocomplete="off" [formGroup]="miFormulario" (ngSubmit)="guardar()">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">Agregar Equipo</div>
+            <div class="card-body">
+
+                <div class="form-group">
+                    <label for="nombre">Nombre de equipo</label>
+                    <input class="form-control" formControlName="nombre" id="nombre">
+                    <span *ngIf="campoNoValido('nombre')" class="form-text text-danger">
+                        Es obligatorio
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="inventario">Inventario</label>
+                    <input type="text" class="form-control" formControlName="inventario" id="inventario">
+                    <span *ngIf="campoNoValido('inventario')" class="form-text text-danger">
+                        Es obligatorio
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="serie">Número de serie</label>
+                    <input type="text" class="form-control" formControlName="serie" id="serie">
+                    <span *ngIf="campoNoValido('serie')" class="form-text text-danger">
+                        Es obligatorio
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="usuario">Usuario/Departamento</label>
+                    <select class="form-control" formControlName="usuarioId" id="usuarioId">
+                        <option value="">Selecciona un usuario</option>
+                        <option *ngFor="let usr of usuarios" value="{{usr.id}}">{{ usr.userName }}</option>
+                    </select>
+                    <span *ngIf="campoNoValido('usuario')" class="form-text text-danger">
+                        Es obligatorio
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="comentario">Descripción</label>
+                    <textarea type="text" class="form-control" formControlName="comentario" id="comentario">
+                        </textarea>
+                    <span *ngIf="campoNoValido('comentario')" class="form-text text-danger">
+                        Es obligatorio
+                    </span>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <button [disabled]="miFormulario.invalid || mostrarSpinner" class="btn btn-primary" type="submit">
+                    <span *ngIf="mostrarSpinner" class="spinner-border spinner-border-sm" role="status"
+                        aria-hidden="true"></span>
+                    Guardar
+                </button>
+                <span class="spacer"></span>
+                <a class="btn btn-link" routerLink="/equipos">Ir a equipos</a>
+            </div>
+
+        </div>
+    </div>
+</form>

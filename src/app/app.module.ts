@@ -26,6 +26,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 import { environment } from 'src/environments/environment';
 import { AgregaComponent } from './pages/usuarios/agrega/agrega.component';
+import { NuevoEquipoComponent } from './pages/equipos/equipos-admin/nuevo-equipo/nuevo-equipo.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +36,8 @@ import { AgregaComponent } from './pages/usuarios/agrega/agrega.component';
     HistorialComponent,
     DetalleSolicitudComponent,
     EditaSolicitudComponent,
-    AgregaComponent
+    AgregaComponent,
+    NuevoEquipoComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
