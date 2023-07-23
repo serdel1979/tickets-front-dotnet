@@ -46,6 +46,7 @@ export class UsersComponent implements OnInit {
 
   public mostrarSpinner: boolean = false;
 
+
   archivoSeleccionado: File | null = null;
 
   imagenURL: string = '';
@@ -125,8 +126,13 @@ export class UsersComponent implements OnInit {
     this.isLogued = this.authService.isLogued();
     if (this.isLogued) {
       this.id = this.authService.getIdLogued();
+      this.mostrarSpinner = true;
       this.solicitudesServices.getMisSolicitudes(this.id).subscribe(resp => {
+        this.mostrarSpinner = false;
         this.misSolicitudes = resp;
+      },
+      ()=>{
+        this.mostrarSpinner = false;
       })
       this.setValoresPorDefecto();
     };

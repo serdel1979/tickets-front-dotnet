@@ -30,6 +30,14 @@ export class EquiposService {
   getEquipo(id:number){
     return this.http.get<Equipo>(`${URLapi}/equipos/detalle/${id}`);
   }
+
+  actualizaEquipo(id:number,eq: any){
+    return this.http.put(`${URLapi}/equipos/${id}`,eq);
+  }
+
+  getMisEquipos(id:string){
+    return this.http.get<Equipo[]>(`${URLapi}/equipos/misequipos/${id}`);
+  }
   
 
 }

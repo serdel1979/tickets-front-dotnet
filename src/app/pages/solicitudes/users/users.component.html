@@ -6,9 +6,6 @@
           
           <p class="mb-0"><button class="btn btn-primary" (click)="mostrarModalInfo()">Solicitar</button></p>
         </div>
-        <div *ngIf="mostrarSpinner" class="alert alert-info">
-          Enviando!!!
-        </div>
       </div>
     </div>
   </div>
@@ -20,8 +17,30 @@
 
 
 <div class="row">
+
+  <div *ngIf="mostrarSpinner" class="card">
+    <div class="card-header">
+      <h4 class="card-title"> Solicitudes </h4>
+    </div>
+    <div class="card-body">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+
   <div class="col-md-12">
-    <div class="card">
+
+    <div *ngIf="misSolicitudes.length == 0 && !mostrarSpinner" class="card">
+      <div class="card-header">
+        <h4 class="card-title"> Solicitudes </h4>
+      </div>
+      <div class="card-body">
+        <h5>Nada por ahora...</h5>
+      </div>
+    </div>
+
+    <div *ngIf="misSolicitudes.length > 0 && !mostrarSpinner" class="card">
       <div class="card-header">
         <h4 class="card-title"> Solicitudes </h4>
       </div>

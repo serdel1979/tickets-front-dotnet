@@ -91,10 +91,61 @@ export class DetalleEquipoComponent implements OnInit {
     
       // Realizar alguna acción si los valores son diferentes
       if (isDifferent) {
-        // Por ejemplo, mostrar una alerta o tomar alguna decisión
-        console.log('Hay cambios sin guardar. ¿Deseas continuar?');
+          this.equiposService.actualizaEquipo(this.idEquipo,this.miFormulario.value)
+          .subscribe(()=>{
+            this.toastr.success(
+              '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Actualización correcta!!!</span>',
+              "",
+              {
+                timeOut: 4000,
+                closeButton: true,
+                enableHtml: true,
+                toastClass: "alert alert-success alert-with-icon",
+                positionClass: "toast-" + "top" + "-" + "center"
+              }
+            );
+          },
+          (err)=>{
+
+            if(err.status == 400){
+              this.toastr.error(
+                '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">'+err.error+'</span>',
+                "",
+                {
+                  timeOut: 4000,
+                  closeButton: true,
+                  enableHtml: true,
+                  toastClass: "alert alert-danger alert-with-icon",
+                  positionClass: "toast-" + "top" + "-" + "center"
+                }
+              );
+            }else{
+              this.toastr.error(
+                '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Error desconocido</span>',
+                "",
+                {
+                  timeOut: 4000,
+                  closeButton: true,
+                  enableHtml: true,
+                  toastClass: "alert alert-danger alert-with-icon",
+                  positionClass: "toast-" + "top" + "-" + "center"
+                }
+              );
+            }
+            
+          })
       } else {
-        console.log('No hay cambios. Los valores son iguales.');
+        this.toastr.error(
+          '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">No se realizaron cambios!!!</span>',
+          "",
+          {
+            timeOut: 4000,
+            closeButton: true,
+            enableHtml: true,
+            toastClass: "alert alert-danger alert-with-icon",
+            positionClass: "toast-" + "top" + "-" + "center"
+          }
+        );
       }
     }
     

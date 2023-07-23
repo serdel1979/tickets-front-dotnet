@@ -31,7 +31,7 @@ export const AdminLayoutRoutes: Routes = [
      { path: 'usuarios/agrega', component: AgregaComponent, canActivate:[isLoguedGuard,isAdminGuard]},
      { path: 'usuarios/detalle/:id',           component: UsuarioDetallaComponent, canActivate:[isLoguedGuard,isAdminGuard] },
      { path: 'equipos/nuevo',          component: NuevoEquipoComponent, canActivate:[isLoguedGuard,isAdminGuard] },
-     { path: 'equipos',          component: EquiposComponent, canActivate:[isLoguedGuard,isAdminGuard] },
+     { path: 'equipos',          component: EquiposComponent, canActivate:[isLoguedGuard] },
      { path: 'equipos/detalle/:id',   component: DetalleEquipoComponent, canActivate:[isLoguedGuard,isAdminGuard] },
      { path: 'chat', component:ChatComponent, canActivate:[isLoguedGuard,reloadGuard]}
 ];
