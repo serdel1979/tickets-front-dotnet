@@ -15,8 +15,8 @@ export class SolicitudesService {
   constructor(private http: HttpClient) { }
 
 
-  getMisSolicitudes(id:string){
-    return this.http.get<Solicitud[]>(`${this.baseUrl}/solicitudes/${id}/missolicitudes`)
+  getMisSolicitudes(){
+    return this.http.get<Solicitud[]>(`${this.baseUrl}/solicitudes/missolicitudes`)
   }
 
   getSolicitudes(){

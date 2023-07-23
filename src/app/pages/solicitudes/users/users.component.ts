@@ -127,7 +127,7 @@ export class UsersComponent implements OnInit {
     if (this.isLogued) {
       this.id = this.authService.getIdLogued();
       this.mostrarSpinner = true;
-      this.solicitudesServices.getMisSolicitudes(this.id).subscribe(resp => {
+      this.solicitudesServices.getMisSolicitudes().subscribe(resp => {
         this.mostrarSpinner = false;
         this.misSolicitudes = resp;
       },
@@ -264,7 +264,7 @@ export class UsersComponent implements OnInit {
             positionClass: "toast-" + "top" + "-" + "center"
           }
         );
-        this.solicitudesServices.getMisSolicitudes(this.id).subscribe(resp => {
+        this.solicitudesServices.getMisSolicitudes().subscribe(resp => {
           this.misSolicitudes = resp;
         });
 

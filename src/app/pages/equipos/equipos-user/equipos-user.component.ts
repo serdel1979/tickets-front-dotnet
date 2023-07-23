@@ -18,9 +18,8 @@ export class EquiposUserComponent implements OnInit {
   public page!: number;
 
   ngOnInit(): void {
-     this.miId = this.authService.getIdLogued();
      this.buscando = true;
-     this.equiposService.getMisEquipos(this.miId)
+     this.equiposService.getMisEquipos()
      .subscribe((resp)=>{
       this.buscando = false;
       this.equipos = resp;

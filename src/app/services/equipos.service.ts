@@ -35,8 +35,8 @@ export class EquiposService {
     return this.http.put(`${URLapi}/equipos/${id}`,eq);
   }
 
-  getMisEquipos(id:string){
-    return this.http.get<Equipo[]>(`${URLapi}/equipos/misequipos/${id}`);
+  getMisEquipos(){
+    return this.http.get<Equipo[]>(`${URLapi}/equipos/misequipos`);
   }
   
 
