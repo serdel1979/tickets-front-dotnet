@@ -1,0 +1,19 @@
+.icon-zoom {
+    cursor: pointer;
+  }
+
+  label:hover {
+    cursor: pointer;
+  }
+  
+  .icon-zoom:hover {
+    transform: scale(2);
+  }
+  
+  
+  .spinner-container {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+  }
+  

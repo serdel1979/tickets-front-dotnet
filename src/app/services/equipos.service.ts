@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Equipos } from '../interfaces/equipos.paginado';
+import { Equipo, Equipos } from '../interfaces/equipos.paginado';
 
 
 const URLapi = environment.baseUrl;
@@ -25,6 +25,10 @@ export class EquiposService {
 
   getEquiposFiltro(page: number, porpagina:number, buscados: string){
     return this.http.get<Equipos>(`${URLapi}/equipos/buscado?buscado=${buscados}&Pagina=${page}&PorPagina=${porpagina}`,{ observe: 'response'});
+  }
+
+  getEquipo(id:number){
+    return this.http.get<Equipo>(`${URLapi}/equipos/detalle/${id}`);
   }
   
 

@@ -32,7 +32,7 @@
                     <div class="form-group">
                         <label for="usuario">Usuario/Departamento</label>
                         <select class="form-control" formControlName="usuarioId" id="usuarioId">
-                            <option value="">Selecciona un usuario</option>
+                            <option value="">Selecciona un destino</option>
                             <option *ngFor="let usr of usuarios" value="{{usr.id}}">{{ usr.userName }}</option>
                         </select>
                         <span *ngIf="campoNoValido('usuario')" class="form-text text-danger">

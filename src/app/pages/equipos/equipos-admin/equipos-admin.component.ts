@@ -84,4 +84,8 @@ export class EquiposAdminComponent implements OnInit {
     this.router.navigate(['equipos/nuevo']);
   }
 
+  detalle(id: number){
+    this.router.navigate([`equipos/detalle/${id}`]);
+  }
+
 }
