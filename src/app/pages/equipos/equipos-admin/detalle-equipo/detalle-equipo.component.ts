@@ -68,9 +68,36 @@ export class DetalleEquipoComponent implements OnInit {
     private route: ActivatedRoute,
     private equiposService: EquiposService) { }
 
-  actualizar() {
-    console.log(this.miFormulario.value);
-  }
+    actualizar() {
+      const formValues = this.miFormulario.value;
+      let isDifferent = false;
+    
+      // Verificar cada campo del formulario con el objeto equipo
+      if (formValues.nombre !== this.equipo.nombre) {
+        isDifferent = true;
+      }
+      if (formValues.usuarioId !== this.equipo.usuarioId) {
+        isDifferent = true;
+      }
+      if (formValues.inventario !== this.equipo.inventario) {
+        isDifferent = true;
+      }
+      if (formValues.serie !== this.equipo.serie) {
+        isDifferent = true;
+      }
+      if (formValues.comentario !== this.equipo.comentario) {
+        isDifferent = true;
+      }
+    
+      // Realizar alguna acción si los valores son diferentes
+      if (isDifferent) {
+        // Por ejemplo, mostrar una alerta o tomar alguna decisión
+        console.log('Hay cambios sin guardar. ¿Deseas continuar?');
+      } else {
+        console.log('No hay cambios. Los valores son iguales.');
+      }
+    }
+    
 
   campoNoValido(campo: string) {
     return this.miFormulario.get(campo)?.invalid && this.miFormulario.get(campo)?.touched
