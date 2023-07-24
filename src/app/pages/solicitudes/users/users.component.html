@@ -68,7 +68,7 @@
               </th>
             </thead>
             <tbody>
-              <tr *ngFor="let solicitud of misSolicitudes | paginate: { itemsPerPage:3, currentPage: page}">
+              <tr *ngFor="let solicitud of misSolicitudes | paginate: { itemsPerPage:5, currentPage: page}">
                 <td>
                   {{ solicitud.usuario }}
                 </td>

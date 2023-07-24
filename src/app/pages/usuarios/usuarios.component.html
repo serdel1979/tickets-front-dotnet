@@ -58,7 +58,7 @@
                             </th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let usr of usuariosFiltrados | paginate: { itemsPerPage:3, currentPage: page}">
+                            <tr *ngFor="let usr of usuariosFiltrados | paginate: { itemsPerPage:5, currentPage: page}">
                                 <td>
                                     {{ usr.userName}}
                                 </td>

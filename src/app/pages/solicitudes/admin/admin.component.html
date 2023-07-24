@@ -48,7 +48,7 @@
               </th>
             </thead>
             <tbody>
-              <tr *ngFor="let solicitud of solicitudes | paginate: { itemsPerPage:3, currentPage: page}">
+              <tr *ngFor="let solicitud of solicitudes | paginate: { itemsPerPage:5, currentPage: page}">
                 <td>
                   {{ solicitud.departamento }}
                 </td>
