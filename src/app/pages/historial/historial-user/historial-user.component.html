@@ -47,7 +47,7 @@
           <table class="table">
             <thead class=" text-primary">
               <th>
-                Usuario
+                Fecha
               </th>
               <th>
                 Equipo
@@ -68,7 +68,7 @@
             <tbody>
               <tr *ngFor="let solicitud of filtroSolicitudes | paginate: { itemsPerPage:3, currentPage: page}">
                 <td>
-                  {{ solicitud.usuario }}
+                  {{ solicitud.fecha | date:'yyyy-MM-dd' }}
                 </td>
                 <td>
                   {{ solicitud.equipo }}
@@ -90,7 +90,7 @@
                   </td>
                 -->
                 <td style="width: 30mm;">
-                  <i (click)="ver(solicitud.id)" class="nc-icon nc-zoom-split icon-zoom"></i>
+                  <i (click)="ver(solicitud.id)" class="nc-icon nc-minimal-right icon-zoom"></i>
 
                 </td>
               </tr>
