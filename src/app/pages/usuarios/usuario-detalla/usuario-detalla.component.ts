@@ -98,7 +98,6 @@ export class UsuarioDetallaComponent implements OnInit {
         }
           ,
           (err) => {
-            console.log(err);
             this.mostrarSpinner = false;
           })
     } else {
@@ -107,7 +106,6 @@ export class UsuarioDetallaComponent implements OnInit {
           this.mostrarSpinner = false;
         },
           (err) => {
-            console.log(err);
             this.mostrarSpinner = false;
           })
     }

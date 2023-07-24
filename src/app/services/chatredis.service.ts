@@ -33,26 +33,15 @@ export class ChatredisService {
       .then(() => {
         if (this.connection && this.connection.state === signalR.HubConnectionState.Connected) {
           this.initializeNewMessageIndicators();
-          console.log(this.connection.connectionId, ' ', this.connection.state);
-        } else {
-          console.log('Connection is not in the "Connected" state.');
-        }
+        } 
       })
-      .catch((err) => console.error(err));
+      .catch(() =>{});
 
-    // this.onLoadMessages((groupName: string, messages: string[]) => {
-    //   if (this.activeMessagesIndicators[groupName]) {
-    //     this.newMessageIndicators[groupName] = messages.length > 0;
-    //     this.activeMessagesIndicators[groupName].next(messages.length > 0);
-    //     console.log('emite al load ',groupName,' ',messages.length > 0)
-    //   }
-    // });
-    //carga los mensajes cuando llegan
+
     this.onReceiveMessage((groupName: string, messages: string[]) => {
       if (this.activeMessagesIndicators[groupName]) {
         this.newMessageIndicators[groupName] = messages.length > 0;
         this.activeMessagesIndicators[groupName].next(messages.length > 0);
-        console.log('emite al recibir ',groupName,' ',messages.length > 0)
       }
     });
   }
@@ -92,8 +81,6 @@ export class ChatredisService {
         .build();
   
       this.connection.onclose((error: any) => {
-        console.log('Connection closed:', error);
-        // Aquí puedes manejar la lógica de reconexión si lo deseas
       });
   
       this.connection.onreconnected(() => {
@@ -109,7 +96,6 @@ export class ChatredisService {
           resolve();
         })
         .catch(err => {
-          console.log('Error while starting connection: ' + err);
           reject(err);
         });
     });
@@ -141,7 +127,6 @@ export class ChatredisService {
   public deleteGroupMessages(groupName: string): Promise<string[]> {
     this.newMessageIndicators[groupName] = false;
     this.activeMessagesIndicators[groupName].next(false);
-    console.log('emitiendo false');
     return this.connection.invoke('DeleteGroupMessagesChat', groupName);
   }
 

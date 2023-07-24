@@ -37,7 +37,6 @@ export class ChatUserComponent implements OnInit{
       this.sound.play();
       setTimeout(()=>{
         this.elemento.scrollTop = this.elemento.scrollHeight;
-        console.log(this.elemento);
       },20)
     }); 
   }

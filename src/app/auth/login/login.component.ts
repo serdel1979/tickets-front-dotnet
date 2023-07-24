@@ -73,7 +73,6 @@ export class LoginComponent {
         this.router.navigateByUrl('/solicitudes');
       },
         (err) => {
-          console.log(err);
           this.mostrarSpinner = false;
           this.toastr.error(
             '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">' + err.name + '</span>',

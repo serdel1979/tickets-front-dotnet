@@ -24,10 +24,7 @@ export class UsuariosComponent implements OnInit{
 
   @HostListener('window:beforeunload', ['$event'])
   onBeforeUnload(event:any) {
-    // Aquí se puede agregar el código para manejar el evento
-    console.log('La página se está recargando o cerrando');
     this.router.navigate([`solicitudes`]);
-    
   }
 
   constructor(private usersService: UsersService, private toastr: ToastrService, private router: Router){}

@@ -44,7 +44,6 @@ export class UsersService {
   }
 
   resetPassword(formulario: any){
-    console.log(formulario);
     const data={
       Usuario: formulario.user,
       Password: formulario.password2

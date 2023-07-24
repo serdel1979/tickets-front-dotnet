@@ -35,7 +35,6 @@ export class SolicitudesService {
     return this.http.post(`${this.baseUrl}/solicitudes`,form)
       .pipe(
         tap(res=>{
-          console.log('ok',res);
         }),
         map(()=>true),
 

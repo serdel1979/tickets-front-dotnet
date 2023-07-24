@@ -50,7 +50,6 @@ export class ChatrUserComponent implements OnInit {
     
     
     this.chatService.onLoadMessages((groupReceive: string, messages: string[]) => {
-      console.log(`logued: ${usrlog} receive: ${groupReceive}`);
       if(groupReceive == usrlog){
         this.messages = messages;
         this.sound.play();

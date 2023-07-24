@@ -108,7 +108,6 @@ export class UsersComponent implements OnInit {
   async ngOnInit() {
     this.connection.start()
     .then(()=> {
-      console.log('Connection Started');
       //------------------
       this.connection.invoke('JoinGroup', 'refresh', 'user')
       .then(_ => {
@@ -151,12 +150,10 @@ export class UsersComponent implements OnInit {
   }
 
   private newMessage(message: NewMessage) {
-    console.log(message);
     this.conversation.push(message);
   }
 
   private leftUser(message: string) {
-    console.log(message);
     this.conversation.push({
       userName: 'Sistema',
       message: message
@@ -172,9 +169,6 @@ export class UsersComponent implements OnInit {
         .then(url => {
           this.imagenURL = url;
         })
-        .catch(error => {
-          console.log('Error al obtener la URL de la imagen:', error);
-        });
     }
   }
 
@@ -207,9 +201,7 @@ export class UsersComponent implements OnInit {
 
   mostrarModalConf() {
     this.modalService.open(this.myModalConf).result.then(r => {
-      console.log("Tu respuesta ha sido: " + r);
-    }, error => {
-      console.log(error);
+    }, () => {
     });
   }
 
@@ -308,7 +300,6 @@ export class UsersComponent implements OnInit {
   }
 
   chat() {
-    console.log("chat");
     this.mostrarChat = !this.mostrarChat;
   }
   toggleChat() {

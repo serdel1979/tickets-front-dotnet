@@ -57,7 +57,6 @@ export class NuevoEquipoComponent implements OnInit {
       },
         (err) => {
           this.mostrarSpinner = false;
-          console.log(err);
           this.toastr.error(
             '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">' + err.error + '</span>',
             "",

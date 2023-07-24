@@ -116,12 +116,10 @@ export class AdminComponent implements OnInit {
   }
 
   private newMessage(message: NewMessage) {
-    console.log(message);
     this.conversation.push(message);
   }
 
   private leftUser(message: string) {
-    console.log(message);
     this.conversation.push({
       userName: 'Sistema',
       message: message

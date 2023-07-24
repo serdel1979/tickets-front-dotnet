@@ -29,11 +29,9 @@ export class ChatService {
       this.hubConnection
         .start()
         .then(() => {
-          console.log('Connection chat started');
           resolve();
         })
         .catch(err => {
-          console.log('Error while starting connection: ' + err);
           reject(err);
         });
     });
@@ -42,9 +40,8 @@ export class ChatService {
   public addToGroup(groupName: string, userName: string){
     this.hubConnection.invoke('JoinGroup', groupName, userName)
       .then(_ => {
-        console.log(`${userName} unido a ${groupName}`);
         true;
-      }).catch(err=> console.error(err));
+      }).catch(()=> {});
   }
 
 

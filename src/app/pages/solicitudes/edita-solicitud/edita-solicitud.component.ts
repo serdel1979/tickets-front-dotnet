@@ -64,7 +64,7 @@ export class EditaSolicitudComponent implements OnInit {
       .build();
 
     this.connection.on("NewUser", message => this.newUser(message));
-    this.connection.on("NewMessage", () => console.log('editado'));
+    this.connection.on("NewMessage",(()=>{}));
     this.connection.on("LeftUser", message => this.leftUser(message));
   }
 
