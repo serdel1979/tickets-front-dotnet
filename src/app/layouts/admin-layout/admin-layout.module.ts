@@ -21,6 +21,9 @@ import { FirstWordBoldPipe } from 'src/app/pipes/world-brawn';
 import { UsuarioDetallaComponent } from 'src/app/pages/usuarios/usuario-detalla/usuario-detalla.component';
 import { EquiposUserComponent } from 'src/app/pages/equipos/equipos-user/equipos-user.component';
 import { EquiposAdminComponent } from 'src/app/pages/equipos/equipos-admin/equipos-admin.component';
+import { HistorialAdminComponent } from 'src/app/pages/historial/historial-admin/historial-admin.component';
+import { HistorialUserComponent } from 'src/app/pages/historial/historial-user/historial-user.component';
+import { HistorialComponent } from 'src/app/pages/historial/historial.component';
 
 @NgModule({
     declarations: [
@@ -37,7 +40,10 @@ import { EquiposAdminComponent } from 'src/app/pages/equipos/equipos-admin/equip
         ChatrUserComponent,
         FirstWordBoldPipe,        
         EquiposUserComponent,
-        EquiposAdminComponent
+        EquiposAdminComponent,
+        HistorialAdminComponent,
+        HistorialUserComponent,
+        HistorialComponent,
     ],
     imports: [
         NgxPaginationModule,

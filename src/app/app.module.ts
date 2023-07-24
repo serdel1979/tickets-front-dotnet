@@ -34,7 +34,6 @@ import { DetalleEquipoComponent } from './pages/equipos/equipos-admin/detalle-eq
     LoginComponent,
     RegisterComponent,
     AdminLayoutComponent,
-    HistorialComponent,
     DetalleSolicitudComponent,
     EditaSolicitudComponent,
     AgregaComponent,

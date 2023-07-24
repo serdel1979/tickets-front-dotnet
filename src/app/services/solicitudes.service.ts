@@ -23,6 +23,14 @@ export class SolicitudesService {
     return this.http.get<Solicitud[]>(`${this.baseUrl}/solicitudes`)
   }
 
+  getHistorial(){
+    return this.http.get<Solicitud[]>(`${this.baseUrl}/solicitudes/historial`)
+  }
+
+  getMiHistorial(){
+    return this.http.get<Solicitud[]>(`${this.baseUrl}/solicitudes/mihistorial`)
+  }
+
   enviaSolicitud(form: any):Observable<any>{
     return this.http.post(`${this.baseUrl}/solicitudes`,form)
       .pipe(

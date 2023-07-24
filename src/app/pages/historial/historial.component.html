@@ -1,1 +1,6 @@
-<p>historial works!</p>
+<div *ngIf="isAdmin">
+    <app-historial-admin></app-historial-admin>
+</div>
+<div  *ngIf="!isAdmin">
+    <app-historial-user></app-historial-user>
+</div>

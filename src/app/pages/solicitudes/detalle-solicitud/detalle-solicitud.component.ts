@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { error } from 'console';
 import { Solicitud } from '../../../interfaces/solicitud.interface';
+import { RoutePreviewService } from '../../../services/route-preview.service';
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -10,8 +11,6 @@ import { Solicitud } from '../../../interfaces/solicitud.interface';
   styleUrls: ['./detalle-solicitud.component.css']
 })
 export class DetalleSolicitudComponent implements OnInit {
-
-  
 
   public idSolicitud!: number;
 
@@ -45,8 +44,8 @@ export class DetalleSolicitudComponent implements OnInit {
 
 
 
-  volver(){
-    this.router.navigate(['/solicitudes']);
+  volver() {
+    window.history.back();
   }
 
   getColorStyles(estado: string) {

@@ -94,7 +94,7 @@ export class EditaSolicitudComponent implements OnInit {
 
 
   volver() {
-    this.router.navigate([`/solicitudes`]);
+    window.history.back();
   }
 
   agregarEstado() {
@@ -102,9 +102,7 @@ export class EditaSolicitudComponent implements OnInit {
       await this.notificarCambio();
       this.volver();
     },
-      err => {
-        console.log(err);
-      })
+      err => {})
   }
 
   setValoresPorDefecto() {
@@ -149,7 +147,6 @@ export class EditaSolicitudComponent implements OnInit {
   }
 
   private newUser(message: string) {
-    console.log(message);
     this.conversation.push({
       userName: 'Sistema',
       message: message
@@ -157,12 +154,10 @@ export class EditaSolicitudComponent implements OnInit {
   }
 
   private newMessage(message: NewMessage) {
-    console.log(message);
     this.conversation.push(message);
   }
 
   private leftUser(message: string) {
-    console.log(message);
     this.conversation.push({
       userName: 'Sistema',
       message: message

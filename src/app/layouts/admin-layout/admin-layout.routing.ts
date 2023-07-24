@@ -12,8 +12,6 @@ import { EditaSolicitudComponent } from 'src/app/pages/solicitudes/edita-solicit
 import { SolicitudesComponent } from 'src/app/pages/solicitudes/solicitudes.component';
 import { UsuarioDetallaComponent } from 'src/app/pages/usuarios/usuario-detalla/usuario-detalla.component';
 import { UsuariosComponent } from 'src/app/pages/usuarios/usuarios.component';
-import { ChatrAdminComponent } from '../../pages/chat/chatr-admin/chatr-admin.component';
-import { ChatrUserComponent } from '../../pages/chat/chatr-user/chatr-user.component';
 import { reloadGuard } from 'src/app/guards/reload.guard';
 import { AgregaComponent } from 'src/app/pages/usuarios/agrega/agrega.component';
 import { NuevoEquipoComponent } from 'src/app/pages/equipos/equipos-admin/nuevo-equipo/nuevo-equipo.component';

@@ -1,0 +1,13 @@
+.icon-zoom {
+    cursor: pointer;
+  }
+
+  label:hover {
+    cursor: pointer;
+  }
+  
+  .icon-zoom:hover {
+    transform: scale(2);
+  }
+  
+
