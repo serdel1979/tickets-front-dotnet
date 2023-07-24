@@ -35,8 +35,7 @@ export class DetalleSolicitudComponent implements OnInit {
       this.buscando = false;
       this.errorNotFound = false;
     },
-    error=>{
-      console.log(error);
+    ()=>{
       this.buscando=false;
       this.errorNotFound = true;
     })

@@ -3,7 +3,6 @@ import { Solicitud } from 'src/app/interfaces/solicitud.interface';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Router } from '@angular/router';
-
 @Component({
   selector: 'app-historial-admin',
   templateUrl: './historial-admin.component.html',
@@ -14,10 +13,14 @@ export class HistorialAdminComponent implements OnInit {
   public spinnerMostrar:boolean = false;
 
   public solicitudes : Solicitud[] = [];
+  public filtroSolicitudes : Solicitud[] = [];
+
+  public filtroSolicitud!: string;
 
   public isLogued: boolean = false;
   
   public page!: number;
+  public perPage: number = 5;
 
   constructor(private solicitudesService: SolicitudesService, 
     private authService: AuthService,
@@ -30,6 +33,7 @@ export class HistorialAdminComponent implements OnInit {
     if (this.isLogued) {
       this.solicitudesService.getHistorial().subscribe( resp => {
         this.solicitudes = resp;
+        this.filtroSolicitudes = resp;
         this.spinnerMostrar = false;
       },
       (err)=>{
@@ -46,6 +50,17 @@ export class HistorialAdminComponent implements OnInit {
     this.router.navigate([`/solicitudes/ver/${id}`]);
   }
 
+  aplicarFiltro() {
+    if (this.filtroSolicitud.trim() === '') {
+      // Si el filtro está vacío, mostrar todos los usuarios
+      this.filtroSolicitudes = this.solicitudes;
+    } else {
+      // Filtrar usuarios por el valor del input
+      this.filtroSolicitudes = this.filtroSolicitudes.filter((solicitud: Solicitud) => {
+        return solicitud.departamento.toLowerCase().includes(this.filtroSolicitud.toLowerCase());
+      });
+    }
+  }
 
   getColorStyles(estado: string) {
     switch (estado) {

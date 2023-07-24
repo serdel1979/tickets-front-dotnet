@@ -41,6 +41,8 @@ export class UsuarioDetallaComponent implements OnInit {
   public buscando: boolean = false;
   public mostrarSpinner: boolean = false;
 
+  public spinnerResetPass: boolean = false;
+
   constructor(private router: Router,
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -132,7 +134,7 @@ export class UsuarioDetallaComponent implements OnInit {
   }
 
   async onSubmit() {
-    this.mostrarSpinner = true;
+    this.spinnerResetPass = true;
     
     this.usersService.resetPassword(this.miFormulario.value).subscribe({
       next: () => {
@@ -149,7 +151,7 @@ export class UsuarioDetallaComponent implements OnInit {
           }
         );
        
-        this.mostrarSpinner = false;
+        this.spinnerResetPass = false;
       },
       error: (error: string) => {
         this.toastr.error(
@@ -163,7 +165,7 @@ export class UsuarioDetallaComponent implements OnInit {
             positionClass: "toast-" + "top" + "-" + "center"
           }
         );
-        this.mostrarSpinner = false;
+        this.spinnerResetPass = false;
       }
 
     })

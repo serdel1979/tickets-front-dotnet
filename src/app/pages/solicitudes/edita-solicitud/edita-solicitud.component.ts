@@ -71,24 +71,26 @@ export class EditaSolicitudComponent implements OnInit {
   ngOnInit(): void {
     this.idSolicitud = this.route.snapshot.params['id'];
     this.setValoresPorDefecto();
+    this.buscando = true;
     this.solicitudesService.getSolicitud(this.idSolicitud).subscribe(async resp => {
       this.solicitud = resp;
+      this.buscando = false;
+      this.errorNotFound = false;
       this.connection.start().then(async () => {
-        // La conexión se ha establecido correctamente
-        console.log("conexión socket ok...");
-        //------------------
         this.connection.invoke('JoinGroup', 'refresh', 'soporte')
           .then(_ => {
             this.joined = true;
           });
         //------------------
         await this.notificarCambio();
-      }).catch(err => {
-        console.error(err.toString());
       });
       this.solicitudesService.getEstadosPosibles(this.idSolicitud).subscribe(estados => {
         this.estadosPosibles = estados;
       })
+    },
+    ()=>{
+      this.buscando=false;
+      this.errorNotFound = true;
     })
   }
 
@@ -101,8 +103,7 @@ export class EditaSolicitudComponent implements OnInit {
     this.solicitudesService.agregaEstado(this.estadoForm.value, this.idSolicitud).subscribe(async resp => {
       await this.notificarCambio();
       this.volver();
-    },
-      err => {})
+    })
   }
 
   setValoresPorDefecto() {

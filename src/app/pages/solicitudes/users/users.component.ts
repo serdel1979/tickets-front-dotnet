@@ -65,7 +65,7 @@ export class UsersComponent implements OnInit {
   public page!: number;
   private connection: HubConnection;
   // Variables de paginación
-  pageSize: number = 3; // Tamaño de página (número de solicitudes por página)
+  pageSize: number = 5; // Tamaño de página (número de solicitudes por página)
   totalPages: number = 0; // Total de páginas
   paginatedSolicitudes: any[] = []; // Solicitudes que se mostrarán en la página actual
 

@@ -1,4 +1,21 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <div class="d-flex flex-row-reverse justify-content-between align-items-center">
+          <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="filtroSolicitud"
+            (ngModelChange)="aplicarFiltro()">
+        </div>
+        <!-- <div *ngIf="mostrarSpinner" class="alert alert-info">
+          Enviando!!!
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row">
+  <div class="col-md-12">
     <div *ngIf="spinnerMostrar" class="card">
       <div class="card-header">
         <h4 class="card-title"> Solicitudes </h4>
@@ -9,71 +26,71 @@
         </div>
       </div>
     </div>
-    <div class="col-md-12">
-      <div *ngIf="solicitudes.length == 0 && !spinnerMostrar" class="card">
-        <div class="card-header">
-          <h4 class="card-title"> Historial </h4>
-        </div>
-        <div class="card-body">
-          <h5>Nada por ahora...</h5>
-        </div>
+
+    <div *ngIf="solicitudes.length == 0 && !spinnerMostrar" class="card">
+      <div class="card-header">
+        <h4 class="card-title"> Historial </h4>
       </div>
-      <div *ngIf="solicitudes.length > 0 && !spinnerMostrar" class="card">
-        <div class="card-header">
-          <h4 class="card-title"> Historial </h4>
+      <div class="card-body">
+        <h5>Nada por ahora...</h5>
+      </div>
+    </div>
+    <div *ngIf="solicitudes.length > 0 && !spinnerMostrar" class="card">
+      <div class="card-header">
+        <h4 class="card-title"> Historial </h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th>
+                Depto
+              </th>
+              <th>
+                Fecha
+              </th>
+              <th>
+                Equipo
+              </th>
+              <th>
+                Descripción
+              </th>
+              <th>
+                Estado
+              </th>
+              <th>
+                Acción
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let solicitud of filtroSolicitudes | paginate: { itemsPerPage:perPage, currentPage: page}">
+                <td>
+                  {{ solicitud.departamento }}
+                </td>
+                <td>
+                  {{ solicitud.fecha | date:'yyyy-MM-dd' }}
+                </td>
+                <td>
+                  {{ solicitud.equipo }}
+                </td>
+                <td>
+                  {{ solicitud.descripcion }}
+                </td>
+                <td [ngStyle]="getColorStyles(solicitud.estadoActual)">
+                  {{ solicitud.estadoActual }}
+                </td>
+                <td style="width: 30mm;">
+                  <i (click)="verSolicitud(solicitud.id)" class="nc-icon nc-minimal-right icon-zoom"></i>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table">
-              <thead class=" text-primary">
-                <th>
-                  Depto
-                </th>
-                <th>
-                  Fecha
-                </th>
-                <th>
-                  Equipo
-                </th>
-                <th>
-                  Descripción
-                </th>
-                <th>
-                  Estado
-                </th>
-                <th>
-                  Acción
-                </th>
-              </thead>
-              <tbody>
-                <tr *ngFor="let solicitud of solicitudes | paginate: { itemsPerPage:3, currentPage: page}">
-                  <td>
-                    {{ solicitud.departamento }}
-                  </td>
-                  <td>
-                    {{ solicitud.fecha | date:'yyyy-MM-dd' }}
-                  </td>
-                  <td>
-                    {{ solicitud.equipo }}
-                  </td>
-                  <td>
-                    {{ solicitud.descripcion }}
-                  </td>
-                  <td [ngStyle]="getColorStyles(solicitud.estadoActual)">
-                    {{ solicitud.estadoActual }}
-                  </td>
-                  <td style="width: 30mm;">
-                    <i (click)="verSolicitud(solicitud.id)" class="nc-icon nc-minimal-right icon-zoom"></i>
-  
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-  
-          <pagination-controls (pageChange)="onPageChange($event)" previousLabel=&laquo;
-            nextLabel=&raquo;></pagination-controls>
-        </div>
+
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel=&laquo;
+          nextLabel=&raquo;></pagination-controls>
       </div>
     </div>
   </div>
+</div>

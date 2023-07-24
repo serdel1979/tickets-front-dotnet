@@ -1,8 +1,14 @@
-<div *ngIf="buscando">
-    <div class="alert alert-info">
-        Cargando!!!
+<div *ngIf="buscando" class="card">
+    <div class="card-header">
+        <h4 class="card-title"> Solicitud </h4>
+    </div>
+    <div class="card-body">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
     </div>
 </div>
+
 <div *ngIf="errorNotFound">
     <div class="alert alert-danger">
         Ha ocurrido un error!!!
@@ -32,7 +38,8 @@
                 </div>
                 <div>
                     <strong>Estado Actual:
-                        <span [ngStyle]="getColorStyles(solicitud.estadoActual)" class="green-text">{{ solicitud.estadoActual }}</span> </strong>
+                        <span [ngStyle]="getColorStyles(solicitud.estadoActual)" class="green-text">{{
+                            solicitud.estadoActual }}</span> </strong>
                 </div>
                 <div>
                     <strong>Fecha: </strong>
@@ -47,7 +54,8 @@
                     <strong>Estados:</strong>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" *ngFor="let estado of solicitud.estados">
-                            <strong>Estado:</strong>  <span [ngStyle]="getColorStyles(estado.estadoActual)">{{ estado.estadoActual }}</span> 
+                            <strong>Estado:</strong> <span [ngStyle]="getColorStyles(estado.estadoActual)">{{
+                                estado.estadoActual }}</span>
                             <strong *ngIf="estado.comentario !== ''">Comentario:</strong> {{ estado.comentario }}
                             <strong>Fecha:</strong> {{ estado.fecha | date }}
                             <strong>Hora:</strong> {{ estado.fecha | date: 'mediumTime' }}
