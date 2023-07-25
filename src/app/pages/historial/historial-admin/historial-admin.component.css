@@ -9,5 +9,13 @@
   .icon-zoom:hover {
     transform: scale(2);
   }
+
+  .pdf-table {
+    font-size: 12px;
+  }
+  
+  .pdf-table th, .pdf-table td {
+    padding: 5px;
+  }
   
 

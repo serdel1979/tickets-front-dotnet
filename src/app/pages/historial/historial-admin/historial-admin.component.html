@@ -18,7 +18,7 @@
   <div class="col-md-12">
     <div *ngIf="spinnerMostrar" class="card">
       <div class="card-header">
-        <h4 class="card-title"> Solicitudes </h4>
+        <h4 class="card-title"> Historial </h4>
       </div>
       <div class="card-body">
         <div class="spinner-border" role="status">
@@ -35,12 +35,13 @@
         <h5>Nada por ahora...</h5>
       </div>
     </div>
-    <div *ngIf="solicitudes.length > 0 && !spinnerMostrar" class="card">
+    <div *ngIf="solicitudes.length > 0 && !spinnerMostrar" class="card" >
       <div class="card-header">
         <h4 class="card-title"> Historial </h4>
+        <button class="btn btn-primary btn-sm ml-2" (click)="generaPdf()">Generar PDF</button>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive" #table>
           <table class="table">
             <thead class=" text-primary">
               <th>

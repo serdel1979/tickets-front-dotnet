@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Solicitud } from 'src/app/interfaces/solicitud.interface';
 import { SolicitudesService } from '../../../services/solicitudes.service';
+import { PdfGeneratorService } from '../../../services/pdf-generator.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-historial-user',
@@ -26,7 +28,9 @@ export class HistorialUserComponent implements OnInit {
   totalPages: number = 0; // Total de páginas
 
   constructor(  private router: Router,
-    private fb: FormBuilder, private miHistorialSolicitudes: SolicitudesService){}
+    private authService: AuthService,
+    private miHistorialSolicitudes: SolicitudesService,
+    private pdfService:PdfGeneratorService){}
 
   ngOnInit(): void {
     this.mostrarSpinner = true;
@@ -40,6 +44,10 @@ export class HistorialUserComponent implements OnInit {
     })
   }
 
+
+  generaPdf(){
+    this.pdfService.generatePdf(this.filtroSolicitudes,this.authService.getUserLogued());
+  }
 
 
   ver(id:number) {

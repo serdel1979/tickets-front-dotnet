@@ -24,6 +24,12 @@ import { EquiposAdminComponent } from 'src/app/pages/equipos/equipos-admin/equip
 import { HistorialAdminComponent } from 'src/app/pages/historial/historial-admin/historial-admin.component';
 import { HistorialUserComponent } from 'src/app/pages/historial/historial-user/historial-user.component';
 import { HistorialComponent } from 'src/app/pages/historial/historial.component';
+import * as pdfMake from  'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { PdfMakeWrapper } from 'pdfmake-wrapper';
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
+PdfMakeWrapper.setFonts(pdfFonts);
 
 @NgModule({
     declarations: [
