@@ -1,3 +1,16 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <div class="d-flex flex-row-reverse justify-content-between align-items-center">
+
+          <p class="mb-0"><button class="btn btn-primary" (click)="mostrarModalInfo()">Solicitar</button></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-md-12">
     <div *ngIf="spinnerMostrar" class="card">
@@ -79,3 +92,54 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #myModalInfo let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Reportar problema</h5>
+      <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="solicitudesForm" (ngSubmit)="modal.close('send')">
+        <div class="form-group">
+          <input type="text" class="form-control" id="usuario" formControlName="usuario" autocomplete="off"
+            placeholder="Ingrese su nombre">
+          <span *ngIf="campoNoValido('usuario')" class="form-text text-danger">
+            Debe indicar un usuario
+          </span>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" id="equipo" formControlName="equipo" autocomplete="off"
+            placeholder="Ingrese cual es el equipo que tiene problema">
+          <span *ngIf="campoNoValido('equipo')" class="form-text text-danger">
+            Debe indicar el equipo que tiene problemas
+          </span>
+        </div>
+        <div class="form-group">
+          <textarea class="form-control" id="descripcion" formControlName="descripcion" autocomplete="off"
+            placeholder="Ingrese una descripción del problema"></textarea>
+          <span *ngIf="campoNoValido('descripcion')" class="form-text text-danger">
+            {{ comentErrorMsg }}
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="imagen">Imagen (opcional)</label>
+
+          <input type="file" name="imagen" (change)="onFileSelected($event)" formControlName="imagen"
+            accept=".png, .jpg, .jpeg, .gif" />
+          <!-- Mostrar la imagen cargada -->
+          <img *ngIf="imagenURL" [src]="imagenURL" alt="Imagen cargada">
+          <!-- Otros campos del formulario -->
+
+        </div>
+        <button [disabled]="!solicitudesForm.valid" type="submit" class="btn btn-primary">
+          <span *ngIf="mostrarSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Enviar
+        </button>
+      </form>
+    </div>
+  </div>
+</ng-template>
