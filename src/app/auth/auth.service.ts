@@ -33,12 +33,13 @@ export class AuthService {
   }
 
 
-  solicitaUsuario( usuario: string, email: string, password: string){
-    const url = `${this.baseUrl}/usuarios/solicitar`
+  solicitaUsuario( data: any){
+    const url = `${this.baseUrl}/usuarios/solicitar`;
     const body = {
-      usuario,
-      email,
-      password
+      usuario: data.user,
+      email: data.email,
+      password: data.password,
+      recaptchaToken: data.recaptchaToken
     }
     return this.http.post<AuthResponse>(url,body);
   }

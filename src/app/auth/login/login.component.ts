@@ -38,18 +38,17 @@ export class LoginComponent {
 
 
   async login() {
-    this.mostrarSpinner = true;
+    
     try {
       // Obtener el token de reCAPTCHA v3.
+      this.mostrarSpinner = true;
       const recaptchaToken = await this.recaptchaV3Service.execute(this.recaptchaSiteKey).toPromise();
 
 
 
       const { user, password } = this.miFormulario.value;
 
-    
-      const loginData = { usuario: user, password, recaptchaToken }; // Incluye el token en el objeto de inicio de sesión.
-
+      const loginData = { usuario: user, password, recaptchaToken}; // Incluye el token en el objeto de inicio de sesión.
 
       this.authService.login(loginData)
         .subscribe(async (resp) => {
