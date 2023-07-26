@@ -26,13 +26,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
 
-  login( usuario: string, password: string){
+  login(loginData:any){
     const url = `${this.baseUrl}/usuarios/login`
-    const body = {
-      usuario,
-      password
-    }
-    return this.http.post<AuthResponse>(url,body);
+
+    return this.http.post<AuthResponse>(url,loginData);
   }
 
 
