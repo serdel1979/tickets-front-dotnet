@@ -1,0 +1,103 @@
+[{
+  "user": "soporte",
+  "password": "$2b$10$6dJ2cNHs6f0sXORybWJ89uLuWK69.5UKiACBPoIM5X5aXVeeaOaLy"
+},{
+  "user": "musica",
+  "password": "$2b$10$FZtN2QLJHG8wSpnyAdSJWeqR4wodsbEqFxCNTafrM0wR6AYPbO5ES"
+},{
+  "user": "plastica",
+  "password": "$2b$10$BuVcTbDnlyMJsl7Boj7wQOSTIe9ALo4W1xmOFxK3IY4McC0mRsmci"
+},{
+  "user": "planificacion",
+  "password": "$2b$10$4fohUhxLCzOM0n4fliXO0uRbo4Hv3sn/Eo5bUijEauYCRs.VQFGB6"
+},{
+  "user": "compras",
+  "password": "$2b$10$F/pVj.RoxH6GnTPNQtMRt.T15kkDk9h6zOQHs/CnTNXIgHGcEXDOS"
+},{
+  "user": "vicedecanato",
+  "password": "$2b$10$OmDW2xQHbLh5UigLC5waVea4JDsjx3FT9r8mMvu0ym83fD2Hevf52"
+},{
+  "user": "historicoysociales",
+  "password": "$2b$10$7YjSHuucynHLFmwHWGLub.uAQeDNbFJlWAZ3yiKGT0KHIbYouprWa"
+},{
+  "user": "Decanato",
+  "password": "$2b$10$zl6p.yAiiVL.CL7ozmPrv.BNtNWgoa9i1dUyh4Z7SU28ExlICv0Ka"
+},{
+  "user": "Tesoreria",
+  "password": "$2b$10$3kKZGNXDRebNhlKfiYBWZuoYXG5MKiUPQVLdWBWmC/Jx0IaEfhekO"
+},{
+  "user": "lenguajesartisticos",
+  "password": "$2b$10$9LLuFxDrzwlmVQYmko0/xubKcugaAGsjCCTmXlbS/J.FJ5u8pPISC"
+},{
+  "user": "contable",
+  "password": "$2b$10$GV.7W2mvWJy5YUOsG4mzu.wLgb732pT9l24AtFXUNKxAWNIXV15NK"
+},{
+  "user": "fendo",
+  "password": "$2b$10$yw7UXuD4zD9kQH4PYycq6eGpRpRVEnOKFKHWng44XPg4xSvGeEshG"
+},{
+  "user": "personal",
+  "password": "$2b$10$qKkyt1k2bx/PM32AnW18G./KnMq5LdaymUwVe99y7bdAUkYF.4c0m"
+},{
+  "user": "decanato",
+  "password": "$2b$10$/SMTTKcZKIiq/WkHcYznJOn21yDjxGHsQW6zmYfdVuArn0mCaJSOq"
+},{
+  "user": "extension",
+  "password": "$2b$10$7hlZzrubbZ4es682RQpe6u8sOBz.IwQJIinatN6En5sU3fTd6quFW"
+},{
+  "user": "dehsoc",
+  "password": "$2b$10$6Sgz4FyXsM04.vaZrKlgIOP2vU.mUBq0D/1meVtdln81XxusTwbpe"
+},{
+  "user": "alumnos",
+  "password": "$2b$10$YP7iW1Yp7zDb9ERBZdSLheCWDDl/M1oUszvmSdB8bavWXMfBwdKEK"
+},{
+  "user": "sonido",
+  "password": "$2b$10$vNBnuN7Y1mQazuq0gs2SGen4UVl25SrwhR11IbjJwg7C1nK9fm842"
+},{
+  "user": "academica",
+  "password": "$2b$10$/jzYeMwjC.LW/Cv/QaVGB.Jk3gmhh6Y6Q/BXvMOlqyyeWKPy6kO1O"
+},{
+  "user": "patrimonio",
+  "password": "$2b$10$xOjrl21te0LviupvMUcsIuIa3bdLRzvA/5TpqBptrlaTTfaKa1u2m"
+},{
+  "user": "fkoroch",
+  "password": "$2b$10$Z6/cj2KfYrizuDbbiuCNiOgad7rOLUlsi5U1FR5.tLhi7//El4F6u"
+},{
+  "user": "biblioteca",
+  "password": "$2b$10$LgSoideLdOMHBft2iHlv0OTEel3yXNYy0N2A.O.FV.6RAOZZvrpbG"
+},{
+  "user": "nodocentes",
+  "password": "$2b$10$g/XolktIBoIV4W0GTJmdFuy6wKgPwLACfH01ddjFTSscYM4ghpk92"
+},{
+  "user": "multimedia",
+  "password": "$2b$10$ORtcJf3GFmojmqDyDxb4Y.mYlEow44GT8iVEQlTFmSR4CYHpk6ELu"
+},{
+  "user": "arteycultura",
+  "password": "$2b$10$Wmo85JxOJrnSe6Ov6t6Cs.gX/uQcvKQFy9XIreDUyGD1/yppJ74kG"
+},{
+  "user": "mesadeentrada",
+  "password": "$2b$10$KH0jysnaKBygyov..4l9RehBsSjk0y8zENc0pmvUIUaLIECdpBCEu"
+},{
+  "user": "prueba",
+  "password": "$2b$10$Y18OObzh4xO2LcIEZyOSPuLtZXfM9o6BbqE7LO.D.N7VoicI2FlTC"
+},{
+  "user": "disindustrial",
+  "password": "$2b$10$opevpwqz7KmlZbh8HmMccOk6wTAWsjf8vVKoz9wM30J9wKHtbcLgm"
+},{
+  "user": "cine",
+  "password": "$2b$10$qpA77suuZjJLGmZeN.oyV.VS.fBF9Tj88/y6ozdoopq3Tr1QU0Prm"
+},{
+  "user": "cienciaytecnica",
+  "password": "$2b$10$aWnlVZ1VPiR8vHR.XQ1hCuDrbZE8oZLjKUXL5Ozd.1UK8lEr9sQMG"
+},{
+  "user": "dcv",
+  "password": "$2b$10$xLebp6i5Zo.HqFi.SMaUTO9PIckKoNNhc1KGzAavnF5u0R8FctGky"
+},{
+  "user": "papelcosido",
+  "password": "$2b$10$NwBU9mRaBcfRrQTXGqAi1uscO6M1PImnC1SQMYk1aUREpoTRE3Zvm"
+},{
+  "user": "terraza",
+  "password": "$2b$10$nLpbEh7t8j1HadbGRcpASuW1Gji/ZdIDQgM67ZWikBXLqSDVzfdle"
+},{
+  "user": "posgrado",
+  "password": "$2b$10$aweTPaSn7zUCrQDSTME/NOo6XevbQjI7S/yYsqfwexyyqBGxLBZo."
+}]

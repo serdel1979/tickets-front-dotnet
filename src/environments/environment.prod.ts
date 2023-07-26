@@ -4,4 +4,7 @@ export const environment = {
     baseUrl: 'https://tickets-dotnet-production.up.railway.app/api',
     urlHub: 'https://tickets-dotnet-production.up.railway.app/Hubs/MHub',
     urlHubChat: 'https://chatredusdotnet-production.up.railway.app/Hub/ChatHub',
+    recaptcha: {
+      siteKey: '6LeA3DEkAAAAAMNPs2KtsZwnbzaMflR7YLJC0tJZ',
+    },
   };

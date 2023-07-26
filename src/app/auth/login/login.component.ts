@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ChatService } from 'src/app/services/chat.service';
-import { ChatredisService } from 'src/app/services/chatredis.service';
+import { environment } from 'src/environments/environment';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +13,9 @@ import { ChatredisService } from 'src/app/services/chatredis.service';
 })
 export class LoginComponent {
 
+
+
+  private recaptchaSiteKey = environment.recaptcha.siteKey;
 
   public mostrarSpinner: boolean = false;
 
@@ -27,66 +30,108 @@ export class LoginComponent {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private chatrService: ChatredisService
+    private recaptchaV3Service: ReCaptchaV3Service
   ) { }
 
 
-  login() {
+
+
+
+  async login() {
     this.mostrarSpinner = true;
-    const { user, password } = this.miFormulario.value;
-
-    this.authService.login(user, password)
-      .subscribe(async (resp) => {
-        this.mostrarSpinner = false;
-        let token = JSON.stringify(resp.token);
-        token = token.slice(1);
-        token = token.slice(0, -1);
-        localStorage.setItem('token', token);
-        localStorage.setItem('usrlog', JSON.stringify(resp));
-
-        this.authService.loginOk();
-        
-        // if (this.authService.isAdmin()) {
-        //     this.authService.getAllUsers().subscribe((users)=>{
-        //       for(let usr of users){
-        //         this.chatrService.joinGroup(usr.userName).then()
-        //       }
-        //     })
-        // } else {
-        //   const groupName = this.authService.getUserLogued();
-         
-        //   this.chatrService.joinGroup(groupName).then()
-        // }
+    try {
+      // Obtener el token de reCAPTCHA v3.
+      const token = await this.recaptchaV3Service.execute(this.recaptchaSiteKey).toPromise();
 
 
-        this.toastr.success(
-          '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Acceso correcto!!!</span>',
-          "",
-          {
-            timeOut: 4000,
-            closeButton: true,
-            enableHtml: true,
-            toastClass: "alert alert-success alert-with-icon",
-            positionClass: "toast-" + "top" + "-" + "center"
-          }
-        );
-        this.router.navigateByUrl('/solicitudes');
-      },
-        (err) => {
+
+      const { user, password } = this.miFormulario.value;
+      const loginData = { user, password, token }; // Incluye el token en el objeto de inicio de sesión.
+
+
+      this.authService.login(user, password)
+        .subscribe(async (resp) => {
           this.mostrarSpinner = false;
-          this.toastr.error(
-            '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">' + err.name + '</span>',
+          let token = JSON.stringify(resp.token);
+          token = token.slice(1);
+          token = token.slice(0, -1);
+          localStorage.setItem('token', token);
+          localStorage.setItem('usrlog', JSON.stringify(resp));
+
+          this.authService.loginOk();
+
+          // if (this.authService.isAdmin()) {
+          //     this.authService.getAllUsers().subscribe((users)=>{
+          //       for(let usr of users){
+          //         this.chatrService.joinGroup(usr.userName).then()
+          //       }
+          //     })
+          // } else {
+          //   const groupName = this.authService.getUserLogued();
+
+          //   this.chatrService.joinGroup(groupName).then()
+          // }
+
+
+          this.toastr.success(
+            '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Acceso correcto!!!</span>',
             "",
             {
               timeOut: 4000,
               closeButton: true,
               enableHtml: true,
-              toastClass: "alert alert-danger alert-with-icon",
+              toastClass: "alert alert-success alert-with-icon",
               positionClass: "toast-" + "top" + "-" + "center"
             }
           );
+          this.router.navigateByUrl('/solicitudes');
+        },
+          (err) => {
+            this.mostrarSpinner = false;
+            if (err.status == 400) {
+              this.toastr.error(
+                '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">' + err.error + '</span>',
+                "",
+                {
+                  timeOut: 4000,
+                  closeButton: true,
+                  enableHtml: true,
+                  toastClass: "alert alert-danger alert-with-icon",
+                  positionClass: "toast-" + "top" + "-" + "center"
+                }
+              );
+            } else {
+              this.toastr.error(
+                '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Error desconocido!!!</span>',
+                "",
+                {
+                  timeOut: 4000,
+                  closeButton: true,
+                  enableHtml: true,
+                  toastClass: "alert alert-danger alert-with-icon",
+                  positionClass: "toast-" + "top" + "-" + "center"
+                }
+              );
+            }
+
+          }
+        )
+
+
+    } catch (error) {
+      this.mostrarSpinner = false;
+      this.toastr.error(
+        '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Error en reCAPTCHA!!!</span>',
+        "",
+        {
+          timeOut: 4000,
+          closeButton: true,
+          enableHtml: true,
+          toastClass: "alert alert-danger alert-with-icon",
+          positionClass: "toast-" + "top" + "-" + "center"
         }
-      )
+      );
+    }
   }
 
 

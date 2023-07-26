@@ -30,6 +30,7 @@
     "jspdf-autotable": "^3.5.31",
     "jwt-decode": "^3.1.2",
     "ng-chat": "^3.1.0",
+    "ng-recaptcha": "^12.0.1",
     "ng2-charts": "^4.1.1",
     "ngx-chat": "^0.0.4",
     "ngx-pagination": "^6.0.3",

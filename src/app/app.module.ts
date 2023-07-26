@@ -28,6 +28,9 @@ import { environment } from 'src/environments/environment';
 import { AgregaComponent } from './pages/usuarios/agrega/agrega.component';
 import { NuevoEquipoComponent } from './pages/equipos/equipos-admin/nuevo-equipo/nuevo-equipo.component';
 import { DetalleEquipoComponent } from './pages/equipos/equipos-admin/detalle-equipo/detalle-equipo.component';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,6 +44,7 @@ import { DetalleEquipoComponent } from './pages/equipos/equipos-admin/detalle-eq
     DetalleEquipoComponent
   ],
   imports: [
+    RecaptchaV3Module,
     AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
@@ -62,6 +66,10 @@ import { DetalleEquipoComponent } from './pages/equipos/equipos-admin/detalle-eq
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true
+  },
+  {
+    provide: RECAPTCHA_V3_SITE_KEY,
+    useValue: environment.recaptcha.siteKey, // Aquí debes poner tu clave de sitio de reCAPTCHA v3
   }],
   bootstrap: [AppComponent]
 })

@@ -5,6 +5,10 @@ export const environment = {
     urlHub: 'https://tickets-dotnet-production.up.railway.app/Hubs/MHub',
     urlHubChat: 'https://chatredusdotnet-production.up.railway.app/Hub/ChatHub', //https://localhost:7078
     //urlHubChat: 'https://localhost:7078/Hub/ChatHub',
+
+    recaptcha: {
+      siteKey: '6LeA3DEkAAAAAMNPs2KtsZwnbzaMflR7YLJC0tJZ',
+    },
     firebase: {
       apiKey: 'AIzaSyDmIdEn_IRpfK4WfeWi005SIy-2W0AFmPg',
       authDomain: 'tickets-c2458.firebaseapp.com',
