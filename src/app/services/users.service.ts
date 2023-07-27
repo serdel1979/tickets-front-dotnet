@@ -61,5 +61,11 @@ export class UsersService {
     return this.http.post<any>(url,body);
   }
 
+  borraUsuario(id: string) {
+    const url = `${BASEURL}/usuarios/${id}`;
+    return this.http.delete<any>(url);
+  }
+  
+
 
 }

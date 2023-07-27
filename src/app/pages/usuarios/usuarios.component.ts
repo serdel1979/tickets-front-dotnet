@@ -1,8 +1,9 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { UsuarioDetalle } from 'src/app/interfaces/usuario.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-usuarios',
@@ -10,6 +11,11 @@ import { UsuarioDetalle } from 'src/app/interfaces/usuario.interface';
   styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent implements OnInit{
+
+
+  
+  @ViewChild("myModalInfo", { static: false }) myModalInfo!: TemplateRef<any>;
+
 
 
   users: UsuarioDetalle[] = [];
@@ -27,9 +33,16 @@ export class UsuariosComponent implements OnInit{
     this.router.navigate([`solicitudes`]);
   }
 
-  constructor(private usersService: UsersService, private toastr: ToastrService, private router: Router){}
+  constructor(private usersService: UsersService, 
+    private toastr: ToastrService, 
+    private router: Router,
+    private modalService: NgbModal){}
 
   ngOnInit(): void {
+    this.inicializa();
+  }
+
+  inicializa(){
     this.spinnerMostrar = true;
     this.usersService.getUsers()
     .subscribe((users:any[])=>{
@@ -41,7 +54,6 @@ export class UsuariosComponent implements OnInit{
       this.spinnerMostrar = false;
     })
   }
-
 
   onPageChange(event: any) {
     this.page = event;
@@ -102,5 +114,69 @@ export class UsuariosComponent implements OnInit{
       });
     }
   }
+
+
+ 
+
+
+
+  
+  mostrarModalInfo(id: string): void {
+    this.modalService.open(this.myModalInfo).result.then(
+        async (userConfirmed) => {
+            if (userConfirmed) {
+                await this.deleteUser(id);
+            }
+        },
+        () => {}
+    );
+}
+
+async deleteUser(id: string): Promise<void> {
+    this.usersService.borraUsuario(id)
+    .subscribe(
+      ()=>{
+        this.toastr.success(
+          '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Usuario eliminado!!!</span>',
+          "",
+          {
+            timeOut: 4000,
+            closeButton: true,
+            enableHtml: true,
+            toastClass: "alert alert-success alert-with-icon",
+            positionClass: "toast-" + "top" + "-" + "center"
+          }
+        );
+        this.inicializa();
+      },
+      (err)=>{
+        if (err.status == 404) {
+          this.toastr.error(
+            '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">' + err.error + '</span>',
+            "",
+            {
+              timeOut: 4000,
+              closeButton: true,
+              enableHtml: true,
+              toastClass: "alert alert-danger alert-with-icon",
+              positionClass: "toast-" + "top" + "-" + "center"
+            }
+          );
+        } else {
+          this.toastr.error(
+            '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Error desconocido!!!</span>',
+            "",
+            {
+              timeOut: 4000,
+              closeButton: true,
+              enableHtml: true,
+              toastClass: "alert alert-danger alert-with-icon",
+              positionClass: "toast-" + "top" + "-" + "center"
+            }
+          );
+        }
+      }
+    )
+}
 
 }

@@ -3,7 +3,8 @@
         <div class="row">
             <div class="col">
                 <div class="d-flex flex-row-reverse justify-content-between align-items-center">
-                    <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="filtroUsuario" (ngModelChange)="aplicarFiltro()">
+                    <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="filtroUsuario"
+                        (ngModelChange)="aplicarFiltro()">
                     <p class="mb-0"><button class="btn btn-primary" (click)="agregar()">Agregar</button></p>
                 </div>
                 <!-- <div *ngIf="mostrarSpinner" class="alert alert-info">
@@ -54,7 +55,7 @@
                                 Habilitado
                             </th>
                             <th>
-                                Ver
+                                Acción
                             </th>
                         </thead>
                         <tbody>
@@ -71,7 +72,19 @@
                                         [checked]="usr.habilitado" title="Habilita o deshabilita usuario">
                                 </td>
                                 <td style="width: 30mm;">
-                                    <i (click)="verUsuario(usr.id)" class="nc-icon nc-minimal-right icon-zoom"></i>
+
+                                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+                                        (click)="mostrarModalInfo(usr.id)" title="Borrar usuario" width="20" height="20"
+                                        fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                        <path
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                    </svg>
+
+
+                                    <i style="margin-left: 10px;" (click)="verUsuario(usr.id)"
+                                        class="nc-icon nc-minimal-right icon-zoom"></i>
 
                                 </td>
                             </tr>
@@ -85,3 +98,30 @@
         </div>
     </div>
 </div>
+
+
+
+<ng-template #myModalInfo let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Eliminar</h5>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close"
+                (click)="modal.close()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h5>¿Seguro de eliminar al usuario?</h5>
+        </div>
+        <div class="modal-footer"> <!-- Agregar un contenedor para los botones del pie de página -->
+            <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close"
+                (click)="modal.close(true)">
+                <span aria-hidden="true">Si</span>
+            </button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close"
+                (click)="modal.close(false)">
+                <span aria-hidden="true">No</span>
+            </button>
+        </div>
+    </div>
+</ng-template>
