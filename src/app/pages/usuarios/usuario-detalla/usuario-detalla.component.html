@@ -90,7 +90,7 @@
 
                 </div>
 
-                <button type="submit" class="btn btn-primary">
+                <button  [disabled]="miFormulario.invalid || mostrarSpinner" type="submit" class="btn btn-primary">
                     <span *ngIf="mostrarSpinner" class="spinner-border spinner-border-sm" role="status"
                         aria-hidden="true"></span>
                     Guardar

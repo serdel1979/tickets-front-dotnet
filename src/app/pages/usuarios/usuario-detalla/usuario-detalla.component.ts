@@ -21,8 +21,8 @@ export class UsuarioDetallaComponent implements OnInit {
 
   miFormulario: FormGroup = this.fb.group({
     user: ['', [Validators.required]],
-    password1: ['', [Validators.required, this.validaPassword.passInvalid]],
-    password2: ['', [Validators.required, this.validaPassword.passInvalid]]
+    password1: ['', [Validators.required,Validators.minLength(8), this.validaPassword.passInvalid]],
+    password2: ['', [Validators.required,Validators.minLength(8), this.validaPassword.passInvalid]]
   });
 
 
@@ -95,18 +95,62 @@ export class UsuarioDetallaComponent implements OnInit {
       this.usersService.hacerAdmin(this.usuario)
         .subscribe(() => {
           this.mostrarSpinner = false;
+          this.toastr.success(
+            '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Actualizado!!!</span>',
+            "",
+            {
+              timeOut: 4000,
+              closeButton: true,
+              enableHtml: true,
+              toastClass: "alert alert-success alert-with-icon",
+              positionClass: "toast-" + "top" + "-" + "center"
+            }
+          );
         }
           ,
           (err) => {
             this.mostrarSpinner = false;
+            this.toastr.error(
+              '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">No se actualizó!!!</span>',
+              "",
+              {
+                timeOut: 4000,
+                closeButton: true,
+                enableHtml: true,
+                toastClass: "alert alert-danger alert-with-icon",
+                positionClass: "toast-" + "top" + "-" + "center"
+              }
+            );
           })
     } else {
       this.usersService.borrarAdmin(this.usuario)
         .subscribe(() => {
           this.mostrarSpinner = false;
+          this.toastr.success(
+            '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Actualizado!!!</span>',
+            "",
+            {
+              timeOut: 4000,
+              closeButton: true,
+              enableHtml: true,
+              toastClass: "alert alert-success alert-with-icon",
+              positionClass: "toast-" + "top" + "-" + "center"
+            }
+          );
         },
           (err) => {
             this.mostrarSpinner = false;
+            this.toastr.error(
+              '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">No se actualizó!!!</span>',
+              "",
+              {
+                timeOut: 4000,
+                closeButton: true,
+                enableHtml: true,
+                toastClass: "alert alert-danger alert-with-icon",
+                positionClass: "toast-" + "top" + "-" + "center"
+              }
+            );
           })
     }
 
