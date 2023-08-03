@@ -48,7 +48,7 @@ export class EditaSolicitudComponent implements OnInit {
 
   estadoForm: FormGroup = this.fb.group({
     estadoActual: ['', [Validators.required]],
-    comentario: ['', [Validators.required, this.validaText.textInvalid]],
+    comentario: ['', [Validators.required,Validators.maxLength(250),this.validaText.textInvalid]],
     solicitudId: ['', [Validators.required]],
     fecha: [new Date(), [Validators.required]]
   });
@@ -128,7 +128,7 @@ export class EditaSolicitudComponent implements OnInit {
     } else if (errors?.['notOnlyWhitespace']) {
       return "No puede escribir solo espacios en blanco"
     }
-    return ("Longitud máxima debe ser de 256 caracteres");
+    return ("Longitud máxima debe ser de 250 caracteres");
   }
 
 
