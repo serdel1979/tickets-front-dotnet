@@ -17,7 +17,7 @@ export class PdfGeneratorService {
 
     pdf.add(
       new Txt(`Historial al ${new Date().toLocaleDateString('es-AR')}`)
-        .fontSize(16)
+        .fontSize(13)
         .bold()
         .margin([0, 0, 0, 10])
         .end
@@ -50,7 +50,7 @@ export class PdfGeneratorService {
 
     pdf.add(
       new Txt(`Historial al ${new Date().toLocaleDateString('es-AR')} perteneciente a ${user}`)
-        .fontSize(16)
+        .fontSize(13)
         .bold()
         .margin([0, 0, 0, 10])
         .end
@@ -80,6 +80,7 @@ export class PdfGeneratorService {
     pdf.info({
       title: `Inventario ${new Date().toISOString()}`
     });
+
 
     pdf.add(
       new Txt(`Equipamiento cargado al ${new Date().toLocaleDateString('es-AR')}`)

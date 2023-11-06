@@ -40,7 +40,7 @@ export class EquiposService {
   }
 
   getAllEquipos(){
-    return this.http.get<Equipo[]>(`${URLapi}/equipos/todos`);
+    return this.http.get<Equipo[]>(`${URLapi}/equipos/allequipos`);
   }
   
 
