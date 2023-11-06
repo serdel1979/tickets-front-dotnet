@@ -3,6 +3,7 @@ import { EquiposService } from '../../../services/equipos.service';
 import { HttpResponse } from '@angular/common/http';
 import { Equipos } from 'src/app/interfaces/equipos.paginado';
 import { Router } from '@angular/router';
+import { PdfGeneratorService } from 'src/app/services/pdf-generator.service';
 
 @Component({
   selector: 'app-equipos-admin',
@@ -16,13 +17,17 @@ export class EquiposAdminComponent implements OnInit {
   equipos: any[] | null = [];
   equiposFiltrados: any[] | null =[];
 
+  loadingPdf: boolean = false;
+
+  allEquipos: any[] = [];
+
   public filtroBuscaUsuario: string = '';
   public page: number = 1;
   public porPagina: number = 5;
   public cantidadPaginas!: string | null;
   public totalItems: number = 0;
 
-  constructor(private equipoService: EquiposService, private router: Router){}
+  constructor(private equipoService: EquiposService, private router: Router, private reportesPdf: PdfGeneratorService){}
 
   ngOnInit(): void {
     if(this.filtroBuscaUsuario === ''){
@@ -86,6 +91,18 @@ export class EquiposAdminComponent implements OnInit {
 
   detalle(id: number){
     this.router.navigate([`equipos/detalle/${id}`]);
+  }
+
+  generaPdfEquipos(){
+    this.loadingPdf = true;
+    this.equipoService.getAllEquipos().subscribe(resp=>{
+      this.allEquipos = resp;
+      this.reportesPdf.generateInventario(resp)
+      this.loadingPdf = false;
+    },
+    (err)=>{
+      this.loadingPdf = false;
+    })
   }
 
 }

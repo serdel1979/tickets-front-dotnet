@@ -38,6 +38,10 @@ export class EquiposService {
   getMisEquipos(){
     return this.http.get<Equipo[]>(`${URLapi}/equipos/misequipos`);
   }
+
+  getAllEquipos(){
+    return this.http.get<Equipo[]>(`${URLapi}/equipos/todos`);
+  }
   
 
 }

@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
-    //baseUrl: 'https://tickets-dotnet-production.up.railway.app/api',
-    baseUrl: 'https://localhost:7147/api',
+    baseUrl: 'https://tickets-dotnet-production.up.railway.app/api',
+    //baseUrl: 'https://localhost:7147/api',
     urlHub: 'https://tickets-dotnet-production.up.railway.app/Hubs/MHub',
     urlHubChat: 'https://chatredusdotnet-production.up.railway.app/Hub/ChatHub', //https://localhost:7078
     //urlHubChat: 'https://localhost:7078/Hub/ChatHub',
@@ -20,3 +20,5 @@ export const environment = {
       measurementId: 'G-3M73YG949V'
     },
   };
+
+  //ng build -c production
