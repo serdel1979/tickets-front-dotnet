@@ -19,7 +19,7 @@ export class PdfGeneratorService {
       new Txt(`Historial al ${new Date().toLocaleDateString('es-AR')}`)
         .fontSize(13)
         .bold()
-        .margin([0, 0, 0, 10])
+        .margin([0, 0, 0, 0])
         .end
     );
 
@@ -52,7 +52,7 @@ export class PdfGeneratorService {
       new Txt(`Historial al ${new Date().toLocaleDateString('es-AR')} perteneciente a ${user}`)
         .fontSize(13)
         .bold()
-        .margin([0, 0, 0, 10])
+        .margin([0, 0, 0, 0])
         .end
     );
 
@@ -99,6 +99,72 @@ export class PdfGeneratorService {
       new Table([
         ['Equipo', 'Descripcion', 'Ubicación', 'Inventario'],
         ...formattedData.map(item => [item.nombre, item.comentario, item.usuario.userName, item.inventario])
+      ])
+        .layout('lightHorizontalLines') // Optional: Add horizontal lines to separate the rows
+        .end
+    );
+
+    pdf.create().open();
+  }
+
+  inventarioPorEquipo(data: any[]){
+    const pdf = new PdfMakeWrapper();
+
+    pdf.info({
+      title: `Inventario ${new Date().toISOString()}`
+    });
+
+
+    pdf.add(
+      new Txt(`Equipamiento cargado al ${new Date().toLocaleDateString('es-AR')}`)
+        .fontSize(16)
+        .bold()
+        .margin([0, 0, 0, 10])
+        .end
+    );
+
+    const formattedData = data.map(item => ({
+      ...item,
+      fecha: new Date(item.fecha).toLocaleDateString('es-AR')
+    }));
+
+    pdf.add(
+      new Table([
+        ['Equipo', 'Cantidad'],
+        ...formattedData.map(item => [item.equipo, item.cantidad])
+      ])
+        .layout('lightHorizontalLines') // Optional: Add horizontal lines to separate the rows
+        .end
+    );
+
+    pdf.create().open();
+  }
+
+  inventarioPorUsuario(data: any[]){
+    const pdf = new PdfMakeWrapper();
+
+    pdf.info({
+      title: `Inventario ${new Date().toISOString()}`
+    });
+
+
+    pdf.add(
+      new Txt(`Equipamiento cargado al ${new Date().toLocaleDateString('es-AR')}`)
+        .fontSize(16)
+        .bold()
+        .margin([0, 0, 0, 10])
+        .end
+    );
+
+    const formattedData = data.map(item => ({
+      ...item,
+      fecha: new Date(item.fecha).toLocaleDateString('es-AR')
+    }));
+
+    pdf.add(
+      new Table([
+        ['Usuario', 'Cantidad de equipos'],
+        ...formattedData.map(item => [item.usuario, item.cantidad])
       ])
         .layout('lightHorizontalLines') // Optional: Add horizontal lines to separate the rows
         .end

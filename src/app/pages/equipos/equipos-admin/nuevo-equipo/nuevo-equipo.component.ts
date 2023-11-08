@@ -43,6 +43,8 @@ export class NuevoEquipoComponent implements OnInit {
     this.equiposService.guardaEquipo(this.miFormulario.value)
       .subscribe((resp) => {
         this.mostrarSpinner = false;
+        this.miFormulario.reset();
+        this.miFormulario.clearValidators();
         this.toastr.success(
           '<span data-notify="icon" class="nc-icon nc-bell-55"></span><span data-notify="message">Guardado!!!</span>',
           "",

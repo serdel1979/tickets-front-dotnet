@@ -105,4 +105,32 @@ export class EquiposAdminComponent implements OnInit {
     })
   }
 
+
+  generaPdfGrupEquipos(){
+    this.loadingPdf = true;
+    this.equipoService.getGrupEquipos().subscribe(resp=>{
+      this.allEquipos = resp;
+      this.reportesPdf.inventarioPorEquipo(resp)
+      this.loadingPdf = false;
+    },
+    (err)=>{
+      this.loadingPdf = false;
+    })
+  }
+
+  generaPdfGrupUsuarios(){
+    this.loadingPdf = true;
+    this.equipoService.getGrupUsuarios().subscribe(resp=>{
+      this.allEquipos = resp;
+      this.reportesPdf.inventarioPorUsuario(resp)
+      this.loadingPdf = false;
+    },
+    (err)=>{
+      this.loadingPdf = false;
+    })
+  }
+
+
+
+
 }
