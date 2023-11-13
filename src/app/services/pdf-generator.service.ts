@@ -74,6 +74,8 @@ export class PdfGeneratorService {
   generateInventario(data: any[]){
     const pdf = new PdfMakeWrapper();
 
+    pdf.pageOrientation('landscape'); // Configura la orientación de la página
+
     pdf.info({
       title: `Inventario ${new Date().toISOString()}`
     });

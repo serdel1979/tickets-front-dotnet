@@ -119,12 +119,11 @@ export class EquiposAdminComponent implements OnInit {
   }
 
 
-  //generaPdfGrupEquiposSoporte
   generaPdfGrupEquiposSoporte(){
     this.loadingPdf = true;
-    this.equipoService.getGrupEquipos().subscribe(resp=>{
+    this.equipoService.getGrupEquiposSoporte().subscribe(resp=>{
       this.allEquipos = resp;
-      this.reportesPdf.inventarioPorEquipo(resp)
+      this.reportesPdf.inventarioPorEquipoSoporte(resp)
       this.loadingPdf = false;
     },
     (err)=>{
