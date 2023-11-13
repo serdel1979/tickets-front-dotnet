@@ -137,6 +137,41 @@ export class PdfGeneratorService {
     pdf.create().open();
   }
 
+
+  inventarioPorEquipoSoporte(data: any[]){
+    const pdf = new PdfMakeWrapper();
+
+    pdf.info({
+      title: `Inventario ${new Date().toISOString()}`
+    });
+
+
+    pdf.add(
+      new Txt(`Equipamiento para entregar - ${new Date().toLocaleDateString('es-AR')}`)
+        .fontSize(16)
+        .bold()
+        .margin([0, 0, 0, 10])
+        .end
+    );
+
+    const formattedData = data.map(item => ({
+      ...item,
+      fecha: new Date(item.fecha).toLocaleDateString('es-AR')
+    }));
+
+    pdf.add(
+      new Table([
+        ['Equipo', 'Cantidad'],
+        ...formattedData.map(item => [item.equipo, item.cantidad])
+      ])
+        .layout('lightHorizontalLines') // Optional: Add horizontal lines to separate the rows
+        .end
+    );
+
+    pdf.create().open();
+  }
+
+
   inventarioPorUsuario(data: any[]){
     const pdf = new PdfMakeWrapper();
 

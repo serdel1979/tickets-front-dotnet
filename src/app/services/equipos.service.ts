@@ -47,6 +47,10 @@ export class EquiposService {
     return this.http.get<Equipo[]>(`${URLapi}/equipos/grupbyequipo`);
   }
 
+  getGrupEquiposSoporte(){
+    return this.http.get<Equipo[]>(`${URLapi}/equipos/grupbyequiposoporte`);
+  }
+
   getGrupUsuarios(){
     return this.http.get<Equipo[]>(`${URLapi}/equipos/grupbyusuario`);
   }

@@ -46,6 +46,10 @@
                     Generar PDF
                     <span *ngIf="loadingPdf" class="sr-only">Loading...</span>
                 </button>
+                <button class="btn btn-primary btn-sm ml-2" (click)="generaPdfGrupEquiposSoporte()">
+                    PDF equipos disponibles
+                    <span *ngIf="loadingPdf" class="sr-only">Loading...</span>
+                </button>
                 <button class="btn btn-primary btn-sm ml-2" (click)="generaPdfGrupEquipos()">
                     PDF por equipos
                     <span *ngIf="loadingPdf" class="sr-only">Loading...</span>
